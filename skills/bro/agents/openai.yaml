@@ -1,0 +1,4 @@
+interface:
+  display_name: "用普通话重新说明"
+  short_description: "用户要求再说简单一点、去掉术语或重述上一条回答时，用清楚简短的日常语言重述，不另起调查或丢掉关键事实。"
+  default_prompt: "使用 $bro 完成当前任务，遵守正文的适用范围、证据和授权边界。"

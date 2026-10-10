@@ -1,0 +1,4 @@
+interface:
+  display_name: "多模型交叉审核"
+  short_description: "不同模型独立审核同一证据包，由主审核实发现、去重并裁决"
+  default_prompt: "使用 $interrogate 审核本次改动，保留独立报告并给出有证据的裁决。"

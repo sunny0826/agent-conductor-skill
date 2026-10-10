@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent 指挥官 · 模型配置"
+  short_description: "基于 Lody 全量发现 Agent 和模型，由用户选择角色组合与推理预算"
+  default_prompt: "使用 $agent-conductor-setup 分页枚举 Lody 的机器、Agent 配置与角色的全部模型，列出选项由我选择角色组合与预算。"

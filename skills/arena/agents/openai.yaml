@@ -1,0 +1,4 @@
+interface:
+  display_name: "独立方案探索"
+  short_description: "对同一任务独立探索多个方案，比较后选择基础、吸收有用部分并核验真实结果"
+  default_prompt: "使用 $arena 独立探索这个任务，记录候选、评判、合成来源与真实验证边界。"

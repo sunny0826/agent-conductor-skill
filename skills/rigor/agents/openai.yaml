@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rigor"
+  short_description: "按工程流程完成非平凡任务，用真实证据交付。发现和派发 Agent 用 agent-conductor。"
+  default_prompt: "使用 $rigor 完成当前任务，遵守正文的适用范围、证据和授权边界。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "决策证据轨迹"
+  short_description: "为长任务记录选择、原因、证据与结果，并核对每项结论是否有实际产物支持"
+  default_prompt: "使用 $show-me-your-work 为本任务保留可复核的决策轨迹。"

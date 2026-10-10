@@ -1,0 +1,4 @@
+interface:
+  display_name: "以使用体验为目标"
+  short_description: "产品、交互或功能取舍时，从实际使用者和维护者的体验选择目标，减少粗糙功能和无用选项。"
+  default_prompt: "使用 $principle-experience-first 完成当前任务，遵守正文的适用范围、证据和授权边界。"

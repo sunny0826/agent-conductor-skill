@@ -1,0 +1,4 @@
+interface:
+  display_name: "恢复最近工作上下文"
+  short_description: "用户要求回顾某主题最近工作或继续之前工作时，从范围内历史和当前状态恢复目标、决定、问题和下一步，不将旧记录当作实时事实。"
+  default_prompt: "使用 $recall 完成当前任务，遵守正文的适用范围、证据和授权边界。"

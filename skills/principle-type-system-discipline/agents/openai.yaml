@@ -1,0 +1,4 @@
+interface:
+  display_name: "用类型表达约束"
+  short_description: "设计类型或签名时编码合法状态、语义标识与穷尽分支，在边界解析外部数据，不用断言欺骗编译器。"
+  default_prompt: "使用 $principle-type-system-discipline 完成当前任务，遵守正文的适用范围、证据和授权边界。"

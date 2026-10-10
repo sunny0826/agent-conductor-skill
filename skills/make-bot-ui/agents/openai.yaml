@@ -1,0 +1,4 @@
+interface:
+  display_name: "构建 webhook 控制页面"
+  short_description: "用户要求构建按钮或页面唤醒 webhook Agent 时，使用服务器保管发送密钥、明确 payload 契约，并验证访"
+  default_prompt: "使用 $make-bot-ui 完成当前任务，遵守正文的适用范围、证据和授权边界。"

@@ -1,0 +1,40 @@
+---
+name: rigor
+description: "非平凡任务按工程流程执行：匹配包内流程，按相关原则决策，以真实证据交付。闲聊与普通小改动不启用。发现和派发 Agent 用 agent-conductor。"
+---
+
+# Rigor
+
+Rigor 匹配工程流程，并在某项决定需要时读取对应原则。发现、配置和调度见 [agent-conductor](../agent-conductor/SKILL.md)。首先区分解释、调查、设计、计划、实施、审查和发布，保留用户指定关口。
+
+## 先确定可证明的目标
+
+明确完成条件、范围与授权，读取实际项目约定。非平凡修改先用 [how](../how/SKILL.md) 追踪，涉及动机用 [why](../why/SKILL.md)。先命名数据形状与 [领域结构](../principle-model-the-domain/SKILL.md)，非机械接口／归属变更用 [architect](../architect/SKILL.md)。可观察的行为分歧应调查或做隔离原型，不能把可运行的问题交用户猜；真正产品偏好或必需授权仍由用户决定。
+
+采用哪个原则就先读 [原则叶目录](references/principles.md) 的完整条目，说明它改变了哪项具体决定，不罗列所有标签。多步工作记录阻塞前置、独立工作流、共享可变状态和最小安全分解；不适用写原因。
+
+## 匹配执行流程
+
+用 [23 项流程目录](references/playbooks.md) 匹配任务，读取对应文件，把实际步骤放入待办，跳过项保留原因。复杂、跨范围或没有窄流程匹配时用 [figure-it-out](../figure-it-out/SKILL.md) 设计一次执行；持续多日项目才用 Orchestrate，单任务完成条件用 Autonomous run，不因为措辞宏大强行上多层调度。
+
+只读调查和只做计划不能自动进入开 PR。PR 状态问题选 Babysit 的明确模式；合并请求才选 Shipping，绿 CI 不是独立行为证明。长期工作只用宿主真实活动句柄、事件或定时能力；缺能力交付状态和缺口，不自行启动 Agent CLI 冒充派发或循环。
+
+## 委派与所有权
+
+按实际可用工具与用户已有模型选择派发，必要时用包内 [setup](../agent-conductor-setup/SKILL.md)，不复制 Cursor 模型规则、不硬编码家族或自动付费回退。独立性和实际身份须记录；同模型多人不是跨模型。
+
+覆盖／竞赛用 [swarm](../swarm/SKILL.md)，同问题选基础并合成用 [arena](../arena/SKILL.md)，对抗审核用 [interrogate](../interrogate/SKILL.md)。任务包有原目标、所有后来限制、范围、输入、产物位置、验证和报告。独立写者分离目录／分支，先处理阻塞的共享原语；协调者亲自读产物和证据，不能转发“已完成”自述。
+
+新工作、修复轮、重试和下一项默认新会话；只有确实需要原会话不可迁移的 checkout、未提交状态或进程时续用。停止／暂停消息不是复用。没有委派能力时可自行完成允许的工作，但必须报告要求的独立阶段未完成，不能等不存在的子代理。
+
+## 写清楚与证明结果
+
+使用 [unslop](../unslop/SKILL.md) 与 [technical-writing](../technical-writing/SKILL.md) 按任务写清楚。先说使用者和维护者实际看到的变化，再写必要技术细节。只引用实际读过或产生的证据，测量、推导与未知在结论附近标明。测试脚本注释不做阶段旁白，只保留法律、契约或非显然的原因；范围内注释审查由 [no-comments](../no-comments/SKILL.md) 负责。
+
+运行和驱动步骤使用包内 [真实表面验证](references/verification-surfaces.md)，产品精简审核用 [代码检查](references/code-review.md)，不依赖其他插件的控制／清理技能。性能数值用 [benchmark-checklist](../benchmark-checklist/SKILL.md)。长任务轨迹用 [show-me-your-work](../show-me-your-work/SKILL.md)，是否提交由既有授权决定。
+
+可逆工作在既有授权内推进；代码可回滚不等于获得发送消息、生产修改或发布权。模式调用不自动授权 commit、push、合并、部署、删除、外部聊天或全局配置。观察到技能错误可修本轮授权范围内的说明，其他仓库／全局问题交付建议，不无界扩张。
+
+结论包含流程要求的事实、选择、取舍、证据和开放项；没有真实验证就不报告完成。模式常驻和自动发现按宿主真实能力，不许诺原 Cursor mode 字段跨宿主可用。
+
+来源与适配见 [说明](references/sources.md)，保留 [MIT 许可](LICENSE)。

@@ -1,0 +1,4 @@
+interface:
+  display_name: "技能选择与使用帮助"
+  short_description: "用户询问提取版技能如何配置、选择或使用时，读取对应说明并给一个适合的提示示例；帮助问题不自动启动工作。"
+  default_prompt: "使用 $skill-help 完成当前任务，遵守正文的适用范围、证据和授权边界。"

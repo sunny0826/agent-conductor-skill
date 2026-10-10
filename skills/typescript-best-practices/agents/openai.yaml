@@ -1,0 +1,4 @@
+interface:
+  display_name: "TypeScript 类型与边界"
+  short_description: "阅读或修改 .ts、.tsx 时，建模合法状态、校验外部输入并保持穷尽与可观察测试；不为一个检查新增框架或重构无关代码。"
+  default_prompt: "使用 $typescript-best-practices 完成当前任务，遵守正文的适用范围、证据和授权边界。"

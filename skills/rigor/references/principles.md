@@ -1,0 +1,28 @@
+# 原则目录
+
+只在当前判断确实需要时读完整叶技能，不因目录存在扩大范围。
+
+- [principle-attack-the-premise](../../principle-attack-the-premise/SKILL.md)
+- [principle-boundary-discipline](../../principle-boundary-discipline/SKILL.md)
+- [principle-build-the-lever](../../principle-build-the-lever/SKILL.md)
+- [principle-encode-lessons-in-structure](../../principle-encode-lessons-in-structure/SKILL.md)
+- [principle-exhaust-the-design-space](../../principle-exhaust-the-design-space/SKILL.md)
+- [principle-experience-first](../../principle-experience-first/SKILL.md)
+- [principle-explain-the-number](../../principle-explain-the-number/SKILL.md)
+- [principle-fix-root-causes](../../principle-fix-root-causes/SKILL.md)
+- [principle-foundational-thinking](../../principle-foundational-thinking/SKILL.md)
+- [principle-guard-the-context-window](../../principle-guard-the-context-window/SKILL.md)
+- [principle-laziness-protocol](../../principle-laziness-protocol/SKILL.md)
+- [principle-make-operations-idempotent](../../principle-make-operations-idempotent/SKILL.md)
+- [principle-migrate-callers-then-delete-legacy-apis](../../principle-migrate-callers-then-delete-legacy-apis/SKILL.md)
+- [principle-minimize-reader-load](../../principle-minimize-reader-load/SKILL.md)
+- [principle-model-the-domain](../../principle-model-the-domain/SKILL.md)
+- [principle-never-block-on-the-human](../../principle-never-block-on-the-human/SKILL.md)
+- [principle-outcome-oriented-execution](../../principle-outcome-oriented-execution/SKILL.md)
+- [principle-prove-it-works](../../principle-prove-it-works/SKILL.md)
+- [principle-redesign-from-first-principles](../../principle-redesign-from-first-principles/SKILL.md)
+- [principle-separate-before-serializing-shared-state](../../principle-separate-before-serializing-shared-state/SKILL.md)
+- [principle-sequence-verifiable-units](../../principle-sequence-verifiable-units/SKILL.md)
+- [principle-subtract-before-you-add](../../principle-subtract-before-you-add/SKILL.md)
+- [principle-test-behavior-not-implementation](../../principle-test-behavior-not-implementation/SKILL.md)
+- [principle-type-system-discipline](../../principle-type-system-discipline/SKILL.md)

@@ -1,0 +1,4 @@
+interface:
+  display_name: "构建可复跑工具"
+  short_description: "非平凡编辑、迁移、分析或验证时，将做法做成最小可复跑工具，而不是重复手工操作。"
+  default_prompt: "使用 $principle-build-the-lever 完成当前任务，遵守正文的适用范围、证据和授权边界。"

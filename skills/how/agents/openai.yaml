@@ -1,0 +1,4 @@
+interface:
+  display_name: "系统工作原理"
+  short_description: "从真实源码追踪入口、调用链、数据流与状态归属，建立可核对的系统运行模型"
+  default_prompt: "使用 $how 解释这个系统如何工作，追踪真实入口、调用链、数据流与归属，注明来源和未知项。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "提取个人工作方式"
+  short_description: "用户要求创建或更新个人 mode 技能、让 Agent 遵循其工作习惯时，结合明确偏好与范围内重复证据编写短技能；普通任"
+  default_prompt: "使用 $automate-me 完成当前任务，遵守正文的适用范围、证据和授权边界。"

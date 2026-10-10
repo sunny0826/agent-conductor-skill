@@ -1,0 +1,4 @@
+interface:
+  display_name: "项目验收技能生成器"
+  short_description: "根据项目事实生成可复用验收技能与功能地图，实跑并保留证据"
+  default_prompt: "使用 $create-verification-skill 为当前项目建立可复用验收技能与功能地图，实际跑通一个功能并保留清理后的证据。"

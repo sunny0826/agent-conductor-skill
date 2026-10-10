@@ -1,0 +1,4 @@
+interface:
+  display_name: "解释到能理解"
+  short_description: "用户要求理解改动、子系统或设计选择时，结合机制与有证据的动机分层解释；只教学不自动修改产品。"
+  default_prompt: "使用 $teach 完成当前任务，遵守正文的适用范围、证据和授权边界。"

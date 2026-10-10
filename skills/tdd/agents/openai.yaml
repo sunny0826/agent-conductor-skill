@@ -1,0 +1,4 @@
+interface:
+  display_name: "先复现，再修复"
+  short_description: "用最小回归检查证明修复前失败、修复后通过，测试不现实时采用有效替代验证"
+  default_prompt: "使用 $tdd 修复这个错误，先证明检查因目标错误失败，再最小修复并用同一检查验证。"

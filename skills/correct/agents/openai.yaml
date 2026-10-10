@@ -1,0 +1,4 @@
+interface:
+  display_name: "把重复错误变成结构约束"
+  short_description: "用户要求防止本仓库反复出现的 Agent 错误时，收集重复实例并优先用架构、类型、检查或测试消除错误，文档只保留判断规则"
+  default_prompt: "使用 $correct 完成当前任务，遵守正文的适用范围、证据和授权边界。"

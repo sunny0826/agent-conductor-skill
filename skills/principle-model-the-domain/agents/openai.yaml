@@ -1,0 +1,4 @@
+interface:
+  display_name: "用结构表达领域"
+  short_description: "写状态逻辑或重复分支时，用符合领域的数据结构表达状态、归属与约束，避免散落的布尔值和重复假设。"
+  default_prompt: "使用 $principle-model-the-domain 完成当前任务，遵守正文的适用范围、证据和授权边界。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "设计可审计的执行流程"
+  short_description: "复杂迁移、多部分变更或没有更窄流程可用时，先设计按风险缩放的阶段流程，再用假设、实证和决策轨迹推进。"
+  default_prompt: "使用 $figure-it-out 完成当前任务，遵守正文的适用范围、证据和授权边界。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "性能结果核验"
+  short_description: "核验性能主张的公平性、正确性、实际工作与重复测量证据"
+  default_prompt: "使用 $benchmark-checklist 核验这个性能主张，给出测量证据、结论与缺口。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "授权内自主推进"
+  short_description: "已授权的可逆工作可自主推进并交付可评审结果，保留用户指定关口，不把执行自主性当作外部操作授权。"
+  default_prompt: "使用 $principle-never-block-on-the-human 完成当前任务，遵守正文的适用范围、证据和授权边界。"

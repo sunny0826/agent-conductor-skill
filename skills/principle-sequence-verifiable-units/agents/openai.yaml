@@ -1,0 +1,4 @@
+interface:
+  display_name: "逐单元验证工作"
+  short_description: "多步迁移、批量改动或交付时，每个单元以可检验状态结束，先验证当前单元再依赖它继续。"
+  default_prompt: "使用 $principle-sequence-verifiable-units 完成当前任务，遵守正文的适用范围、证据和授权边界。"

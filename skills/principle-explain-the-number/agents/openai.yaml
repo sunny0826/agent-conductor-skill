@@ -1,0 +1,4 @@
+interface:
+  display_name: "解释测量数字"
+  short_description: "相信、报告或据测量选型前，找到真实瓶颈，并排除错误、跳过工作、未调优和噪声。"
+  default_prompt: "使用 $principle-explain-the-number 完成当前任务，遵守正文的适用范围、证据和授权边界。"

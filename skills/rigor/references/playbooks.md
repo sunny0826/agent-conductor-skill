@@ -1,0 +1,27 @@
+# 执行流程目录
+
+先匹配范围再读对应流程；原型、调查、计划、实施、PR 状态和落地是不同任务。
+
+- [authoring-a-skill](../playbooks/authoring-a-skill.md)
+- [autonomous-run](../playbooks/autonomous-run.md)
+- [autopilot-full](../playbooks/autopilot-full.md)
+- [autopilot-stack](../playbooks/autopilot-stack.md)
+- [babysit](../playbooks/babysit.md)
+- [bug-fix](../playbooks/bug-fix.md)
+- [eval](../playbooks/eval.md)
+- [feature](../playbooks/feature.md)
+- [hillclimb](../playbooks/hillclimb.md)
+- [investigation](../playbooks/investigation.md)
+- [multi-phase-plan](../playbooks/multi-phase-plan.md)
+- [opening-a-pr](../playbooks/opening-a-pr.md)
+- [orchestrate](../playbooks/orchestrate.md)
+- [pause-safely](../playbooks/pause-safely.md)
+- [perf-issue](../playbooks/perf-issue.md)
+- [prototype](../playbooks/prototype.md)
+- [refactoring](../playbooks/refactoring.md)
+- [runtime-forensics](../playbooks/runtime-forensics.md)
+- [session-pickup](../playbooks/session-pickup.md)
+- [shipping](../playbooks/shipping.md)
+- [trace-forensics](../playbooks/trace-forensics.md)
+- [visual-parity](../playbooks/visual-parity.md)
+- [worktree-cleanup](../playbooks/worktree-cleanup.md)

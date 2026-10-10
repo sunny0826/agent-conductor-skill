@@ -1,0 +1,4 @@
+interface:
+  display_name: "设计动机追溯"
+  short_description: "从历史与实际可访问资料追溯设计动机，区分证据强度、矛盾与尚未覆盖的来源"
+  default_prompt: "使用 $why 追溯这段代码的设计动机，给出分层证据和来源覆盖。"

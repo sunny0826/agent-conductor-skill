@@ -1,0 +1,4 @@
+interface:
+  display_name: "结构设计"
+  short_description: "从调用者用法推导类型和模块归属，比较结构方案并在实施中核对设计是否成立"
+  default_prompt: "使用 $architect 设计这个改动，先追踪现状，再比较结构方案并说明接口、归属、取舍和验证边界。"

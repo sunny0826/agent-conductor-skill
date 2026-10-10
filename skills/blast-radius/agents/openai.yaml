@@ -1,0 +1,4 @@
+interface:
+  display_name: "改动影响分析"
+  short_description: "追踪改动之外的间接消费方，用真实代码证明风险并限定排除范围"
+  default_prompt: "使用 $blast-radius 分析这次改动的间接影响，运行最小证明并区分已确认、已排除和待证范围。"

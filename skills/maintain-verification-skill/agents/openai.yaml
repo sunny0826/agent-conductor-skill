@@ -1,0 +1,4 @@
+interface:
+  display_name: "维护项目验收技能"
+  short_description: "用户要求审计或维护已有 verify 技能及功能地图时，逐功能读源码并实跑，修正说明或 harness；不修改产品代码。"
+  default_prompt: "使用 $maintain-verification-skill 完成当前任务，遵守正文的适用范围、证据和授权边界。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent 指挥官"
+  short_description: "分配 Agent 角色、路由子任务、协调执行，并以真实结果验证任务完成"
+  default_prompt: "使用 $agent-conductor 组织 Agent 协作完成这个任务，拆解依赖、分配角色并验证真实结果。"
