@@ -4,7 +4,7 @@ import process from "node:process";
 
 const RULE =
 	"Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked.";
-const LANES = /Ten lanes on `[^`<>]+` at the PR head/;
+const LANES = /^([1-9]\d*) lanes on `[^`<>]+` at the PR head/;
 const SUB_BLOCKS = [
 	"Depends on.",
 	"Files.",
@@ -129,10 +129,19 @@ for (const pr of prSections) {
 
 	const live = block("Verify, live.");
 	if (live) {
-		if (!LANES.test(live.rest)) fail(live.n, `${pr.title}: Verify, live lacks "Ten lanes on \`<swarm workers model>\` at the PR head" with the actual model filled in`);
+		const declared = live.rest.slice(RULE.length).trim().match(LANES);
+		if (!declared) fail(live.n, `${pr.title}: declare a positive lane count and actual model: "3 lanes on \`model\` at the PR head"`);
+		const metadata = live.lines.filter((l) => !l.code).map((l) => l.text).join("\n");
+		const risk = metadata.match(/^Risk: (low|high)\s*$/m)?.[1];
+		if (!risk) fail(live.n, `${pr.title}: Risk must be low or high`);
+		if (!/^Coverage: [^<>\n]*\S[^<>\n]*$/m.test(metadata)) fail(live.n, `${pr.title}: Coverage must explain scenarios, exclusions and any scaling`);
+		const audits = metadata.match(/^Audit lanes: ([1-9]\d*)\s*$/m)?.[1];
+		if (!audits || (risk === "high" && Number(audits) < 2)) fail(live.n, `${pr.title}: audit lanes require at least one, or two for high risk`);
 		const lanes = boxes(live.lines).map((b) => ({ ...b, m: b.text.match(/^Lane (\d+)\. /) }));
 		const numbers = lanes.filter((b) => b.m).map((b) => Number(b.m[1])).sort((a, b) => a - b);
-		if (numbers.join(",") !== "1,2,3,4,5,6,7,8,9,10") fail(live.n, `${pr.title}: lanes are [${numbers.join(",")}], expected 1 to 10`);
+		if (!declared || Number(declared[1]) !== lanes.length || numbers.length !== lanes.length || numbers.some((n, i) => n !== i + 1)) {
+			fail(live.n, `${pr.title}: lane numbering must be consecutive from 1 and match the declared count`);
+		}
 		for (const lane of lanes) {
 			if (!lane.m) fail(lane.n, `${pr.title}: live box is not a lane`);
 			else if (!/Save `[^`]+`/.test(lane.text)) fail(lane.n, `${pr.title}: lane ${lane.m[1]} names no evidence artifact`);
