@@ -8,12 +8,12 @@
 
 ## 验证合同
 
-每 verification block 以模板 RULE 开头；unit、live、perf 缺任何必需证据均不能通过。live 必有十个独立具体 scenario／artifact／pass predicate，按 [swarm](../../swarm/SKILL.md) 实际可用模型与容量执行，不硬编码模型，缺十项完整证据标缺口。至少一项 Regression lane against trunk，基线无功能记录事实并验证新增行为和用户等到的终态，不伪造 trunk 结果。
+每 verification block 以模板 RULE 开头；unit、live、perf 缺任何必需证据均不能通过。live 的 lane 数按该 PR 的用户可见风险缩放：默认十项独立 scenario／artifact／pass predicate；纯只读诊断或单一 CLI/JSON 输出的 PR 可缩减为覆盖主要分支与拒绝路径的更少 lane，在计划中写明缩放理由；缺证据的 lane 标缺口，不凑数补齐。按 [swarm](../../swarm/SKILL.md) 实际可用模型与容量执行，不硬编码模型。至少一项 Regression lane against trunk，基线无功能记录事实并验证新增行为和用户等到的终态，不伪造 trunk 结果。
 
 按包内 [真实表面](../references/verification-surfaces.md) 驱动实际 Browser／CLI／TUI／模拟器等，两个表面都覆盖；UI 保存截图，其他保存真实原始输出等适当产物，不是一律伪造 PNG。缺驱动条件记 Appendix C，但 lane 仍写如何执行。使用实际隔离环境，不假定 cloud VM。
 
 perf 写两侧 metric、交错 probe、先测 trunk baseline、会失败的数值 rule，用 [benchmark-checklist](../../benchmark-checklist/SKILL.md) 核对工作与结果。trunk 缺功能，分别预算 diff-added work 和用户终态；不同场景不能 ratio。确不影响可测工作时写不适用的机制证据，不拿空数值假装性能获证。
 
-交互变更保留用户 review gate，截图与 30–60 秒视频在已有聊天交付方式下供查看，merge-ready 后等待约定操作；明确无交互写 `None. <PR id> is not review-gated.`，无 boxes。每新 patch 独立 gates、live、perf 与至少两个源码 audit lane，原版有效结果仅按 [Shipping](shipping.md) patch-id 规则保留。宿主缺独立能力须说明而非降低合同。
+交互变更保留用户 review gate，截图与 30–60 秒视频在已有聊天交付方式下供查看，merge-ready 后等待约定操作；明确无交互写 `None. <PR id> is not review-gated.`，无 boxes。纯 CLI/JSON 输出无交互时以真实回执为证据，不设截图或视频 lane。每新 patch 独立 gates、live、perf 与源码 audit lane（只读或低风险改动至少一个，写路径、并发或安全敏感至少两个），原版有效结果仅按 [Shipping](shipping.md) patch-id 规则保留。宿主缺独立能力须说明而非降低合同。
 
-只交付计划路径、PR 依赖／review-gated 集合、原型已证与未知、检查输出。计划请求不授权实施或 PR 操作，执行从用户 explicit go 开始；已明确给定的执行授权沿用，不重复索取。
+只交付计划路径、PR 依赖／review-gated 集合、原型已证与未知、检查输出。计划与审查包含必要性维度：存在数量级更便宜的替代方案（如仅归档搬运对比格式迁移）时，连同代价差异作为选项提交用户，不默认选择更重的方案；验收深度按上文风险缩放，不因模板存在而全量套用。计划请求不授权实施或 PR 操作，执行从用户 explicit go 开始；已明确给定的执行授权沿用，不重复索取。
