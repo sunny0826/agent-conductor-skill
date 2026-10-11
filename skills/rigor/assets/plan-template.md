@@ -43,7 +43,7 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 
 ### Verdict and merge, for every PR
 
-- [ ] At the code-ready head SHA and at each later push that changes the patch, run the swarm per `../swarm/SKILL.md`. One gates lane. The ten live lanes from the PR's **Verify, live** block. The perf lane from its **Verify, perf** block. Two or more audit lanes, each with its own focus, that read the diff and the receipts and distrust the PR body. The root audits the receipts in the merge-ready report before the verdict.
+- [ ] At the code-ready head SHA and at each later push that changes the patch, run the swarm per `../swarm/SKILL.md`. One gates lane. The declared live lanes from the PR's **Verify, live** block. The perf lane from its **Verify, perf** block. The declared audit lanes under the risk rules in `playbooks/multi-phase-plan.md`, each with its own focus, that read the diff and the receipts and distrust the PR body. The root audits the receipts in the merge-ready report before the verdict.
 - [ ] Clean only when every lane is `PASS`. Findings go back to the owner, including a defect that a lane filed as a note. A new head gets a fresh swarm and a fresh verdict, except for results that stay valid under the patch-id rule in `playbooks/shipping.md`.
 - [ ] <The merge or append rule from the execution playbook, with the patch-id rule from `playbooks/shipping.md`.>
 
@@ -78,18 +78,16 @@ Each live lane uses its own actual isolated environment at the PR head. Drive th
 
 - [ ] <Test file and the case it gains.> Run `<command>`.
 
-**Verify, live.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked. Ten lanes on `<actual configured workers model identity>` at the PR head, per the boot recipe.
+**Verify, live.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked. <N> lanes on `<actual configured workers model identity>` at the PR head, per the boot recipe.
+
+Risk: <low or high>
+Coverage: <Why these scenarios cover the change; exclusions and the reason for any scaling.>
+Audit lanes: <count under the risk rules in playbooks/multi-phase-plan.md>
 
 - [ ] Lane 1. Regression lane against trunk. Run <the same load-bearing scenario> at trunk and head. If trunk lacks the feature, record that and gate <the behavior the diff adds plus the end state the user waits for>. Save `<scenario artifact path>`. Pass when <predicate>.
 - [ ] Lane 2. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
 - [ ] Lane 3. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 4. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 5. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 6. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 7. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 8. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 9. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
-- [ ] Lane 10. <Scenario.> Save `<scenario artifact path>`. Pass when <predicate>.
+<Add or remove scenario rows to match N; use consecutive numbers. Choose coverage from the actual risks, not a fixed row count.>
 
 **Verify, perf.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked.
 
@@ -98,7 +96,7 @@ Each live lane uses its own actual isolated environment at the PR head. Drive th
 - [ ] Baseline. Record the trunk <value> first.
 - [ ] Rule. <Head against trunk, with the number that fails. If the scenarios differ, add absolute budgets for the diff-added work and the user-visible end state instead of an invalid ratio.>
 
-**Review gate.** The operator reviews before merge.
+**Review gate.** <For non-interactive CLI/JSON changes use "None. PR-id is not review-gated." and remove the media boxes below. Otherwise retain the agreed operator gate.>
 
 - [ ] Copy lane <n> screenshots into `<media path>/<pr-id>-review-<slug>.png`.
 - [ ] Record a 30 to 60 second video of the change on the actual isolated UI instance. Save it as `<media path>/<pr-id>-review.mp4`.

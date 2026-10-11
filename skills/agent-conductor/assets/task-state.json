@@ -1,0 +1,30 @@
+{
+  "goals": [
+    {
+      "id": "G1",
+      "source": "用户要求的消息位置及原意，不能填 Agent 自选方案",
+      "status": "active",
+      "acceptance": [
+        {
+          "id": "A1",
+          "expected": "用户可观察的结果、场景和范围",
+          "status": "pending",
+          "observed": "",
+          "evidence": []
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "goal": "G1",
+      "owner": "coordinator",
+      "workspace": "同一真实工作区使用同一标识",
+      "status": "pending",
+      "writes": [],
+      "constraints": [],
+      "evidence": []
+    }
+  ]
+}
