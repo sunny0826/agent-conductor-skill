@@ -1,5 +1,7 @@
 # agent-conductor-skill
 
+[按任务选技能：可搜索的使用指南](docs/skill-usage.html)（28 个任务技能、24 个原则技能）。下载或在本地浏览器打开 HTML 查看。
+
 两套技能分开使用。
 
 - [rigor](skills/rigor/SKILL.md) 是工程流程。它匹配 23 项流程，需要时读取对应原则，用真实证据交付。[下载](dist/rigor.zip)（43 个技能，220 个文件）。这个 ZIP 含 rigor 链接到的 `agent-conductor`。

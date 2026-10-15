@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>按任务选技能 · agent-conductor-skill</title>
+<link rel="icon" href="data:,">
+<style>
+:root{color-scheme:light;--ink:#16262c;--muted:#53656c;--paper:#f6f7f3;--line:#d6dfd9;--accent:#176d59}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"PingFang SC",sans-serif}
+main{max-width:1080px;margin:auto;padding:52px 28px 72px}a{color:var(--accent);text-underline-offset:4px}button,input,select{font:inherit}
+h1{font-size:clamp(32px,5vw,56px);line-height:1.15;margin:12px 0 20px;letter-spacing:-1.5px}h2{font-size:27px;margin:0 0 16px}h3{font-size:20px;margin:0 0 10px}
+p{margin:8px 0 16px}.eyebrow,.meta{font-size:13px;color:var(--muted)}.lead{font-size:20px;max-width:700px}.muted{color:var(--muted)}
+section{margin-top:48px}.entries{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.entry{background:white;border:1px solid var(--line);border-radius:18px;padding:24px}
+.entry b{display:block;font-size:25px;margin:6px 0}.entry code{font-size:14px;overflow-wrap:anywhere}.entry p{color:var(--muted);font-size:16px}.entry .num{color:var(--accent);font-size:14px}
+.flow{display:flex;align-items:center;gap:18px;margin-top:28px;padding:20px 0;border-block:1px solid var(--line);flex-wrap:wrap}.flow span{flex:1;min-width:120px}.flow b{display:block}.flow small{color:var(--muted)}.arrow{color:var(--accent);font-size:26px}
+.search{display:flex;gap:12px;align-items:center}.search input{flex:1;width:100%;padding:14px 18px;border:1px solid #a9bcb1;border-radius:12px;background:white}.search label{white-space:nowrap}
+#count{font-size:14px;color:var(--muted);margin:10px 0 18px}.group{border-top:1px solid var(--line);padding:16px 0}.group>summary{font-size:21px;font-weight:650;cursor:pointer}.group>summary small{font-size:14px;color:var(--muted);font-weight:400;margin-left:10px}
+.skills{padding-top:10px}.skill{background:white;border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:14px 18px}.skill>summary{cursor:pointer;display:list-item}.skill-name{font-size:14px;color:var(--accent);overflow-wrap:anywhere}.goal{margin-left:12px}
+.skill-body{padding:12px 0 0;font-size:16px}.skill-body p{margin:6px 0}.boundary{color:var(--muted)}.source{display:flex;gap:20px;align-items:center;margin-top:12px;flex-wrap:wrap}
+button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px 14px;border-radius:9px;cursor:pointer}button:hover{background:#eaf2ec}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e0ae39;outline-offset:3px}
+.prompt{background:#e9f0e9;padding:24px;border-radius:16px}.prompt label{display:block;margin-bottom:12px}.prompt select{max-width:100%;padding:8px;border:1px solid #a9bcb1;border-radius:8px;background:white}#prompt-text{white-space:pre-wrap;overflow-wrap:anywhere;margin:20px 0;font:16px/1.8 system-ui,sans-serif}#copy-status{font-size:14px;margin-left:12px}
+.comparison{width:100%;border-collapse:collapse;font-size:16px}.comparison th,.comparison td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}.comparison th{color:var(--muted);font-weight:500}
+.notes{padding-left:22px}.notes li{margin:8px 0}.technical{font-size:15px;color:var(--muted);margin-top:24px}.technical>summary{cursor:pointer}footer{border-top:1px solid var(--line);padding-top:22px;margin-top:48px;font-size:14px;color:var(--muted)}[hidden]{display:none!important}
+@media(max-width:680px){main{padding:30px 18px 48px}.entries{grid-template-columns:1fr}.entry{padding:18px}.entry b{font-size:22px}.flow{gap:8px}.flow span{min-width:40%;flex:1}.flow .arrow{display:none}.search{display:block}.search label{display:block;margin-bottom:8px}.goal{display:block;margin:5px 0 0}.comparison{font-size:14px}.comparison th,.comparison td{padding:10px 5px}section{margin-top:36px}}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media print{button,.search,#count{display:none}.entry,.skill,.prompt{break-inside:avoid}main{padding:0}body{background:white}.technical{color:var(--ink)}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">agent-conductor-skill · 2026-10-10 · 当前仓库 52 个技能</div>
+<h1>先说目标，<br>再选一个入口。</h1>
+<p class="lead">日常从下面三个入口里选。专门任务再查目录，原则技能按需读取。</p>
+<div class="entries">
+<article class="entry"><span class="num">完成工程任务</span><b>rigor</b><p>选流程、查原因、做修改，用实际结果证明完成。</p><a href="../skills/rigor/SKILL.md">读技能原文</a></article>
+<article class="entry"><span class="num">组织多个 Agent</span><b>agent-conductor</b><p>拆任务、分工、核对产物，决定继续、返工或交付。</p><a href="../skills/agent-conductor/SKILL.md">读技能原文</a></article>
+<article class="entry"><span class="num">不知道选哪个</span><b>skill-help</b><p>描述你要解决的问题，得到技能选择和一个提示示例。</p><a href="../skills/skill-help/SKILL.md">读技能原文</a></article>
+</div>
+<p class="meta">需要首次配置或调整角色模型时用 <a href="../skills/agent-conductor-setup/SKILL.md">agent-conductor-setup</a>。普通小改动可直接做。</p>
+</header>
+<section aria-labelledby="flow-title">
+<h2 id="flow-title">它们怎样配合</h2>
+<div class="flow" aria-label="目标、分工、执行、证据四步流程">
+<span><b>你的目标</b><small>完成后能看到什么</small></span><i class="arrow" aria-hidden="true">→</i>
+<span><b>conductor 分工</b><small>需要协作时使用</small></span><i class="arrow" aria-hidden="true">→</i>
+<span><b>专门技能执行</b><small>如 how、tdd、项目 verify</small></span><i class="arrow" aria-hidden="true">→</i>
+<span><b>核对证据</b><small>通过则交付，失败则返工</small></span>
+</div>
+<p class="meta">rigor 提供工程步骤和判断原则；setup 提供模型配置。这是分工关系，按任务选择步骤。</p>
+</section>
+<section id="task-catalog" aria-labelledby="catalog-title">
+<h2 id="catalog-title">我现在要做什么</h2>
+<div class="search"><label for="search">搜索技能</label><input id="search" type="search" placeholder="例如：解释、验收、性能、tdd" autocomplete="off"></div>
+<p id="count" role="status" aria-live="polite"></p>
+<div id="catalog"></div>
+<p id="empty" hidden>没有匹配的技能。试试任务名称，或用 skill-help 描述你的目标。</p>
+<noscript><p>目录筛选需要 JavaScript。完整技能与原文链接见 <a href="../README.md">README</a>。</p></noscript>
+</section>
+<section id="prompt" class="prompt" aria-labelledby="prompt-title">
+<h2 id="prompt-title">用一个提示开始</h2>
+<label for="skill-select">选择入口 <select id="skill-select" aria-label="选择提示中的技能"></select></label>
+<pre id="prompt-text"></pre>
+<button id="copy" type="button">复制提示</button><span id="copy-status" role="status" aria-live="polite"></span>
+<p class="meta">把括号里的内容换成实际目标。当前会话已列出这些技能，可用 $技能名；其他宿主是否支持此写法，以它的实际能力为准。</p>
+<details class="technical"><summary>技能没被宿主发现时</summary><p>让 Agent 读取仓库中的 skills/&lt;技能名&gt;/SKILL.md，再按该文件完成目标。下载 ZIP 后保留其中并排的目录及 references、scripts 等内容；项目技能位置按宿主实际约定选择。</p></details>
+</section>
+<section aria-labelledby="differences-title">
+<h2 id="differences-title">几个容易选错的地方</h2>
+<table class="comparison">
+<thead><tr><th scope="col">你要的结果</th><th scope="col">用哪个</th></tr></thead>
+<tbody>
+<tr><td>知道代码怎样工作 / 知道当时为什么这样设计</td><td>how / why</td></tr>
+<tr><td>把同一问题做成多套候选，再选基础并合成</td><td>arena</td></tr>
+<tr><td>把多个范围分给不同 Agent，或按预定规则竞赛</td><td>swarm</td></tr>
+<tr><td>不同模型独立检查同一份代码或证据</td><td>interrogate</td></tr>
+<tr><td>证明功能能用</td><td>项目已有的 verify 技能或真实验收流程</td></tr>
+<tr><td>建立验收说明 / 全面维护已有验收说明</td><td>create-verification-skill / maintain-verification-skill</td></tr>
+<tr><td>本次会话复盘 / 防止仓库反复出现同类错误</td><td>reflect / correct</td></tr>
+</tbody>
+</table>
+<p class="meta">来源：上方目录中各技能的已读 SKILL.md。项目 verify 是生成或已有的项目专用技能，不属于当前仓库的 52 个入口。</p>
+</section>
+<section aria-labelledby="lody-title">
+<h2 id="lody-title">在 Lody 中使用</h2>
+<ol class="notes">
+<li>要选模型，先用 setup；已有有效选择则核对并复用。主 AI 沿用当前会话。</li>
+<li>要分工，用 conductor。共享工作目录中的文件要明确唯一写入者。</li>
+<li>任务结果返回后，核对真实文件和运行证据，再判断是否完成。</li>
+</ol>
+<details class="technical"><summary>给执行 Agent 的接口说明</summary>
+<p>全量发现使用 lody_machine_list、lody_agent_config_list、lody_agent_role_list，并跟随 nextCursor 到结束。lody_session_create_options 最多给 20 个稀疏候选，适合取得当前上下文及解析项目。</p>
+<p>按角色派发传 agentRoleId，角色目录行决定机器、模型、推理和权限；显式组合传 machineId、agentConfigId、modelId，选项来自对应 runConfig。权限须符合已有授权。</p>
+<p>lody_session_create 使用调用方生成的 operationId 启动异步任务，完成后自动续接，避免轮询 operation_get。需要独立项目上下文时传 workContext；它与 useCurrentSessionAsParent 互斥。实际字段以当次工具说明为准。</p>
+<p>本指南核对了当前 Lody 工具说明；本次没有扫描模型、写入角色配置或启动子 Agent。</p>
+</details>
+</section>
+<section aria-labelledby="boundaries-title">
+<h2 id="boundaries-title">完成意味着什么</h2>
+<ul class="notes">
+<li>写清目标、范围、可观察的完成条件和已有证据。预算或模型有要求时明确写出。</li>
+<li>调查、设计和审查各有交付范围。要实施时明确要求实施；人工评审关口写进提示。</li>
+<li>编译、审查和实际验收证明不同事情。未执行的功能保留为未验证。</li>
+<li>技能不会赋予宿主缺少的委派、后台或定时能力。持续任务需要真实活动句柄和停止条件。</li>
+<li>提交、推送、合并、发布及对外发送沿用实际授权。原则技能用于改变具体判断，按需读取。</li>
+</ul>
+</section>
+<footer>
+<p>范围：当前仓库的 28 个任务技能与 24 个原则技能。依据：各 SKILL.md、<a href="../skills/skill-help/references/prompting.md">提示指引</a>、<a href="../skills/rigor/references/playbooks.md">23 项工程流程</a>、<a href="../skills/rigor/references/principles.md">原则目录</a>和当次 Lody MCP 工具说明。</p>
+<details><summary>Nowledge 检索记录</summary><p>MCP memory_search；query：agent-conductor-skill 技能 使用 选择 指南 skill-help；mode：normal；scope：default；筛选：无其他筛选；limit：5。前两项用于核对名称和配套边界，其余作为历史线索，当前使用方式以已读文件为准。</p>
+<ol>
+<li><a href="nowledgemem://memory/a1cacb95-c7b1-482b-8798-9743d1c6a536">agent-conductor 技能帮助改名为 skill-help</a> · score 0.99</li>
+<li><a href="nowledgemem://memory/fcbf7cd9-5b44-4af5-9930-069cb1693b5a">agent-conductor 保留 sources.md 用于节点与配套边界说明</a> · score 0.7707814262373137</li>
+<li><a href="nowledgemem://memory/a67ba0e3-ca8b-4b6e-88db-878f8d8705f7">项目的 GitHub 仓库地址</a> · score 0.7496350383081763</li>
+<li><a href="nowledgemem://memory/6b2e896c-b68d-41dd-ab06-ffe89815e560">agent-conductor-setup 重设计为 Lody-first</a> · score 0.738010902040162</li>
+<li><a href="nowledgemem://memory/ac6ebe13-6908-47dd-8eb7-a66188306c7e">让项目验收技能补充 conductor 工作流</a> · score 0.7005571408870843 · 历史建议</li>
+</ol><p>当前无可确认相同身份与空间访问限制的图工具，未生成记忆图。</p></details>
+</footer>
+</main>
+<script>
+const groups = ['统筹任务与协作','理解代码与历史','设计、实现与修复','分析、审查与验收','写作、习惯与复盘','原则：按当前判断选用'];
+// 每项依次为技能、分组、使用时机、交付物、使用边界。
+const skills = [
+['rigor',0,'完成非平凡工程任务','按匹配流程执行，并交付可核对的证据。','普通小改动无需强制启用；发布等操作沿用既有授权。'],
+['agent-conductor',0,'组织多个 Agent 完成任务','任务分工、产物核对，以及继续、返工或交付的判断。','缺委派能力可由主 AI 执行，但须说明独立阶段缺口。'],
+['agent-conductor-setup',0,'首次配置、发现模型或调整角色与预算','完整 Lody 目录及用户选择；需要时保存项目 models.json。','目录可派发不等于模型已实测；角色和预算遵循用户选择。'],
+['skill-help',0,'不知道选哪个技能或如何调用','适合当前问题的技能说明和至多一个提示。','帮助问题本身不会启动工程任务或模型扫描。'],
+['arena',0,'同一问题需要多个独立方案','独立候选、独立评判、选一个基础并吸收有用部分。','至少两个有效独立候选；自评不能冒充独立评判。'],
+['swarm',0,'并行覆盖多个范围或按规则竞赛','逐范围结果或按事先声明规则选出的结果。','失败和缺片须保留；多个同模型会话不算跨模型。'],
+['how',1,'解释系统怎样工作、状态归谁、代码放哪里','从真实入口到结果的调用链、数据流和源码定位。','机制解释以源码为依据；调查请求不自动修改产品。'],
+['why',1,'追溯当时为什么这样设计','历史证据、设计约束及明确区分的事实、推断和未知。','不能用今天的代码反推作者动机；默认只读。'],
+['teach',1,'理解改动、子系统或设计选择','从最小完整解释开始，结合机制与有依据的动机。','深度随读者需要调整；教学不自动修改产品。'],
+['recall',1,'回顾最近工作或找回继续任务的上下文','目标、决定、问题、当前状态和一个下一步。','默认最近 7 天；旧聊天状态须核对，回顾本身不授权继续实施。'],
+['architect',2,'设计接口、模块边界或非平凡结构变更','基于源码和调用者用法的结构草图、备选与取舍。','只要设计就停在设计；完整独立探索依赖 arena 能力。'],
+['figure-it-out',2,'复杂迁移、多部分变更或无合适窄流程','按风险设计阶段，逐单元验证并保留决策轨迹。','保留人工关口；未验证和无法判断都不能算通过。'],
+['tdd',2,'错误有明确、低成本的回归检查路径','修复前因目标错误失败，修复后同一检查通过。','测试环境代价过高时采用有效替代验证，并说明覆盖。'],
+['typescript-best-practices',2,'阅读或修改 TypeScript / TSX','合法状态类型、边界解析、穷尽分支和真实验证。','复用项目工具；不为单项检查新增框架或无关重构。'],
+['no-comments',2,'清理指定范围的注释和 workaround','核对后的注释删改、约束编码及范围内根因修复。','保留法律、协议和真实外部约束；独立审核缺失须说明。'],
+['make-bot-ui',2,'构建页面或按钮唤醒 webhook Agent','服务器保管密钥的 UI，并验证可达、接收及实际唤醒。','不假定 webhook 或 Tailscale 已配置；HTTP 接收不等于任务完成。'],
+['blast-radius',3,'查指定改动会影响哪些间接调用者','消费链、已确认风险、有界排除和待证项。','影响分析不能代替完整验收，也不自动修复产品。'],
+['interrogate',3,'让不同模型独立审核同一证据包','固定快照的独立报告，以及主审逐条核实与裁决。','审核对象只读；实际模型身份和失败项须可核对。'],
+['create-verification-skill',3,'项目缺少可复用验收说明，需要建立','项目 verify 技能、功能地图，以及至少一个功能的实跑证据。','单个功能跑通只证明本次说明可用，不代表整个项目通过。'],
+['maintain-verification-skill',3,'全面审计已有 verify 技能和功能地图','逐功能读源码并实跑，修正说明或其拥有的 harness。','目标须已存在；产品回归单独报告，不改文档掩盖坏行为。'],
+['benchmark-checklist',3,'核验提速、退化或按性能数字选型','瓶颈、公平性、正确性、次数与波动，以及有界结论。','正式比较每侧至少五次、交错运行；单次粗估不能用于选型。'],
+['technical-writing',4,'写 README、RFC、PR 说明或技术文档','按教程、操作、参考或解释目的写出的准确文字。','符号和命令须来自实际事实；不把技术文档规则套到产品文案。'],
+['unslop',4,'清理套话、术语堆积和机械表达','保留原意、数字、引用与证据强度的改写。','不凭空补事实，也不为风格修改代码或逐字引用。'],
+['bro',4,'把上一条回答再说简单一点','简短、完整、容易理解的重述。','保留条件、风险和不确定性；不另起调查。'],
+['automate-me',4,'建立或更新个人工作方式技能','有明确偏好或重复证据支持的个人 mode 技能草稿。','普通任务技能无需挖历史；不擅改全局技能。'],
+['reflect',4,'复盘本次会话，找持久改进','判断、工具、发散三种视角的 Accepted / Rejected / Backlog。','只在用户要求时执行；提出修改后遵守选择关口。'],
+['correct',4,'防止仓库反复出现同类 Agent 错误','用架构、类型、检查或测试约束真实重复错误。','至少两次实际实例；证明机制能拦住旧错误并接受修复后状态。'],
+['show-me-your-work',4,'长任务需要保留决策和证据轨迹','只追加的 TSV：时间、阶段、决定、原因、证据、结果。','记录关键选择；提交轨迹沿用授权，缺独立核对须说明。'],
+['principle-attack-the-premise',5,'多次修复因同一共同前提而失败','写下前提，统计各参与者分布，再查角色分配根因。','分布均匀时转查其他原因；不继续叠补丁。'],
+['principle-boundary-discipline',5,'决定输入校验和业务逻辑放哪里','在外部边界解析校验，内部使用明确领域契约。','契约须真实成立；不把外部线格式泄漏进业务接口。'],
+['principle-build-the-lever',5,'非平凡编辑或验证需要可复跑做法','最小 codemod、生成器或验证脚本。','避免做成框架；提交工具仍沿用已有授权。'],
+['principle-encode-lessons-in-structure',5,'同一纠正反复被忽略','优先把约束编码进结构、类型、检查或单一实现。','需要判断而无法机械化的规则才留在文字中。'],
+['principle-exhaust-the-design-space',5,'新交互或结构没有明确先例','比较结构真正不同的原型或草图。','既定机械修改无需强制探索；改名不是第二个结构。'],
+['principle-experience-first',5,'产品和实现方便发生取舍','以实际使用者和维护者的体验选择目标。','每个功能和选项须有用途，减少粗糙功能。'],
+['principle-explain-the-number',5,'准备相信、报告或按测量数字选型','解释瓶颈，排除错误、跳过工作、未调优和噪声。','性能主张按 benchmark-checklist 完整核验。'],
+['principle-fix-root-causes',5,'修复错误，尤其重启后失败','先复现，追到根因；重启问题优先核对持久状态。','不以防御分支掩盖结构或状态问题。'],
+['principle-foundational-thinking',5,'开始设计数据与后续工作顺序','先确定数据形状、访问模式和归属，再写逻辑。','抽象服务真实访问；不为相似几行代码提前抽象。'],
+['principle-guard-the-context-window',5,'长任务或大输出挤占上下文','分阶段有界读取，保留必要事实和证据。','委派须实际可用且获授权，否则本地分段读。'],
+['principle-laziness-protocol',5,'重构或接口传递增加复杂度','优先删除，统一事实来源，隐藏真正复杂的决定。','少代码要能完成目标；不增加无价值透传。'],
+['principle-make-operations-idempotent',5,'有重试、恢复或重复执行','验证重复执行及中途失败后能收敛到正确状态。','既有状态要核对归属，不任意清理用户数据。'],
+['principle-migrate-callers-then-delete-legacy-apis',5,'允许协调迁移内部 API','清点并迁移调用者，同轮移除旧入口。','须无外部兼容承诺，并允许协调破坏性迁移。'],
+['principle-minimize-reader-load',5,'理解代码需要追踪太多层和隐含状态','减少透传层和可变状态，让来源与写入者可见。','以实际理解成本判断，固定文件数不是验收硬门槛。'],
+['principle-model-the-domain',5,'状态逻辑长出散落布尔值或重复分支','用领域结构表达状态、归属和不变量。','结构须删掉实际复杂度；现状清楚时保留简单代码。'],
+['principle-never-block-on-the-human',5,'已授权可逆工作遇到常规执行选择','自主推进并交付可评审结果。','保留人工关口；外部操作授权和必需信息仍须核对。'],
+['principle-outcome-oriented-execution',5,'授权迁移需要完整目标状态','限定可逆的中间破坏范围，最后证明整体行为。','有明确阶段边界，不能用中间成功替代最终验证。'],
+['principle-prove-it-works',5,'准备宣布任务完成','直接核对真实产物和行为，适合时写可复跑检查。','编译、时间戳和自述各自只能证明局部事实。'],
+['principle-redesign-from-first-principles',5,'新约束使现有结构失效','围绕新要求重建结构，同步类型、调用者、文档与例子。','整体想清楚后分步交付，只改授权范围。'],
+['principle-separate-before-serializing-shared-state',5,'并发参与者可能写共享状态','先分离写入目标，确需共享时采用锁或唯一写者。','口头约定不算并发控制；不同字段也可能争写同文件。'],
+['principle-sequence-verifiable-units',5,'批量变更或多步迁移','每个单元以可检验状态结束，再推进依赖单元。','变基、提交和 PR 沿用既有授权。'],
+['principle-subtract-before-you-add',5,'准备添加抽象或补丁','先去掉本轮替代的冗余和不必要状态。','按真实用途简化，避免猜测性校验和解析器。'],
+['principle-test-behavior-not-implementation',5,'编写或保留测试','调用真实入口，断言具体结果和可观察副作用。','调用次数、常量复述或 fixture 自测不能代替行为。'],
+['principle-type-system-discipline',5,'设计类型或函数签名','表达合法状态、语义 ID、边界解析和穷尽分支。','断言不是验证；类型只在实际需要处加强。']
+];
+const search = document.querySelector('#search');
+const catalog = document.querySelector('#catalog');
+const select = document.querySelector('#skill-select');
+const prompt = document.querySelector('#prompt-text');
+const copyStatus = document.querySelector('#copy-status');
+function node(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el}
+const entries = skills.map(([name,group,goal,result,boundary])=>{
+  const item=node('details',undefined,'skill');
+  const summary=node('summary');summary.append(node('code',name,'skill-name'),node('span',goal,'goal'));item.append(summary);
+  const body=node('div',undefined,'skill-body');body.append(node('p','得到：'+result),node('p','边界：'+boundary,'boundary'));
+  const source=node('div',undefined,'source');const link=node('a','读 SKILL.md');link.href='../skills/'+name+'/SKILL.md';source.append(link);
+  if(group!==5){const use=node('button','用于提示');use.type='button';use.addEventListener('click',()=>{select.value=name;updatePrompt();document.querySelector('#prompt').scrollIntoView();select.focus({preventScroll:true})});source.append(use)}
+  body.append(source);item.append(body);
+  return {name,group,element:item,text:[name,groups[group],goal,result,boundary].join(' ').toLowerCase()};
+});
+const sections=groups.map((title,index)=>{
+  const group=node('details',undefined,'group');const summary=node('summary',title);summary.append(node('small',String(entries.filter(e=>e.group===index).length)+' 个'));group.append(summary);
+  const container=node('div',undefined,'skills');entries.filter(e=>e.group===index).forEach(e=>container.append(e.element));group.append(container);catalog.append(group);return group;
+});
+function filter(){
+  const words=search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);let count=0;
+  entries.forEach(e=>{e.element.hidden=!words.every(word=>e.text.includes(word));if(!e.element.hidden)count++});
+  sections.forEach((el,i)=>{el.hidden=!entries.some(e=>e.group===i&&!e.element.hidden);if(words.length)el.open=!el.hidden});
+  document.querySelector('#count').textContent=words.length?'找到 '+count+' 个技能':'28 个任务技能 · 24 个原则技能；点分类展开，或搜索任务名称。';
+  document.querySelector('#empty').hidden=count!==0;
+}
+entries.filter(e=>e.group!==5).forEach(e=>{const option=node('option',e.name);option.value=e.name;select.append(option)});
+function updatePrompt(){
+  prompt.textContent='使用 $'+select.value+' 帮我完成【目标】。\n范围：【项目、文件或功能】。\n完成条件：【能观察到的结果】。\n已知信息：【症状、复现、日志或链接】。\n限制与授权：【预算、只读或可修改范围、需要保留的人工关口】。\n请按任务给出产物、证据和未完成项。';
+  copyStatus.textContent='';
+}
+document.querySelector('#copy').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(prompt.textContent);copyStatus.textContent='已复制'}
+  catch{const range=document.createRange();range.selectNodeContents(prompt);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);copyStatus.textContent='请按 ⌘C 或 Ctrl+C 复制已选中的提示'}
+});
+search.addEventListener('input',filter);select.addEventListener('change',updatePrompt);filter();updatePrompt();
+</script>
+</body>
+</html>
