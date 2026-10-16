@@ -20,13 +20,15 @@ const problems = [];
 const fail = (message) => problems.push(message);
 
 // 1. Suppression openers. Global "just execute, don't think" lines are not
-// decidable boundaries; the first three lines are where they appear in practice.
+// decidable boundaries; the first three lines are where they appear in
+// practice (known limit: a suppression line placed fourth or later passes).
 const opener = text.split("\n").slice(0, 3).join("\n");
 const suppressionOpeners = [
   [/只执行任务/, "execution-suppression opener"],
   [/不要.{0,6}思考/, "thought-suppression opener"],
+  [/无需思考/, "thought-suppression opener"],
   [/自作主张/, "blanket no-initiative opener"],
-  [/不要问(任何|用户)/, "question-suppression opener"],
+  [/不要问.{0,3}问题/, "question-suppression opener"],
 ];
 for (const [pattern, label] of suppressionOpeners) {
   if (pattern.test(opener)) {
@@ -39,9 +41,16 @@ if (!/(回执|回报|最终报告|VERDICT|裁决)/.test(text)) {
   fail("no receipt requirement (回执 / 回报 / 裁决) — completion claims need a checkable channel");
 }
 
-// 3. Implementation packages grant file or VCS writes; those are the ones whose
-// missing terms (identity, baseline) have repeatedly escaped review.
-const grantsWrites = /(git (commit|push)|gh pr create|提交你改的|只在.{0,24}提交|开(一个|一条)?.{0,8}PR|创建.{0,6}PR)/i.test(text);
+// 3. Implementation packages grant file or VCS writes. Sentences that merely
+// prohibit a write ("git push 一律禁止", "do not commit") are stripped first so
+// explicit prohibitions do not read as grants. Known limit: grant wording
+// variants outside these patterns are treated as read-only.
+const negation = /(不要|禁止|不得|不许|一律不|never|forbidden|do not|don'?t)/i;
+const affirmative = text
+  .split(/[\n。；!?！？]/)
+  .filter((sentence) => sentence.trim() && !negation.test(sentence))
+  .join("\n");
+const grantsWrites = /(git (commit|push|merge)|gh pr (create|merge)|提交你改的|开(一个|一条)?.{0,8}PR|创建.{0,6}PR|合并(进|到|入).{0,20}(main|主分支|主干))/i.test(affirmative);
 if (grantsWrites) {
   if (!/(自身执行|再分工|重派|回报协调者)/.test(text)) {
     fail("implementation package lacks an execution-identity term (自身执行 / 确需再分工先回报协调者重派)");
