@@ -1,0 +1,4 @@
+interface:
+  display_name: "开工前收紧任务"
+  short_description: "用户要求 sharpen 或开工前收紧任务时，对齐做法、真实目标和规格松紧，再按已有授权执行；只问专家会怎么做时交付解释。"
+  default_prompt: "使用 $sharpen 收紧当前任务，在已有授权内执行；纯咨询交付解释，保留用户限制。"

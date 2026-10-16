@@ -758,7 +758,10 @@ def main(argv=None) -> int:
         home = os.path.abspath(os.path.expanduser(args.home))
     else:
         home = real_home
-    home_is_real = home == real_home
+    # Ancestor aliases are trusted; keep the root itself lexical so a linked
+    # scan root cannot enable CLI execution or bypass the scan guard.
+    home_identity = os.path.join(os.path.realpath(os.path.dirname(home)), os.path.basename(home))
+    home_is_real = home_identity == real_home
     project = os.path.abspath(args.project)
 
     report = build_report(home, project, args.no_cli, home_is_real)
