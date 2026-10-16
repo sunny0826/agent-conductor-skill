@@ -12,7 +12,7 @@
 
 按包内 [真实表面](../references/verification-surfaces.md) 驱动实际 Browser／CLI／TUI／模拟器等；有多个受影响表面时分别覆盖，不为纯 CLI 任务构造 UI 验收。UI 保存截图，其他保存真实原始输出等适当产物，不是一律伪造 PNG。缺驱动条件记 Appendix C，但 lane 仍写如何执行。使用实际隔离环境，不假定 cloud VM。
 
-perf 写两侧 metric、交错 probe、先测 trunk baseline、会失败的数值 rule，用 [benchmark-checklist](../../benchmark-checklist/SKILL.md) 核对工作与结果。trunk 缺功能，分别预算 diff-added work 和用户终态；不同场景不能 ratio。确不影响可测工作时写不适用的机制证据，不拿空数值假装性能获证。
+perf 写两侧 metric、交错 probe、先测 trunk baseline、会失败的数值 rule，用 [benchmark-checklist](../../benchmark-checklist/SKILL.md) 核对工作与结果。trunk 缺功能，分别预算 diff-added work 和用户终态；不同场景不能 ratio。确不影响可测工作时，保留 Metric.、Probe.、Baseline.、Rule. 四个复选项，各填 `N/A — <不适用的机制理由或其证据引用>`；不删成单一 N/A 项，不填虚假数值。四项可以引用同一份说明，检查器只验证格式，不判断不适用理由是否成立。
 
 交互变更保留用户 review gate，截图与 30–60 秒视频在已有聊天交付方式下供查看，merge-ready 后等待约定操作；明确无交互写 `None. <PR id> is not review-gated.`，无 boxes。纯 CLI/JSON 输出无交互时以真实回执为证据，不设截图或视频 lane。每新 patch 独立 gates、live、perf 与源码 audit lane（只读或低风险改动至少一个，写路径、并发或安全敏感至少两个），原版有效结果仅按 [Shipping](shipping.md) patch-id 规则保留。宿主缺独立能力须说明而非降低合同。模板和执行流程沿用本节风险规则与计划声明的数量；检查器只能核对结构，风险判定与覆盖是否充分仍须读实际改动。
 
