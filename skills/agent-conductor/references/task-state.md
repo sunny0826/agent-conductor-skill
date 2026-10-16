@@ -15,11 +15,11 @@
 派发、目标变更、所有权交接后运行：
 
 ```sh
-node <agent-conductor目录>/scripts/check-task-state.mjs <task-state.json>
+mise exec -- node <agent-conductor目录>/scripts/check-task-state.mjs <task-state.json>
 ```
 
 准备宣称任务完成时加 `--complete`。普通检查允许诚实记录待验或受阻项；完成检查要求活动目标每项有实际结果及证据，且所有任务已终结。失败时继续处理或交付标明缺口的阶段报告，不因此自动要求额外审批。
 
 检查器拒绝目标引用失效、被取代目标仍有活动任务、同一工作区的运行任务写入路径重叠、缺回执的停止／完成，以及缺证据的验收通过。它不执行证据、不访问引用、不监控实际进程、不判断风险或语义等价；填了引用不证明引用内容真实。协调者仍须读回证据，核对预期、实际场景、版本和用户授权。停止回执与网络限制依赖宿主能力，不能声称本脚本能中止 Agent 或阻断下载。
 
-维护者修改模板、脚本或此契约时，运行仓库 `node --test tools/test_skill_contracts.mjs`，再运行 `python3 tools/package_skills.py` 与 `python3 tools/package_skills.py --check`，验证行为及下载包一致性。
+维护者修改模板、脚本或此契约时，运行仓库 `mise exec -- node --test tools/test_skill_contracts.mjs`，再运行 `mise exec -- python3 tools/package_skills.py` 与 `mise exec -- python3 tools/package_skills.py --check`，验证行为及下载包一致性。

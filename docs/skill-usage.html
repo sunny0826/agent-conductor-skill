@@ -30,7 +30,7 @@ button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px
 <body>
 <main>
 <header>
-<div class="eyebrow">agent-conductor-skill · 2026-10-10 · 当前仓库 52 个技能</div>
+<div class="eyebrow">agent-conductor-skill · 2026-10-16 · 当前仓库 55 个技能</div>
 <h1>先说目标，<br>再选一个入口。</h1>
 <p class="lead">日常从下面三个入口里选。专门任务再查目录，原则技能按需读取。</p>
 <div class="entries">
@@ -78,9 +78,10 @@ button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px
 <tr><td>证明功能能用</td><td>项目已有的 verify 技能或真实验收流程</td></tr>
 <tr><td>建立验收说明 / 全面维护已有验收说明</td><td>create-verification-skill / maintain-verification-skill</td></tr>
 <tr><td>本次会话复盘 / 防止仓库反复出现同类错误</td><td>reflect / correct</td></tr>
+<tr><td>开工前确认目标 / 收紧任务后直接做 / 追上上次发言后的变化</td><td>in-your-own-words / sharpen / ketchup</td></tr>
 </tbody>
 </table>
-<p class="meta">来源：上方目录中各技能的已读 SKILL.md。项目 verify 是生成或已有的项目专用技能，不属于当前仓库的 52 个入口。</p>
+<p class="meta">来源：上方目录中各技能的已读 SKILL.md。项目 verify 是生成或已有的项目专用技能，不属于当前仓库的 55 个入口。</p>
 </section>
 <section aria-labelledby="lody-title">
 <h2 id="lody-title">在 Lody 中使用</h2>
@@ -107,7 +108,7 @@ button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px
 </ul>
 </section>
 <footer>
-<p>范围：当前仓库的 28 个任务技能与 24 个原则技能。依据：各 SKILL.md、<a href="../skills/skill-help/references/prompting.md">提示指引</a>、<a href="../skills/rigor/references/playbooks.md">23 项工程流程</a>、<a href="../skills/rigor/references/principles.md">原则目录</a>和当次 Lody MCP 工具说明。</p>
+<p>范围：当前仓库的 31 个任务技能与 24 个原则技能。依据：各 SKILL.md、<a href="../skills/skill-help/references/prompting.md">提示指引</a>、<a href="../skills/rigor/references/playbooks.md">23 项工程流程</a>、<a href="../skills/rigor/references/principles.md">原则目录</a>和当次 Lody MCP 工具说明。</p>
 <details><summary>Nowledge 检索记录</summary><p>MCP memory_search；query：agent-conductor-skill 技能 使用 选择 指南 skill-help；mode：normal；scope：default；筛选：无其他筛选；limit：5。前两项用于核对名称和配套边界，其余作为历史线索，当前使用方式以已读文件为准。</p>
 <ol>
 <li><a href="nowledgemem://memory/a1cacb95-c7b1-482b-8798-9743d1c6a536">agent-conductor 技能帮助改名为 skill-help</a> · score 0.99</li>
@@ -132,6 +133,9 @@ const skills = [
 ['why',1,'追溯当时为什么这样设计','历史证据、设计约束及明确区分的事实、推断和未知。','不能用今天的代码反推作者动机；默认只读。'],
 ['teach',1,'理解改动、子系统或设计选择','从最小完整解释开始，结合机制与有依据的动机。','深度随读者需要调整；教学不自动修改产品。'],
 ['recall',1,'回顾最近工作或找回继续任务的上下文','目标、决定、问题、当前状态和一个下一步。','默认最近 7 天；旧聊天状态须核对，回顾本身不授权继续实施。'],
+['ketchup',1,'追上上次发言之后这次对话的变化','几句白话、已有小图，以及只有用户能做的决定。','摘要阶段只读；已有任务按用户指令继续，媒体按宿主能力与分享授权展示。'],
+['in-your-own-words',1,'复述目标和要解决的问题','用自己的话复述目标与问题。','单独复述不启动工作；明确要求先复述再执行时继续。'],
+['sharpen',2,'开工前把任务收到该有的松紧','对齐专家做法、真实目标和一个外部对错检查，再按已有授权执行。','保留用户限制；纯咨询交付解释，不新增执行授权。'],
 ['architect',2,'设计接口、模块边界或非平凡结构变更','基于源码和调用者用法的结构草图、备选与取舍。','只要设计就停在设计；完整独立探索依赖 arena 能力。'],
 ['figure-it-out',2,'复杂迁移、多部分变更或无合适窄流程','按风险设计阶段，逐单元验证并保留决策轨迹。','保留人工关口；未验证和无法判断都不能算通过。'],
 ['tdd',2,'错误有明确、低成本的回归检查路径','修复前因目标错误失败，修复后同一检查通过。','测试环境代价过高时采用有效替代验证，并说明覆盖。'],
@@ -150,18 +154,18 @@ const skills = [
 ['reflect',4,'复盘本次会话，找持久改进','判断、工具、发散三种视角的 Accepted / Rejected / Backlog。','只在用户要求时执行；提出修改后遵守选择关口。'],
 ['correct',4,'防止仓库反复出现同类 Agent 错误','用架构、类型、检查或测试约束真实重复错误。','至少两次实际实例；证明机制能拦住旧错误并接受修复后状态。'],
 ['show-me-your-work',4,'长任务需要保留决策和证据轨迹','只追加的 TSV：时间、阶段、决定、原因、证据、结果。','记录关键选择；提交轨迹沿用授权，缺独立核对须说明。'],
-['principle-attack-the-premise',5,'多次修复因同一共同前提而失败','写下前提，统计各参与者分布，再查角色分配根因。','分布均匀时转查其他原因；不继续叠补丁。'],
+['principle-attack-the-premise',5,'多次修复因同一共同前提而失败','写下前提，找一个能证伪它的观察并做出来。','未写下并检验前提前不开始下一修。'],
 ['principle-boundary-discipline',5,'决定输入校验和业务逻辑放哪里','在外部边界解析校验，内部使用明确领域契约。','契约须真实成立；不把外部线格式泄漏进业务接口。'],
 ['principle-build-the-lever',5,'非平凡编辑或验证需要可复跑做法','最小 codemod、生成器或验证脚本。','避免做成框架；提交工具仍沿用已有授权。'],
 ['principle-encode-lessons-in-structure',5,'同一纠正反复被忽略','优先把约束编码进结构、类型、检查或单一实现。','需要判断而无法机械化的规则才留在文字中。'],
 ['principle-exhaust-the-design-space',5,'新交互或结构没有明确先例','比较结构真正不同的原型或草图。','既定机械修改无需强制探索；改名不是第二个结构。'],
 ['principle-experience-first',5,'产品和实现方便发生取舍','以实际使用者和维护者的体验选择目标。','每个功能和选项须有用途，减少粗糙功能。'],
 ['principle-explain-the-number',5,'准备相信、报告或按测量数字选型','解释瓶颈，排除错误、跳过工作、未调优和噪声。','性能主张按 benchmark-checklist 完整核验。'],
-['principle-fix-root-causes',5,'修复错误，尤其重启后失败','先复现，追到根因；重启问题优先核对持久状态。','不以防御分支掩盖结构或状态问题。'],
+['principle-fix-root-causes',5,'修复错误，尤其重启后失败','先复现，追到系统第一次做错的地方；重启问题优先核对持久状态。','状态合法就地处理；状态不该存在时，防御分支是掩盖。'],
 ['principle-foundational-thinking',5,'开始设计数据与后续工作顺序','先确定数据形状、访问模式和归属，再写逻辑。','抽象服务真实访问；不为相似几行代码提前抽象。'],
 ['principle-guard-the-context-window',5,'长任务或大输出挤占上下文','分阶段有界读取，保留必要事实和证据。','委派须实际可用且获授权，否则本地分段读。'],
 ['principle-laziness-protocol',5,'重构或接口传递增加复杂度','优先删除，统一事实来源，隐藏真正复杂的决定。','少代码要能完成目标；不增加无价值透传。'],
-['principle-make-operations-idempotent',5,'有重试、恢复或重复执行','验证重复执行及中途失败后能收敛到正确状态。','既有状态要核对归属，不任意清理用户数据。'],
+['principle-make-operations-idempotent',5,'有重试、恢复或重复执行','从现存状态推导差额，使中断后的下一次仍收敛。','既有状态要核对归属，不任意清理用户数据。'],
 ['principle-migrate-callers-then-delete-legacy-apis',5,'允许协调迁移内部 API','清点并迁移调用者，同轮移除旧入口。','须无外部兼容承诺，并允许协调破坏性迁移。'],
 ['principle-minimize-reader-load',5,'理解代码需要追踪太多层和隐含状态','减少透传层和可变状态，让来源与写入者可见。','以实际理解成本判断，固定文件数不是验收硬门槛。'],
 ['principle-model-the-domain',5,'状态逻辑长出散落布尔值或重复分支','用领域结构表达状态、归属和不变量。','结构须删掉实际复杂度；现状清楚时保留简单代码。'],
@@ -172,8 +176,8 @@ const skills = [
 ['principle-separate-before-serializing-shared-state',5,'并发参与者可能写共享状态','先分离写入目标，确需共享时采用锁或唯一写者。','口头约定不算并发控制；不同字段也可能争写同文件。'],
 ['principle-sequence-verifiable-units',5,'批量变更或多步迁移','每个单元以可检验状态结束，再推进依赖单元。','变基、提交和 PR 沿用既有授权。'],
 ['principle-subtract-before-you-add',5,'准备添加抽象或补丁','先去掉本轮替代的冗余和不必要状态。','按真实用途简化，避免猜测性校验和解析器。'],
-['principle-test-behavior-not-implementation',5,'编写或保留测试','调用真实入口，断言具体结果和可观察副作用。','调用次数、常量复述或 fixture 自测不能代替行为。'],
-['principle-type-system-discipline',5,'设计类型或函数签名','表达合法状态、语义 ID、边界解析和穷尽分支。','断言不是验证；类型只在实际需要处加强。']
+['principle-test-behavior-not-implementation',5,'编写或保留测试','用两处想象中的修改判断：行为坏了必须失败，只改内部必须仍通过。','断言形状不决定对错，契约决定；内部调用不是行为。'],
+['principle-type-system-discipline',5,'设计类型或函数签名','区分语义标识，在边界解析外部数据，并从权威模式派生类型。','语言语法细节见 typescript-best-practices。']
 ];
 const search = document.querySelector('#search');
 const catalog = document.querySelector('#catalog');
@@ -198,7 +202,7 @@ function filter(){
   const words=search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);let count=0;
   entries.forEach(e=>{e.element.hidden=!words.every(word=>e.text.includes(word));if(!e.element.hidden)count++});
   sections.forEach((el,i)=>{el.hidden=!entries.some(e=>e.group===i&&!e.element.hidden);if(words.length)el.open=!el.hidden});
-  document.querySelector('#count').textContent=words.length?'找到 '+count+' 个技能':'28 个任务技能 · 24 个原则技能；点分类展开，或搜索任务名称。';
+  document.querySelector('#count').textContent=words.length?'找到 '+count+' 个技能':'31 个任务技能 · 24 个原则技能；点分类展开，或搜索任务名称。';
   document.querySelector('#empty').hidden=count!==0;
 }
 entries.filter(e=>e.group!==5).forEach(e=>{const option=node('option',e.name);option.value=e.name;select.append(option)});

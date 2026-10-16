@@ -36,6 +36,12 @@ const checkPlan = (text) => run("skills/rigor/scripts/check-plan.mjs", text);
 test("three low-risk CLI scenarios and one audit are accepted", () => {
   assert.equal(checkPlan(plan()).code, 0);
 });
+test("performance not applicable uses the four fields without fabricated measurements", () => {
+  const text = plan().replace(/^- \[ \] (Metric|Probe|Baseline|Rule)\. .*$/gm,
+    "- [ ] $1. N/A — Only documentation links change; no executable workload changes.");
+  const result = checkPlan(text);
+  assert.equal(result.code, 0, result.output);
+});
 test("high-risk plan with two audits is accepted", () => {
   assert.equal(checkPlan(plan(10, "high", 2)).code, 0);
 });
