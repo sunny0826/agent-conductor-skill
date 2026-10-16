@@ -201,3 +201,57 @@ test("packages without a receipt channel are rejected", () => {
   assert.equal(result.code, 1);
   assert.match(result.output, /receipt/);
 });
+test("real 2026-10-16 suppression package is caught with all five problems", () => {
+  // Verbatim shape of the dispatch package sent to session 143e2c10 on
+  // 2026-10-16 (prose kept, file lists trimmed to one entry).
+  const pkg = `只执行任务，不要进行额外的思考，不要自作主张
+
+你是 studio-shell 这一个 PR 的替代 owner。角色是 worker+。上一个会话已结束，不要续用它。它没有改任何文件。
+
+计划只读：studio/docs/plans/studio-ux.md 的「Show the shell (studio-shell)」一节。不要改这份计划。
+
+只能改这些文件：studio/internal/pages/window.go
+
+验证：在 studio/ 目录执行 go test ./internal/pages/ -count=1，再跑 go vet ./...。不要启动模型服务。
+
+提交与 PR：检查通过后，只在 studio-shell 上提交你改的文件。不要改 git config，不要 --no-verify，不要提交 main，不要合并。然后 git push -u origin studio-shell，并用 gh pr create 开一个普通 PR，base 是 main。
+
+完成回执必须包含：工作目录、分支名、head 完整 SHA、PR URL、测试命令的退出码、改过的文件清单。测试没过就不要开 PR，回报失败输出。`;
+  const result = checkDispatch(pkg);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /execution-suppression opener/);
+  assert.match(result.output, /implementation package lacks an execution-identity/);
+  assert.match(result.output, /failure baseline/);
+});
+test("explicit prohibitions do not read as write grants", () => {
+  const pkg = `You are an independent gates lane for PR #55. You are not the author. git push, git commit, gh pr merge: all forbidden. Do not modify any file.
+
+Target head must be 93e8c15. Run go test ./internal/... and keep the exit codes.
+
+VERDICT: write PASS when both commands exit 0.`;
+  const result = checkDispatch(pkg);
+  assert.equal(result.code, 0, result.output);
+  assert.match(result.output, /read-only/);
+});
+test("merge grants are treated as implementation packages", () => {
+  for (const pkg of [
+    "你是合并执行者。把 PR #55 合并进 main，合并后推送 main。\n\n回执：合并提交 SHA 与分支状态。",
+    "你是发布助手。检查 CI 全绿后执行 gh pr merge 55 --merge。\n\n回执：合并结果与提交。",
+  ]) {
+    const result = checkDispatch(pkg);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /implementation package lacks an execution-identity/);
+  }
+});
+test("suppression opener variants are caught", () => {
+  for (const opener of ["无需思考，直接执行", "不要问我任何问题"]) {
+    const result = checkDispatch(`${opener}\n\n${verificationPackage()}`);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /opener .*decidable boundaries/);
+  }
+});
+test("receipt wording alone does not read as a write grant", () => {
+  const result = checkDispatch("你是只读核对员。核对六处改动与源码一致，只在最终回执中提交测试输出摘要。\n\n发现问题时回报。");
+  assert.equal(result.code, 0, result.output);
+  assert.match(result.output, /read-only/);
+});
