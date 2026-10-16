@@ -4,6 +4,6 @@
 
 完整保留原则目录与 23 个流程。原第三方 deslop／control-cli／control-ui 和宿主 create-skill 被随包代码审查、真实表面验证与技能编写流程替代。原固定模型、自动外部写入、默认 reset --hard、gt 权威和 Cursor /loop 改为实际能力与授权边界。原 Bun watcher／orch CLI 不作为必需：原生 forge 状态契约与随包持久存储／生命周期规则承担流程，不能宣称存在未提供的命令。
 
-计划保留原字段、十条真实 lane、双侧性能与用户 review gate；英文结构 checker 移除英语标点和 Cursor 定时／固定 trunk 检查，非 UI 使用适当产物。原 orch 工具的状态维护改为完整可读文件契约与实际执行的 Python status 生成器；不提供原 Bun 派发包装，也不声称运行了真实 fleet／PR。
+计划保留原字段，真实 lane 按风险与覆盖范围缩放；适用时提供双侧性能证据，不适用时在四个性能字段写明机制理由，交互变更保留约定的用户 review gate；英文结构 checker 移除英语标点和 Cursor 定时／固定 trunk 检查，非 UI 使用适当产物。原 orch 工具的状态维护改为完整可读文件契约与实际执行的 Python status 生成器；不提供原 Bun 派发包装，也不声称运行了真实 fleet／PR。
 
 沿用 [MIT 许可](../LICENSE)。

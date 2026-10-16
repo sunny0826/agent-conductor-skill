@@ -91,6 +91,8 @@ Audit lanes: <count under the risk rules in playbooks/multi-phase-plan.md>
 
 **Verify, perf.** Tests alone are not sufficient verification. A PR is verified only when its unit, live, and perf boxes are all checked.
 
+<If no measurable workload changes, keep all four boxes and write `N/A — <mechanism reason or evidence reference>` in each. They may share one explanation. Do not invent measurements; check each box only after confirming the reason.>
+
 - [ ] Metric. <What is measured at both trunk and head. If trunk lacks the feature, also name the diff-added work and the end-to-end state the user waits for.>
 - [ ] Probe. <The command or procedure, run at trunk and at the head, interleaved. Both sides must produce the metric.>
 - [ ] Baseline. Record the trunk <value> first.

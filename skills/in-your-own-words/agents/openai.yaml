@@ -1,0 +1,4 @@
+interface:
+  display_name: "复述目标与问题"
+  short_description: "用户要求用自己的话复述目标或问题时，先给出复述；单独的复述请求不启动工作，明确要求随后执行则继续。"
+  default_prompt: "使用 $in-your-own-words 复述当前目标与问题；仅在用户明确要求随后执行时继续。"

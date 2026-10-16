@@ -130,7 +130,7 @@ class ScannerTests(unittest.TestCase):
             with self.subTest(path=path):
                 os.stat(path)
                 self.assertEqual(module.checked_target(path, lambda _: False),
-                                 (str(expected), None))
+                                 (str(expected.resolve()), None))
 
     def test_path_canaries_and_values(self):
         home = self.root / SECRET / 'home'
@@ -261,13 +261,18 @@ class ScannerTests(unittest.TestCase):
         agent(self.home)
         alias = self.root / 'ancestor'
         alias.symlink_to(self.root)
+        marker = self.fake(self.bin)
         data, raw = self.data(home=alias / 'home', no_cli=False)
         self.assertIn('fixture-model', raw)
-        self.assertEqual(data['diagnostics']['cli']['reason'], 'home_override_is_not_real_home')
+        self.assertEqual(data['diagnostics']['cli']['reason'], 'ok')
+        self.assertTrue(marker.exists())
+        marker.unlink()
         root_link = self.root / 'root-link'
         root_link.symlink_to(self.home)
-        data, _ = self.data(home=root_link)
+        data, _ = self.data(home=root_link, no_cli=False)
         self.assertFalse(data['agents']['defined'])
+        self.assertEqual(data['diagnostics']['cli']['reason'], 'home_override_is_not_real_home')
+        self.assertFalse(marker.exists())
         alternate = self.root / 'alternate'
         alternate.mkdir()
         (alternate / '.claude').symlink_to(self.home / '.claude')

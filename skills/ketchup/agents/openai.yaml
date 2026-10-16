@@ -1,0 +1,4 @@
+interface:
+  display_name: "追上这次对话"
+  short_description: "用户要求 ketchup、追上进度或问上次发言后发生了什么时，用几句白话和已有的小图说明变化，并列出只有用户能做的决定。摘要阶段只读，不另起工作；已有任务按用户指令继续。"
+  default_prompt: "使用 $ketchup 说明上次用户消息之后的变化，遵守只读、白话和行动项边界。"
