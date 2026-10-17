@@ -30,7 +30,7 @@ button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px
 <body>
 <main>
 <header>
-<div class="eyebrow">agent-conductor-skill · 2026-10-16 · 当前仓库 55 个技能</div>
+<div class="eyebrow">agent-conductor-skill · 2026-10-17 · 当前仓库 56 个技能</div>
 <h1>先说目标，<br>再选一个入口。</h1>
 <p class="lead">日常从下面三个入口里选。专门任务再查目录，原则技能按需读取。</p>
 <div class="entries">
@@ -81,7 +81,7 @@ button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px
 <tr><td>开工前确认目标 / 收紧任务后直接做 / 追上上次发言后的变化</td><td>in-your-own-words / sharpen / ketchup</td></tr>
 </tbody>
 </table>
-<p class="meta">来源：上方目录中各技能的已读 SKILL.md。项目 verify 是生成或已有的项目专用技能，不属于当前仓库的 55 个入口。</p>
+<p class="meta">来源：上方目录中各技能的已读 SKILL.md。项目 verify 是生成或已有的项目专用技能，不属于当前仓库的 56 个入口。</p>
 </section>
 <section aria-labelledby="lody-title">
 <h2 id="lody-title">在 Lody 中使用</h2>
@@ -108,7 +108,7 @@ button{border:1px solid #a9bcb1;background:white;color:var(--accent);padding:7px
 </ul>
 </section>
 <footer>
-<p>范围：当前仓库的 31 个任务技能与 24 个原则技能。依据：各 SKILL.md、<a href="../skills/skill-help/references/prompting.md">提示指引</a>、<a href="../skills/rigor/references/playbooks.md">23 项工程流程</a>、<a href="../skills/rigor/references/principles.md">原则目录</a>和当次 Lody MCP 工具说明。</p>
+<p>范围：当前仓库的 32 个任务技能与 24 个原则技能。依据：各 SKILL.md、<a href="../skills/skill-help/references/prompting.md">提示指引</a>、<a href="../skills/rigor/references/playbooks.md">23 项工程流程</a>、<a href="../skills/rigor/references/principles.md">原则目录</a>和当次 Lody MCP 工具说明。</p>
 <details><summary>Nowledge 检索记录</summary><p>MCP memory_search；query：agent-conductor-skill 技能 使用 选择 指南 skill-help；mode：normal；scope：default；筛选：无其他筛选；limit：5。前两项用于核对名称和配套边界，其余作为历史线索，当前使用方式以已读文件为准。</p>
 <ol>
 <li><a href="nowledgemem://memory/a1cacb95-c7b1-482b-8798-9743d1c6a536">agent-conductor 技能帮助改名为 skill-help</a> · score 0.99</li>
@@ -144,6 +144,7 @@ const skills = [
 ['make-bot-ui',2,'构建页面或按钮唤醒 webhook Agent','服务器保管密钥的 UI，并验证可达、接收及实际唤醒。','不假定 webhook 或 Tailscale 已配置；HTTP 接收不等于任务完成。'],
 ['blast-radius',3,'查指定改动会影响哪些间接调用者','消费链、已确认风险、有界排除和待证项。','影响分析不能代替完整验收，也不自动修复产品。'],
 ['interrogate',3,'让不同模型独立审核同一证据包','固定快照的独立报告，以及主审逐条核实与裁决。','审核对象只读；实际模型身份和失败项须可核对。'],
+['control-ui',3,'操作真实界面并交付截图','复用可用工具，捕获操作前后截图并读回、交付。','不依赖特定编辑器；缺控制或读图能力时明确未验证，不要求录屏。'],
 ['create-verification-skill',3,'项目缺少可复用验收说明，需要建立','项目 verify 技能、功能地图，以及至少一个功能的实跑证据。','单个功能跑通只证明本次说明可用，不代表整个项目通过。'],
 ['maintain-verification-skill',3,'全面审计已有 verify 技能和功能地图','逐功能读源码并实跑，修正说明或其拥有的 harness。','目标须已存在；产品回归单独报告，不改文档掩盖坏行为。'],
 ['benchmark-checklist',3,'核验提速、退化或按性能数字选型','瓶颈、公平性、正确性、次数与波动，以及有界结论。','正式比较每侧至少五次、交错运行；单次粗估不能用于选型。'],
@@ -202,7 +203,7 @@ function filter(){
   const words=search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);let count=0;
   entries.forEach(e=>{e.element.hidden=!words.every(word=>e.text.includes(word));if(!e.element.hidden)count++});
   sections.forEach((el,i)=>{el.hidden=!entries.some(e=>e.group===i&&!e.element.hidden);if(words.length)el.open=!el.hidden});
-  document.querySelector('#count').textContent=words.length?'找到 '+count+' 个技能':'31 个任务技能 · 24 个原则技能；点分类展开，或搜索任务名称。';
+  document.querySelector('#count').textContent=words.length?'找到 '+count+' 个技能':'32 个任务技能 · 24 个原则技能；点分类展开，或搜索任务名称。';
   document.querySelector('#empty').hidden=count!==0;
 }
 entries.filter(e=>e.group!==5).forEach(e=>{const option=node('option',e.name);option.value=e.name;select.append(option)});

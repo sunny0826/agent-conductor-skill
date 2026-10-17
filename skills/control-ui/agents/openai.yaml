@@ -1,0 +1,4 @@
+interface:
+  display_name: "界面操作与截图"
+  short_description: "使用已有浏览器或应用工具操作真实界面，捕获、核对并交付截图证据。"
+  default_prompt: "使用 $control-ui 验证指定界面流程，交付操作前后截图、观察结果和未验证项。"

@@ -30,7 +30,7 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
   - [ ] <PR id> and <PR id> are independent and first. Both branch from the actual trunk.
   - [ ] <PR id> after <PR id>.
 - [ ] Hold the file boundaries. <PR id or class> touches only `<glob>`.
-- [ ] Hold the review gate. <PR ids> change an interaction. They wait for the operator's review in chat with screenshots and a video before merge.
+- [ ] Hold the review gate. <PR ids> change an interaction. They wait for the operator's review in chat with screenshots before merge.
 
 ### PR mechanics, for every PR
 
@@ -38,7 +38,7 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 - [ ] With existing authorization, open a PR under the project ready/draft convention per Opening a PR. A stack child targets its actual parent branch.
 - [ ] Run the repo lint and typecheck before the PR-facing push, with hooks on when configured.
 - [ ] Run package code-review before each authorized commit and package no-comments before review.
-- [ ] Triage review comments per the package bugbot-triage reference; external replies require authorization.
+- [ ] Triage available human or automated review comments per [review triage](../references/review-triage.md); record when no comments exist. External replies require authorization.
 - [ ] Rebase onto current trunk before the code-ready report and babysit. Keep that merge base in fix rounds. Rebase again only at merge prep, on a `git merge-tree` conflict with trunk, or on a CI failure that comes from a change on trunk.
 
 ### Verdict and merge, for every PR
@@ -100,14 +100,13 @@ Audit lanes: <count under the risk rules in playbooks/multi-phase-plan.md>
 
 **Review gate.** <For non-interactive CLI/JSON changes use "None. PR-id is not review-gated." and remove the media boxes below. Otherwise retain the agreed operator gate.>
 
-- [ ] Copy lane <n> screenshots into `<media path>/<pr-id>-review-<slug>.png`.
-- [ ] Record a 30 to 60 second video of the change on the actual isolated UI instance. Save it as `<media path>/<pr-id>-review.mp4`.
-- [ ] Post the screenshots and the video in chat. Stop at merge-ready. Wait for the operator's click.
+- [ ] Read package [control-ui](../../control-ui/SKILL.md). Capture the relevant before/after screenshots and inspect the saved images; keep them in `<media path>/<pr-id>-review-<slug>.png`.
+- [ ] Share the verified screenshots in chat using the available image or artifact delivery mechanism. Stop at merge-ready. Wait for the operator's click.
 
 **Merge.**
 
 - [ ] Root's clean verdict at the exact head SHA.
-- [ ] Bugbot triage done.
+- [ ] Review comments triaged; record unresolved items or that no comments exist. No unresolved blocking findings remain.
 - [ ] Rebased onto current trunk after the verdict, patch-id unchanged.
 - [ ] <The owner squash-merges its own PR, or the root appends it to the base-branch stack and the operator lands it bottom-up.>
 
