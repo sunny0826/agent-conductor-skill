@@ -5,13 +5,14 @@
 // Usage: node check-dispatch.mjs <dispatch.md>   (or "-" to read stdin, so an
 // inline package can be checked without writing a temp file first).
 //
-// The package declares its own type on a leading line (任务包类型：实施 /
+// The package declares its own type on the leading line (任务包类型：实施 /
 // 只读审查 / 验证, or "package type: …"), which replaces the write-grant
-// heuristic as the source of truth; undeclared packages keep the heuristic.
+// heuristic as the source of truth. Undeclared packages are still rejected
+// (exit 1); the heuristic only decides how they are classified.
 // Known limits, kept deliberately: suppression openers are only checked in the
 // first three lines; review/verification command boundaries are only checked
-// when the type is declared; grant wording variants outside the patterns below
-// read as read-only for undeclared packages.
+// when the type is declared; grant and boundary wording variants outside the
+// patterns below read as absent.
 import fs from "node:fs";
 import process from "node:process";
 
@@ -32,20 +33,29 @@ if (file === "-") {
 
 const problems = [];
 const fail = (message) => problems.push(message);
+let declaredType = null;
 
-// 1. Package type declaration. The declared type decides whether
-// implementation terms are required; the grant heuristic only applies when no
-// declaration exists. A package that both implements and verifies declares
-// 实施 (the stronger class).
-const typeLine = text.match(/^\s*(?:任务包类型|package type)[:：]\s*(.+?)\s*$/im);
-let declared = null;
-if (!typeLine) {
+// 1. Package type declaration. The declaration leads the package (first
+// non-empty line); extra or misplaced declaration lines are rejected. A
+// package that both implements and verifies declares 实施 (the stronger
+// class); negated values are not declarations.
+const typeLines = [...text.matchAll(/^\s*(?:任务包类型|package type)[:：]\s*(.+?)\s*$/gim)];
+const firstContentLine = text.split("\n").find((line) => line.trim());
+if (typeLines.length === 0) {
   fail("no package-type declaration — lead with 任务包类型：实施 / 只读审查 / 验证");
 } else {
-  const value = typeLine[1].toLowerCase();
-  if (/实施|implement/.test(value)) declared = "implementation";
-  else if (/只读|审查|验证|review|verif|read[- ]?only/.test(value)) declared = "bounded";
-  else fail(`unrecognized package type "${typeLine[1]}" — use 实施 / 只读审查 / 验证`);
+  if (!firstContentLine || !/^\s*(?:任务包类型|package type)[:：]/i.test(firstContentLine)) {
+    fail("package-type declaration must be the first line of the package");
+  }
+  if (typeLines.length > 1) {
+    fail(`duplicate package-type declaration (${typeLines.length} lines) — keep exactly one leading line`);
+  }
+  const value = typeLines[0][1].toLowerCase();
+  if (/不(?:实施|只读|审查|验证|implement|review|verif)/.test(value)) {
+    fail(`unrecognized package type "${typeLines[0][1]}" — use 实施 / 只读审查 / 验证`);
+  } else if (/实施|implement/.test(value)) declaredType = "implementation";
+  else if (/只读|审查|验证|review|verif|read[- ]?only/.test(value)) declaredType = "bounded";
+  else fail(`unrecognized package type "${typeLines[0][1]}" — use 实施 / 只读审查 / 验证`);
 }
 
 // 2. Strip slash-delimited regex literals of the form /(...)/flags before
@@ -53,7 +63,7 @@ if (!typeLine) {
 // the grant patterns of this very script) is not read as granting writes.
 // Only alternation/quantifier bodies (containing | or {) are stripped; prose
 // paths and parentheses survive.
-const stripped = text.replace(/\/\([^\n/]{1,300}\)\/[gimsuy]*/g, (m) => (/[|{]/.test(m) ? "" : m));
+const stripped = text.replace(/\/\([^\n/]{1,2000}\)\/[gimsuy]*/g, (m) => (/[|{]/.test(m) ? "" : m));
 
 // 3. Suppression openers. Global "just execute, don't think" lines are not
 // decidable boundaries; the first three lines are where they appear in
@@ -73,29 +83,32 @@ for (const [pattern, label] of suppressionOpeners) {
 }
 
 // 4. Every package needs a receipt channel so completion claims stay checkable.
-// 最终.{0,4}报告 covers wording like 最终完整报告 seen in real packages.
-if (!/(回执|回报|最终[^\n。；]{0,4}报告|最终回复|VERDICT|裁决)/.test(stripped)) {
-  fail("no receipt requirement (回执 / 回报 / 最终报告 / 最终回复 / 裁决) — completion claims need a checkable channel");
+// 最终{0,4}(报告|回复|结论) covers wording like 最终完整报告 / 最终回复 /
+// 最终结论 seen in real packages.
+if (!/(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决)/.test(stripped)) {
+  fail("no receipt requirement (回执 / 回报 / 最终报告 / 最终回复 / 最终结论 / 裁决) — completion claims need a checkable channel");
 }
 
-// 5. Write grants. Sentences that merely prohibit a write ("git push 一律禁
-// 止", "do not commit") are stripped first so explicit prohibitions do not
-// read as grants. File-write grants (只能改…文件 / 只拥有…文件 / 唯一写入)
-// classify a package as implementation even without VCS wording; writing a
-// designated report file does not. Known limit: grant wording variants
-// outside these patterns are treated as read-only for undeclared packages.
-const negation = /(不要|禁止|不得|不许|一律不|never|forbidden|do not|don'?t)/i;
+// 5. Write grants. Sentences that merely prohibit or deny a write ("git push
+// 一律禁止", "作者没有 git push", "do not commit") are stripped first, and so
+// are sentences that describe a third party's actions or claims (被审…声明 /
+// 核对作者是否…) — a review package verifying someone else's boundary must
+// not read as granting it. File-write grants (只能改…文件 / 只拥有…文件 /
+// 唯一写入) classify a package as implementation even without VCS wording;
+// writing a designated report file does not.
+const negation = /(不要|禁止|不得|不许|一律不|没有|并未|未曾|never|forbidden|do not|don'?t)/i;
+const thirdParty = /(被审|作者|对方|声称|声明|是否)/;
 const affirmative = stripped
   .split(/[\n。；!?！？]/)
-  .filter((sentence) => sentence.trim() && !negation.test(sentence))
+  .filter((sentence) => sentence.trim() && !negation.test(sentence) && !thirdParty.test(sentence))
   .join("\n");
 const vcsGrants = /(git (commit|push|merge)|gh pr (create|merge)|提交你改的|开(一个|一条)?.{0,8}PR|创建.{0,6}PR|合并(进|到|入).{0,20}(main|主分支|主干))/i.test(affirmative);
 const fileGrants = /(只能?改[^\n。；]{0,6}文件|只拥有[^\n。；]{0,4}文件|唯一写入|可写的?文件|允许你?(?:写|改)[^\n。；]{0,6}文件)/.test(affirmative);
 const heuristicGrants = vcsGrants || fileGrants;
 
 let grantsWrites;
-if (declared === "implementation") grantsWrites = true;
-else if (declared === "bounded") {
+if (declaredType === "implementation") grantsWrites = true;
+else if (declaredType === "bounded") {
   if (heuristicGrants) {
     fail("declared read-only/review but the text grants writes — fix the type or the grants");
   }
@@ -113,13 +126,14 @@ if (grantsWrites) {
 
 // 6. Command boundary for declared review/verification packages: the allowed
 // command list (or an explicit "runs no commands") must be stated, not just
-// implied by a couple of ordered instructions — executors otherwise treat the
-// package as open-ended. Wording variants outside these patterns pass.
-if (declared === "bounded" &&
-    !/(?<![不莫])允许[^\n。；]{0,12}(?:命令|执行|运行|搜索|只读)|命令边界|不要?(?:执行|运行|跑)(?:任何)?命令|验证命令|在[^\n。；]{0,30}运行[:：]|(?:allowed|permitted|verification) commands?|command boundary|(?:runs?|execute) no commands/i.test(stripped)) {
+// implied by ordered instructions or a bare mention of the word — executors
+// otherwise treat the package as open-ended. Boundary headers need a colon so
+// prose that merely mentions 验证命令/命令边界 does not pass.
+if (declaredType === "bounded" &&
+    !/(?<![不莫])允许[^\n。；]{0,12}(?:命令|执行|运行|搜索|只读)|(?:可用|可以|能够)[^\n。；]{0,60}(?:命令|执行|运行)|(?:命令边界|验证命令)[^\n。；]{0,30}[:：]|在[^\n。；]{0,30}运行[:：]|不要?(?:执行|运行|跑)(?:任何)?命令|(?:allowed|permitted|verification) commands?|command boundary|(?:runs?|execute) no commands/i.test(stripped)) {
   fail("review/verification package lacks a command boundary (允许执行的命令… / 不执行任何命令 / 验证命令在…运行：)");
 }
 
 for (const problem of problems) console.error(problem);
-console.log(`dispatch package: ${grantsWrites ? "implementation" : "read-only"}${declared ? ` (declared ${declared})` : ""}, ${problems.length} problems`);
+console.log(`dispatch package: ${grantsWrites ? "implementation" : "read-only"}${declaredType ? ` (declared ${declaredType})` : ""}, ${problems.length} problems`);
 process.exit(problems.length ? 1 : 0);

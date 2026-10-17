@@ -386,3 +386,81 @@ test("declared review packages need a command boundary", () => {
     "允许只读命令：git show、git diff、读取源码。");
   assert.equal(checkDispatch(fixed).code, 0, checkDispatch(fixed).output);
 });
+
+test("review packages quoting audited grants are not misread as write grants", () => {
+  // Adversarial shapes from the 2026-10-17 review of this branch: prose
+  // citations of the audited package's boundaries and denials must not read
+  // as grants of this package.
+  for (const pkg of [
+    `任务包类型：只读审查
+
+你是 PR #64 的独立审查者。被审实施包声明「只能改 src/entry/ 下的文件，产品唯一写入 main.cpp」，请核对该边界是否被遵守，并确认作者是否按流程用 gh pr create 开 PR、未私自 git push。
+
+允许只读命令：git diff、git show、读取源码。
+
+回执：第一行 approve 或 request changes，逐项列发现。`,
+    `任务包类型：只读审查
+
+审查未提交 diff。核对作者没有 git push、没有提交你改的文件到远端，范围仅限工作区。
+
+允许只读命令：git diff、读取源码。
+
+回执：第一行 approve 或 request changes。`,
+  ]) {
+    const result = checkDispatch(pkg);
+    assert.equal(result.code, 0, result.output);
+    assert.match(result.output, /read-only/);
+  }
+});
+
+test("bare boundary words do not satisfy the command-boundary check", () => {
+  // The word 验证命令 mentioned in prose (SKILL step-4 wording itself) must
+  // not count as a boundary; the list form needs a colon.
+  const pkg = `任务包类型：只读审查
+
+只挑代码问题，不要修改。协调者已确认验证命令不与禁止事项冲突，按你的判断自由检查。
+
+回执：第一行 approve 或 request changes。`;
+  const result = checkDispatch(pkg);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /command boundary/);
+});
+
+test("alternative boundary wordings pass", () => {
+  // Real wordings seen in 2026-10-17 packages: 可用 X/Y/Z 运行 (dc7d1548
+  // line), 可以执行的命令 (adversarial), 验证命令在…运行： (f1da85e9).
+  for (const boundary of [
+    "可用 rg/cat/git diff 和 .venv Python 运行临时数据库检查（仅 /tmp 瞬态写入）。",
+    "可以执行的命令：git diff、git show、读取源码。不跑任何其他东西。",
+    "验证命令在 studio/ 目录运行：两条 go test 命令。",
+  ]) {
+    const pkg = `任务包类型：只读审查\n\n审查未提交 diff。${boundary}\n\n回执：第一行 approve 或 request changes。`;
+    const result = checkDispatch(pkg);
+    assert.equal(result.code, 0, result.output);
+  }
+});
+
+test("type declarations must lead the package and appear exactly once", () => {
+  for (const [pkg, diagnostic] of [
+    [`你是 PR #70 的审查者。审查 HEAD 快照 fc65b5e。\n任务包类型：只读审查\n允许只读命令：git diff、读取源码。\n回执：结论与逐项发现。`, /must be the first line/],
+    [`任务包类型：只读审查\n\n你是审查者。允许只读命令：git diff、读取源码。\n\n任务包类型：实施\n\n回执：结论。`, /duplicate package-type declaration/],
+    [`任务包类型：不实施任何改动\n\n你是核对员。允许只读命令：读取源码。发现问题时回报。`, /unrecognized package type/],
+  ]) {
+    const result = checkDispatch(pkg);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, diagnostic);
+  }
+});
+
+test("long quoted regex literals and 最终结论 receipts are handled", () => {
+  const pkg = `任务包类型：只读审查
+
+只挑问题，不要修改。重点审查该正则 /(git (commit|push)|${"x".repeat(300)}|提交你改的)/i 的字面分支是否过宽。
+
+允许只读命令：读取源码。
+
+最终结论：approve 或 request changes，附逐项发现。`;
+  const result = checkDispatch(pkg);
+  assert.equal(result.code, 0, result.output);
+  assert.match(result.output, /read-only/);
+});
