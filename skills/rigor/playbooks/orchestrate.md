@@ -46,6 +46,6 @@ frontier 从真实 forge 的 base refs、Git parent/head 和明确 branch 链计
 
 只读查实际句柄、产物、forge 与宿主状态，不 resume 试探活性，不用 mtime 或一次超时判死。确认静默死亡写 synthetic postmortem inbox（失败、最后证据、选项），不等全体停机才重排。cap／OOM 缩范围；network retry 原任务；tool-error 仅实际可用且预算允许的已选能力替代；unknown 一次诊断重试，总计最多两次，随后 abandon 并重排。不自动付费换模型。
 
-迟到 zombie 对当前 frontier／ledger 重核，独特发现转新单元，不盲合并。上游错误、验收契约或基础设施会污染全树时写 STOP，停新派发，收敛在途后修根因；用户 stop 立即零写入。协调者自身连续 abort 同样有界重试，真实无法继续写可恢复 handoff，不虚称完成。重启先读 orders／units、重算 frontier、查实际宿主活动，再 attach／fresh spawn；不套用 Cursor 的本地死／云存活假设，不盲删除锁。
+迟到 zombie 对当前 frontier／ledger 重核，独特发现转新单元，不盲合并。上游错误、验收契约或基础设施会污染全树时写 STOP，停新派发，收敛在途后修根因；用户 stop 立即零写入。协调者自身连续 abort 同样有界重试，真实无法继续写可恢复 handoff，不虚称完成。重启先读 orders／units、重算 frontier、查实际宿主活动，再 attach／fresh spawn；分别核实本地进程与远程会话是否存活，不从一方状态推断另一方，不盲删除锁。
 
 真正不可逆或缺授权动作、实验不能解决的产品偏好、orders 与事实冲突、重排仍死路进入 gates，带选项与可用默认；等待不是批准。常规已授权前沿修复与重试自己处理并记轨迹，无关发现留 follow-up。检查点／结束交付原条件与表格计数、tracks、精确 frontier、verdict、abandon 理由、用户 gates、store／trail 与真实 PR 链接。

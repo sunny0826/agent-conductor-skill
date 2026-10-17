@@ -23,6 +23,7 @@
 - [unslop](../../unslop/SKILL.md)
 - [technical-writing](../../technical-writing/SKILL.md)
 - [bro](../../bro/SKILL.md)
+- [control-ui](../../control-ui/SKILL.md)
 - [create-verification-skill](../../create-verification-skill/SKILL.md)
 - [maintain-verification-skill](../../maintain-verification-skill/SKILL.md)
 - [benchmark-checklist](../../benchmark-checklist/SKILL.md)

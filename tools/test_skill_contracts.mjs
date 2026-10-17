@@ -45,10 +45,28 @@ test("performance not applicable uses the four fields without fabricated measure
 test("high-risk plan with two audits is accepted", () => {
   assert.equal(checkPlan(plan(10, "high", 2)).code, 0);
 });
-test("CLI plans do not require screenshots or video", () => {
+test("CLI plans do not require screenshots", () => {
   const text = plan().replace(/\*\*Review gate\.\*\*[\s\S]*?(?=\*\*Merge\.\*\*)/,
     "**Review gate.** None. CLI is not review-gated.\n\n");
   assert.equal(checkPlan(text).code, 0);
+});
+test("UI review gates accept screenshots without a recording", () => {
+  const text = plan().replace(/\*\*Review gate\.\*\*[\s\S]*?(?=\*\*Merge\.\*\*)/,
+    "**Review gate.** UI review.\n\n- [ ] Capture before and after screenshots with control-ui.\n- [ ] Show the evidence to the operator and wait for the agreed review.\n\n");
+  const result = checkPlan(text);
+  assert.equal(result.code, 0, result.output);
+});
+test("UI review gates still require screenshots and operator review", () => {
+  for (const [body, missing] of [
+    ["- [ ] Wait for the operator.", "screenshot"],
+    ["- [ ] Save screenshots.", "operator"],
+  ]) {
+    const text = plan().replace(/\*\*Review gate\.\*\*[\s\S]*?(?=\*\*Merge\.\*\*)/,
+      `**Review gate.** UI review.\n\n${body}\n\n`);
+    const result = checkPlan(text);
+    assert.equal(result.code, 1);
+    assert.ok(result.output.includes(`Review gate lacks "${missing}"`), result.output);
+  }
 });
 test("scaled plans still require coverage, numbering, artifacts and predicates", () => {
   for (const [text, diagnostic] of [
