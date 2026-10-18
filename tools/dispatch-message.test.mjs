@@ -74,3 +74,14 @@ ${inline}`;
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /execution-suppression opener/);
 });
+
+test("common compounds are exempted from the prohibition pattern", () => {
+  // Review finding 1a (2026-10-19): 不得不/不得已 are ordinary Chinese
+  // compounds, not boundary clauses; 不得 alone stays rejected.
+  const msg = `时间紧张不得不缩小范围。请执行 /Users/x/pkg.md，最终回复给回执。`;
+  assert.equal(checkMessage(msg).code, 0, checkMessage(msg).output);
+  const boundary = `请执行 /Users/x/pkg.md，不得修改任何文件，最终回复给回执。`;
+  const result = checkMessage(boundary);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /prohibition\/boundary clauses/);
+});
