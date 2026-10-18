@@ -1,0 +1,5 @@
+# Skill prompt files are configuration consumed whole by hosts, not source
+# code: splitting them changes when rules get loaded (references are read on
+# demand), so they are exempted from the staged-token limit like other config.
+# Contract scripts and tests stay under the limit; see tools/*.test.mjs.
+skills/*/SKILL.md token-limit-ignore
