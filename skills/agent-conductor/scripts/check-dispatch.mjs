@@ -20,9 +20,15 @@
 // Known limits, kept deliberately: in package mode suppression openers are
 // only checked in the first three lines; review/verification command
 // boundaries are only checked when the type is declared; grant and boundary
-// wording variants outside the patterns below read as absent; in message mode
-// light 不-verb boundary phrasing (只挑…，不要修改) is tolerated and only
-// 禁止/严禁/不得/不许 carriers are rejected.
+// wording variants outside the patterns below read as absent. In message
+// mode: light 不-verb boundary phrasing (只挑…，不要修改 / 不要提交) is
+// tolerated and only 禁止/严禁/不得/不许 carriers are rejected — the two
+// forms sit on one lexical continuum, so tightening would break the tolerated
+// challenge-role openers (review finding 1b, 2026-10-19); Chinese compounds
+// 不得不/不得已 are exempted from the 不得 pattern, but other meta-mention of
+// the audited wording (quoting 「不要自作主张」 while discussing the rule) can
+// still hit (1a); text appended after an inline package skips the prohibition
+// check because the inline form is treated as package content (1c).
 import fs from "node:fs";
 import process from "node:process";
 
@@ -77,7 +83,7 @@ if (messageMode) {
       fail(`${label} /${pattern.source}/ in dispatch message — replace with decidable boundaries in the package: commands, paths, exemptions`);
     }
   }
-  if (!inlinePackage && /(禁止|严禁|不得|不许)/.test(text)) {
+  if (!inlinePackage && /(禁止|严禁|不得(?!不|已)|不许)/.test(text)) {
     fail("dispatch message carries prohibition/boundary clauses (禁止/严禁/不得/不许) — boundaries belong in the package, keep the message to pointer plus receipt requirement");
   }
   for (const problem of problems) console.error(problem);
