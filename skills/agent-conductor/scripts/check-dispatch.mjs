@@ -2,23 +2,35 @@
 // Dispatch-package linter. Task packages drift toward suppression openers and
 // missing contract terms even when the skill text forbids them, so the shape is
 // checked here instead of relying on the writer's discipline alone.
-// Usage: node check-dispatch.mjs <dispatch.md>   (or "-" to read stdin, so an
-// inline package can be checked without writing a temp file first).
+// Usage:
+//   node check-dispatch.mjs <dispatch.md | ->            lint a package
+//   node check-dispatch.mjs --message <message.md | ->   lint a dispatch message
+// "-" reads stdin, so inline packages and messages can be checked without a
+// temp file. Message mode is the structural anchor for the "dispatch message
+// carries only a pointer and a receipt requirement" rule: 2026-10-18 showed
+// suppression openers migrating from packages (now linted) into the covering
+// dispatch messages, which nothing checked.
 //
-// The package declares its own type on the leading line (任务包类型：实施 /
-// 只读审查 / 验证, or "package type: …"), which replaces the write-grant
-// heuristic as the source of truth. Undeclared packages are still rejected
-// (exit 1); the heuristic only decides how they are classified.
-// Known limits, kept deliberately: suppression openers are only checked in the
-// first three lines; review/verification command boundaries are only checked
-// when the type is declared; grant and boundary wording variants outside the
-// patterns below read as absent.
+// The package declares its own type on the leading line, and the value must be
+// exactly one of 实施 / 只读审查 / 验证 (or "package type: implementation /
+// read-only review / verification"); substring matches silently accepted
+// out-of-contract values like 只读调查 on 2026-10-18, so the check is a
+// whitelist. Undeclared packages are still rejected (exit 1); the heuristic
+// only decides how they are classified.
+// Known limits, kept deliberately: in package mode suppression openers are
+// only checked in the first three lines; review/verification command
+// boundaries are only checked when the type is declared; grant and boundary
+// wording variants outside the patterns below read as absent; in message mode
+// light 不-verb boundary phrasing (只挑…，不要修改) is tolerated and only
+// 禁止/严禁/不得/不许 carriers are rejected.
 import fs from "node:fs";
 import process from "node:process";
 
-const [file] = process.argv.slice(2);
-if (!file || process.argv.length > 3) {
-  console.error("Usage: node check-dispatch.mjs <dispatch.md | ->");
+const args = process.argv.slice(2);
+const messageMode = args.includes("--message");
+const file = args.find((arg) => arg !== "--message");
+if (!file || args.filter((arg) => arg !== "--message" && arg !== file).length > 0) {
+  console.error("Usage: node check-dispatch.mjs <dispatch.md | ->  |  --message <message.md | ->");
   process.exit(2);
 }
 
@@ -35,10 +47,49 @@ const problems = [];
 const fail = (message) => problems.push(message);
 let declaredType = null;
 
+// Shared patterns for both modes.
+const suppressionOpeners = [
+  [/只执行任务/, "execution-suppression opener"],
+  [/不要.{0,6}思考/, "thought-suppression opener"],
+  [/无需思考/, "thought-suppression opener"],
+  [/自作主张/, "blanket no-initiative opener"],
+  [/不要问.{0,3}问题/, "question-suppression opener"],
+];
+const receiptPattern = /(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决)/;
+
+if (messageMode) {
+  // Dispatch-message mode: the message must carry a pointer to the package
+  // file (or be an inline package led by its type declaration) plus a receipt
+  // requirement, and no suppression openers or boundary clauses — boundaries
+  // live in the package, where they are linted for consistency.
+  const firstContentLine = text.split("\n").find((line) => line.trim());
+  const inlinePackage = firstContentLine !== undefined &&
+    /^\s*(?:任务包类型|package type)[:：]/i.test(firstContentLine);
+  const hasPointer = /(?:[~/]|[.]{1,2}\/|[A-Za-z]:\\)[^\s，。；）)"'《》`]*\.md/i.test(text);
+  if (!hasPointer && !inlinePackage) {
+    fail("dispatch message has no package pointer — point at the package file path, or inline the full package led by its 任务包类型 declaration");
+  }
+  if (!receiptPattern.test(text)) {
+    fail("no receipt requirement (回执 / 回报 / 最终报告 / 最终回复 / 最终结论 / 裁决) in the dispatch message");
+  }
+  for (const [pattern, label] of suppressionOpeners) {
+    if (pattern.test(text)) {
+      fail(`${label} /${pattern.source}/ in dispatch message — replace with decidable boundaries in the package: commands, paths, exemptions`);
+    }
+  }
+  if (!inlinePackage && /(禁止|严禁|不得|不许)/.test(text)) {
+    fail("dispatch message carries prohibition/boundary clauses (禁止/严禁/不得/不许) — boundaries belong in the package, keep the message to pointer plus receipt requirement");
+  }
+  for (const problem of problems) console.error(problem);
+  console.log(`dispatch message: ${problems.length} problems`);
+  process.exit(problems.length ? 1 : 0);
+}
+
 // 1. Package type declaration. The declaration leads the package (first
-// non-empty line); extra or misplaced declaration lines are rejected. A
-// package that both implements and verifies declares 实施 (the stronger
-// class); negated values are not declarations.
+// non-empty line); extra or misplaced declaration lines are rejected. The
+// value is matched exactly against the three contract values — substring
+// matching accepted out-of-contract values (只读调查, 2026-10-18). A package
+// that both implements and verifies declares 实施 (the stronger class).
 const typeLines = [...text.matchAll(/^\s*(?:任务包类型|package type)[:：]\s*(.+?)\s*$/gim)];
 const firstContentLine = text.split("\n").find((line) => line.trim());
 if (typeLines.length === 0) {
@@ -50,12 +101,11 @@ if (typeLines.length === 0) {
   if (typeLines.length > 1) {
     fail(`duplicate package-type declaration (${typeLines.length} lines) — keep exactly one leading line`);
   }
-  const value = typeLines[0][1].toLowerCase();
-  if (/不(?:实施|只读|审查|验证|implement|review|verif)/.test(value)) {
-    fail(`unrecognized package type "${typeLines[0][1]}" — use 实施 / 只读审查 / 验证`);
-  } else if (/实施|implement/.test(value)) declaredType = "implementation";
-  else if (/只读|审查|验证|review|verif|read[- ]?only/.test(value)) declaredType = "bounded";
-  else fail(`unrecognized package type "${typeLines[0][1]}" — use 实施 / 只读审查 / 验证`);
+  const value = typeLines[0][1];
+  const normalized = value.trim().toLowerCase();
+  if (/^(?:实施|implementation)$/.test(normalized)) declaredType = "implementation";
+  else if (/^(?:只读审查|验证|read[- ]?only review|review only|verification)$/.test(normalized)) declaredType = "bounded";
+  else fail(`unrecognized package type "${value}" — use 实施 / 只读审查 / 验证`);
 }
 
 // 2. Strip slash-delimited regex literals of the form /(...)/flags before
@@ -69,13 +119,6 @@ const stripped = text.replace(/\/\([^\n/]{1,2000}\)\/[gimsuy]*/g, (m) => (/[|{]/
 // decidable boundaries; the first three lines are where they appear in
 // practice (known limit: a suppression line placed fourth or later passes).
 const opener = stripped.split("\n").slice(0, 3).join("\n");
-const suppressionOpeners = [
-  [/只执行任务/, "execution-suppression opener"],
-  [/不要.{0,6}思考/, "thought-suppression opener"],
-  [/无需思考/, "thought-suppression opener"],
-  [/自作主张/, "blanket no-initiative opener"],
-  [/不要问.{0,3}问题/, "question-suppression opener"],
-];
 for (const [pattern, label] of suppressionOpeners) {
   if (pattern.test(opener)) {
     fail(`${label} /${pattern.source}/ — replace with decidable boundaries: commands, paths, exemptions`);
@@ -85,7 +128,7 @@ for (const [pattern, label] of suppressionOpeners) {
 // 4. Every package needs a receipt channel so completion claims stay checkable.
 // 最终{0,4}(报告|回复|结论) covers wording like 最终完整报告 / 最终回复 /
 // 最终结论 seen in real packages.
-if (!/(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决)/.test(stripped)) {
+if (!receiptPattern.test(stripped)) {
   fail("no receipt requirement (回执 / 回报 / 最终报告 / 最终回复 / 最终结论 / 裁决) — completion claims need a checkable channel");
 }
 
