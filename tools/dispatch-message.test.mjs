@@ -26,6 +26,20 @@ test("suppression openers in dispatch messages are rejected", () => {
   assert.match(result.output, /execution-suppression opener .* in dispatch message/);
 });
 
+test("2026-10-19 post-deploy long-session dispatch is rejected", () => {
+  // Verbatim shape of the message sent to session 5305a8f1 on 2026-10-19
+  // 11:19 CST, 37 minutes after the v3 checker was deployed. The forked
+  // coordinator's parent started five minutes before deployment; it saved the
+  // clean pointer message, then prepended the old suppression opener when
+  // sending.
+  const msg = `只执行任务，不要进行额外的思考，不要自作主张
+
+请读取 /Users/guoxudong/codes/local-ai/inferyard/.tools/studio-dev-20261019/go-task.md 执行，并按任务包要求返回最终回执。`;
+  const result = checkMessage(msg);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /execution-suppression opener .* in dispatch message/);
+});
+
 test("boundary clauses in dispatch messages are rejected", () => {
   // Real 2026-10-18 shape (session 0923abac): pointer and receipt are fine, but
   // the message carries 禁止-class boundary clauses that belong in the package.
