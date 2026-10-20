@@ -28,7 +28,10 @@
 // 不得不/不得已 are exempted from the 不得 pattern, but other meta-mention of
 // the audited wording (quoting 「不要自作主张」 while discussing the rule) can
 // still hit (1a); text appended after an inline package skips the prohibition
-// check because the inline form is treated as package content (1c).
+// check because the inline form is treated as package content (1c). Message
+// mode validates the supplied file, not what the host actually sent; dispatch
+// through a host file-input option (Lody --prompt-file) so the checked text is
+// the sent text.
 import fs from "node:fs";
 import process from "node:process";
 
