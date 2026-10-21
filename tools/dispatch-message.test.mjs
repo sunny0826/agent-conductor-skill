@@ -40,6 +40,32 @@ test("2026-10-19 post-deploy long-session dispatch is rejected", () => {
   assert.match(result.output, /execution-suppression opener .* in dispatch message/);
 });
 
+test("2026-10-21 experiment dispatch with inline package is rejected", () => {
+  // Verbatim opener and shape of the two child sessions created by
+  // a14b6d49 on 2026-10-21 03:03/03:07 CST (2ce934db / d218375e). The
+  // coordinator treated the replay as ad-hoc work, so the inline package was
+  // never linted; the same opener still carries three suppression problems.
+  const msg = `只执行任务，不要进行额外的思考，不要自作主张
+
+你是 InferYard 仓库的实施者，由你自身执行。确需再分工先回报协调者重派。仓库在 /private/tmp/inferyard-instruction-ab-20261021/repo。当前分支必须是 studio-first-run，HEAD 必须是 006ff48。
+
+目标：首次打开 Studio 时打开任务页，只显示环境准备卡。
+
+只改这些文件：
+studio/internal/pages/window.go
+docs/subsystems/studio-panel.md
+
+不要提交，不要推送，不要开 PR。不要改上述清单以外的文件。
+
+完成回执写回本会话：改了哪些文件、测试命令与结果、未改的范围。不要提交。`;
+  const result = checkMessage(msg);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /execution-suppression opener/);
+  assert.match(result.output, /thought-suppression opener/);
+  assert.match(result.output, /blanket no-initiative opener/);
+  assert.match(result.output, /dispatch message: 3 problems/);
+});
+
 test("boundary clauses in dispatch messages are rejected", () => {
   // Real 2026-10-18 shape (session 0923abac): pointer and receipt are fine, but
   // the message carries 禁止-class boundary clauses that belong in the package.
