@@ -2,6 +2,8 @@
 
 后续状态：10-23 归档 40 个会话，39 个可读。技能相关入口 3 个，另有 1 个协调会话创建 35 个任务包子会话。本轮确认 **2 个技能问题**：用户消息被待处理回执取代（父会话 4 次），以及已检查的派发消息在发送时被加上压制句（11/35）。第二项是 10-21 同类问题的复发，只靠发送前检查无法发现，已补发送后读回核对。
 
+> **2026-10-24 复核更正：A2 的归因不成立。** `worker+` 与 `Reviewer` 两个 Agent Role 都配置了 `promptPrefix`，Lody 会在派发正文前注入该前缀；`lody session show` 的 `agentRoleId` 与 `lody agent-role get` 的 `promptPrefix` 能逐字对上。11 次「发送时污染」是角色前缀，不是发送时改写。`check-sent-dispatch` 已改为读取角色前缀后只比对正文，未配置的前缀和正文改写仍判失败。详见 [10-24 复盘](lody-session-skill-review-2026-10-24.md)。
+
 ## 维护前置（今日任务 1–2）
 
 - **任务 1：本地仓库与部署副本已是最新。** 检查开始时主检出在 `aa45feb`，与 `origin/main` 一致；`mise exec -- node --version` 为 **v24.22.1**，Python **3.14.2**。`node tools/check-deployment.mjs` 报 **OK 56 skills match**，`python3 tools/package_skills.py --check` 通过，无需更新。
@@ -29,7 +31,7 @@
 | 编号 | Problem | 修复 | 出处 |
 |---|---|---|---|
 | A1 中高 | **用户消息被待处理回执取代**：`46e3f88a` 在用户提出新请求后，立即输出子任务完成/失败汇总或“没有 open_agent_run_log”，没有回答当前请求。10-23 00:42、03:16、05:37、09:08 四次分别对应“再次 UI review”“设备已连接，开始测试”“双键确认不生效”“首页步数为何显示 ——” | conductor 第 4 步补规则：用户新消息与回执同时到达时先回答用户消息；不把回执或工具缺口当作对当前请求的回答，先给可执行答复或具体阻塞 | `46e3f88a` 可见回合 15/16、24/25、26/27、34/35 |
-| A2 高 | **已检查消息在发送时被污染**：11 个派发子会话的第一条用户消息都以“只执行任务，不要进行额外的思考，不要自作主张”开场，而对应的 `*-message.md` 是干净的（8 个可逐字比对；3 个未保存消息文件）。10-21 已把实验派发纳入检查，但发送前检查文件无法发现发送时追加的前缀 | 新增 [check-sent-dispatch.mjs](../skills/agent-conductor/scripts/check-sent-dispatch.mjs)：读回子会话首条用户消息，与已检查文件比对；不一致即失败并提示取消重发。conductor 第 4 步要求派发后立即运行该核对，缺消息文件同样视为污染；新增 5 个回归测试 | `2aadb54c`、`3d87021f`、`3e5f49a3`、`77b77228`、`78ea838b`、`a03b47df`、`a6ada123`、`ac2e8cf6`、`d0db0c85`、`e90b6b0b`、`fdfde833`；`check-dispatch --message` 对实际文本各报 3 problems |
+| A2 高 | **已检查消息在发送时被污染**：11 个派发子会话的第一条用户消息都以“只执行任务，不要进行额外的思考，不要自作主张”开场，而对应的 `*-message.md` 是干净的（8 个可逐字比对；3 个未保存消息文件）。10-21 已把实验派发纳入检查，但发送前检查文件无法发现发送时追加的前缀（10-24 复核：该前缀实为 Agent Role 的 `promptPrefix`，归因已更正） | 新增 [check-sent-dispatch.mjs](../skills/agent-conductor/scripts/check-sent-dispatch.mjs)：读回子会话首条用户消息，与已检查文件比对；不一致即失败并提示取消重发。conductor 第 4 步要求派发后立即运行该核对，缺消息文件同样视为污染；新增 5 个回归测试 | `2aadb54c`、`3d87021f`、`3e5f49a3`、`77b77228`、`78ea838b`、`a03b47df`、`a6ada123`、`ac2e8cf6`、`d0db0c85`、`e90b6b0b`、`fdfde833`；`check-dispatch --message` 对实际文本各报 3 problems |
 
 ## Rejected：不成立或不应再加的规则
 
