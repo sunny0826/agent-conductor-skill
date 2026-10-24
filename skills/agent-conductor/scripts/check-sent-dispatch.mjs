@@ -94,6 +94,18 @@ function resolveRolePrefix(id) {
   if (!roleId) return { prefix: "", name: null };
   const role = lodyJson(["agent-role", "get", roleId, "--json", "--offline"], "agent-role get");
   const item = role?.item || {};
+  const sessionRevision = show?.session?.agentRoleRevision;
+  const roleRevision = item.revision;
+  if (
+    Number.isInteger(sessionRevision) &&
+    Number.isInteger(roleRevision) &&
+    sessionRevision !== roleRevision
+  ) {
+    throw new Error(
+      `role revision changed: session used ${sessionRevision}, current role is ${roleRevision}; ` +
+        "pass --role-prefix with the prefix that was used at dispatch",
+    );
+  }
   return {
     prefix: typeof item.promptPrefix === "string" ? item.promptPrefix : "",
     name: item.name || roleId,

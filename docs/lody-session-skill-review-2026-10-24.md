@@ -29,7 +29,7 @@
 
 | 编号 | Problem | 修复 | 出处 |
 |---|---|---|---|
-| A1 高 | **角色 `promptPrefix` 被误判为发送污染。** 10-23 新增的 `check-sent-dispatch` 要求发送文本与落盘消息逐字一致，但 Lody 会在带 `promptPrefix` 的 Agent Role 正文前注入该前缀。`worker+`（`f96d8f99` rev 4）前缀是「只执行任务，不要进行额外的思考，不要自作主张」，`Reviewer`（`5909b2e4` rev 2）前缀是「需要先使用本机 code-harness 来审计代码，审计通过后再开始 review 代码内容」。`945cb3da` 的 18/19 个子会话首条消息带角色前缀，旧检查只要拿到落盘文件就会把它们判为污染；10-23 归因的 11 次「发送时污染」也是这两个角色前缀，不是协调者改写。若按旧规则取消重发，宿主会再次注入同一前缀，无法收敛 | [check-sent-dispatch.mjs](../skills/agent-conductor/scripts/check-sent-dispatch.mjs) 改为从子会话 `agentRoleId` 读取角色 `promptPrefix`，只在「前缀 + 正文」整体匹配时通过；正文改写、未配置前缀仍失败；角色读取不到时退出码 2，不据此取消会话。新增 `--role-prefix` 显式入口。conductor 第 4 步同步更正，并注明 10-22/23 的 11 次归因错误。10-23 索引与复盘加更正注记 | `0710ca11`（worker+）、`3e579888`（Reviewer）、`6b43ff44`（worker+）、`79bdcff8`（架构师）；`8a9266b7` 为真实正文改写反例；`lody agent-role get f96d8f99…` / `5909b2e4…` |
+| A1 高 | **角色 `promptPrefix` 被误判为发送污染。** 10-23 新增的 `check-sent-dispatch` 要求发送文本与落盘消息逐字一致，但 Lody 会在带 `promptPrefix` 的 Agent Role 正文前注入该前缀。`worker+`（`f96d8f99` rev 4）前缀是「只执行任务，不要进行额外的思考，不要自作主张」，`Reviewer`（`5909b2e4` rev 2）前缀是「需要先使用本机 code-harness 来审计代码，审计通过后再开始 review 代码内容」。`945cb3da` 的 18/19 个子会话首条消息带角色前缀，旧检查只要拿到落盘文件就会把它们判为污染；10-23 归因的 11 次「发送时污染」也是这两个角色前缀，不是协调者改写。若按旧规则取消重发，宿主会再次注入同一前缀，无法收敛 | [check-sent-dispatch.mjs](../skills/agent-conductor/scripts/check-sent-dispatch.mjs) 改为从子会话 `agentRoleId` 读取角色 `promptPrefix`，只在「前缀 + 正文」整体匹配时通过；正文改写、未配置前缀仍失败；角色读取不到或会话记录的 revision 与当前角色不一致时退出码 2，不据此取消会话。新增 `--role-prefix` 显式入口。conductor 第 4 步同步更正，并注明 10-22/23 的 11 次归因错误。10-23 索引与复盘加更正注记 | `0710ca11`（worker+）、`3e579888`（Reviewer）、`6b43ff44`（worker+）、`79bdcff8`（架构师）；`8a9266b7` 为真实正文改写反例；`lody agent-role get f96d8f99…` / `5909b2e4…` |
 | A2 中 | **用户给出具体环境入口后仍沿用旧入口。** `5a081691` 在 17:44、17:58 两次被告知用本机 `~/.kube/sast-scanner.yaml` 连接 ACK，仍继续尝试 omarchy 环境；18:07 用户第三次纠正并明确表达不满后才切换。此前该会话还把 `Session tool requires an active Turn` 当作环境不可用，反复尝试派发 | [rigor](../skills/rigor/SKILL.md) 开头补一句：用户给出具体环境入口（本地配置文件、集群上下文、命令）时先用该入口验证；被纠正后停止沿用旧入口，不反复探测其他机器 | `5a081691` 17:44:55、17:58:27、18:07:56 CST 三个用户回合及其回复 |
 
 ## Rejected：不成立或不应再加的规则
@@ -56,11 +56,12 @@
 ## 实施验证
 
 - 修改：[check-sent-dispatch.mjs](../skills/agent-conductor/scripts/check-sent-dispatch.mjs)、[sent-dispatch.test.mjs](../tools/sent-dispatch.test.mjs)、[agent-conductor SKILL.md](../skills/agent-conductor/SKILL.md)、[rigor SKILL.md](../skills/rigor/SKILL.md)、[10-24 索引](lody-session-skill-inventory-2026-10-24.md)，并给 10-23 索引与复盘加更正注记。
-- `mise exec -- node --test tools/*.test.mjs`：**68/68 通过，0 fail**（基准 63 → 新增 5）。
+- `mise exec -- node --test tools/*.test.mjs`：**69/69 通过，0 fail**（基准 63 → 新增 6）。
 - 真实会话验证：
   - `0710ca11` + `b2-kube-dispatch.md`：**通过**，提示已去掉 `worker+` 角色前缀。
   - `3e579888` + `b5a-review-dispatch.md`：**通过**，提示已去掉 `Reviewer` 角色前缀。
   - `8a9266b7` + `b2-kube-dispatch.md`：**失败于字符 109**，角色前缀已去掉，多余句子仍被识别为改写。
+- 角色 revision 与当前配置不一致时退出 2，并提示用 `--role-prefix` 提供派发时的前缀；不把配置漂移误判为发送污染。
 - `mise exec -- python3 tools/package_skills.py` 重新生成 `dist/`；`--check` 通过后再提交。
 - `node tools/check-deployment.mjs`：修改前 **OK 56 skills match**；修改后 `agent-conductor` 与 `rigor` 会显示 drift，这是合并前未部署的预期状态，合并后再按 [技能部署与核对](skill-deployment.md) 更新副本并复核。
 - 本轮修复证明的是检查器能区分角色前缀与正文改写；宿主侧是否继续注入前缀需在下次多角色派发中复核。
