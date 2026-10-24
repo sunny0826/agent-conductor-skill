@@ -31,7 +31,12 @@ function check(checked, sent, { stdin = false, rolePrefix = null } = {}) {
   }
 }
 
-function checkSession(checked, delivered, sessionId, { roleId, roleRevision, roleName, prefix }) {
+function checkSession(
+  checked,
+  delivered,
+  sessionId,
+  { roleId, roleRevision, sessionRevision = roleRevision, roleName, prefix },
+) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "sent-dispatch-"));
   try {
     const checkedPath = path.join(dir, "message.md");
@@ -46,7 +51,7 @@ function checkSession(checked, delivered, sessionId, { roleId, roleRevision, rol
         'case "$1 $2" in',
         `"session show") printf '%s\\n' '${JSON.stringify({
           ok: true,
-          session: { agentRoleId: roleId, agentRoleRevision: roleRevision },
+          session: { agentRoleId: roleId, agentRoleRevision: sessionRevision },
         })}' ;;`,
         `"agent-role get") printf '%s\\n' '${JSON.stringify({
           ok: true,
@@ -129,6 +134,19 @@ test("session mode still rejects a body edit under the role prefix", () => {
   );
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /sent message differs from checked message/);
+});
+
+test("session mode refuses to guess when the role revision changed", () => {
+  const result = checkSession(message, `${workerPrefix}\n\n${message.trimEnd()}`, "child-1", {
+    roleId: "role-1",
+    roleRevision: 5,
+    sessionRevision: 4,
+    roleName: "worker+",
+    prefix: workerPrefix,
+  });
+  assert.equal(result.code, 2, result.output);
+  assert.match(result.output, /role revision changed/);
+  assert.match(result.output, /pass --role-prefix/);
 });
 
 test("an unconfigured prepended suppression opener is rejected", () => {
