@@ -29,7 +29,7 @@ Rigor 匹配工程流程，并在某项决定需要时读取对应原则。发�
 
 ## 写清楚与证明结果
 
-使用 [unslop](../unslop/SKILL.md) 与 [technical-writing](../technical-writing/SKILL.md) 按任务写清楚。先说使用者和维护者实际看到的变化，再写必要技术细节。只引用实际读过或产生的证据，测量、推导与未知在结论附近标明。测试脚本注释不做阶段旁白，只保留法律、契约或非显然的原因；范围内注释审查由 [no-comments](../no-comments/SKILL.md) 负责。
+使用 [unslop](../unslop/SKILL.md) 与 [technical-writing](../technical-writing/SKILL.md) 按任务写清楚。先说使用者和维护者实际看到的变化，再写必要技术细节。用户可见的交付回复只写结果、证据和缺口；待办更新、工具步骤、计划复述和自检旁白留在任务状态或证据文件，不写进正文。只引用实际读过或产生的证据，测量、推导与未知在结论附近标明。测试脚本注释不做阶段旁白，只保留法律、契约或非显然的原因；范围内注释审查由 [no-comments](../no-comments/SKILL.md) 负责。
 
 运行和驱动步骤使用包内 [真实表面验证](references/verification-surfaces.md)，产品精简审核用 [代码检查](references/code-review.md)，不依赖其他插件的控制／清理技能。性能数值用 [benchmark-checklist](../benchmark-checklist/SKILL.md)。长任务轨迹用 [show-me-your-work](../show-me-your-work/SKILL.md)，是否提交由既有授权决定。
 
