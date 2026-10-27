@@ -74,7 +74,23 @@ if (messageMode) {
   const firstContentLine = text.split("\n").find((line) => line.trim());
   const inlinePackage = firstContentLine !== undefined &&
     /^\s*(?:任务包类型|package type)[:：]/i.test(firstContentLine);
-  const hasPointer = /(?:[~/]|[.]{1,2}\/|[A-Za-z]:\\)[^\s，。；）)"'《》`]*\.md/i.test(text);
+  // A `.md` path alone is not a package pointer. 2026-10-27 sessions b3c5f708
+  // and da113c7f were sent full task bodies whose first `.md` reference was an
+  // incidental document 400+ characters in; the old any-.md test counted them
+  // as pointers, so the message lint reported only the receipt/boundary
+  // problems and would have passed a task body that added a receipt line.
+  // Require the path near the start, or on a line that names the execution
+  // pointer itself.
+  const pointerPattern = /(?:[~/]|[.]{1,2}\/|[A-Za-z]:\\)[^\s，。；）)"'《》`]*\.md/i;
+  const pointerIndex = text.search(pointerPattern);
+  let hasPointer = false;
+  if (pointerIndex !== -1) {
+    const lineStart = text.lastIndexOf("\n", pointerIndex) + 1;
+    const lineEnd = text.indexOf("\n", pointerIndex);
+    const pointerLine = text.slice(lineStart, lineEnd === -1 ? undefined : lineEnd);
+    hasPointer = pointerIndex < 240 ||
+      /(?:任务包|package|请执行|读取并执行)/i.test(pointerLine);
+  }
   if (!hasPointer && !inlinePackage) {
     fail("dispatch message has no package pointer — point at the package file path, or inline the full package led by its 任务包类型 declaration");
   }
