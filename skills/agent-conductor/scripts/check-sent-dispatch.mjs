@@ -14,19 +14,28 @@
 //   node check-sent-dispatch.mjs <message.md> --session <childSessionId>
 //   node check-sent-dispatch.mjs <message.md> --sent <file | ->
 //   node check-sent-dispatch.mjs <message.md> --sent <file | -> --role-prefix <text>
+//   node check-sent-dispatch.mjs --session <childSessionId> --lint [--role-prefix <text>]
 // "--sent -" reads the delivered text from stdin, for hosts that expose the
 // first user message without the Lody CLI. Text is compared after normalizing
 // CRLF and trailing whitespace; an unconfigured prefix, suffix or body edit
 // fails. Exit code 2 means the role prefix could not be verified.
+//
+// "--lint" checks the delivered first message itself with check-dispatch.mjs
+// instead of comparing it to a saved file. Hosts whose create/chat tool accepts
+// only a prompt string still let the coordinator skip the pre-send file, so the
+// delivered text is the last place to catch an inline task body. Run it after
+// creating the child; cancel and resend from a linted message file on failure.
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 function usage(message) {
   if (message) console.error(message);
   console.error(
     "Usage: node check-sent-dispatch.mjs <message.md> (--session <id> | --sent <file|->) [--role-prefix <text>]",
   );
+  console.error("       node check-sent-dispatch.mjs --session <id> --lint [--role-prefix <text>]");
   process.exit(2);
 }
 
@@ -36,9 +45,12 @@ let sessionId = null;
 let sentFile = null;
 let rolePrefix = null;
 let explicitRolePrefix = false;
+let lintMode = false;
 for (let index = 0; index < args.length; index += 1) {
   const arg = args[index];
-  if (arg === "--session" || arg === "--sent" || arg === "--role-prefix") {
+  if (arg === "--lint") {
+    lintMode = true;
+  } else if (arg === "--session" || arg === "--sent" || arg === "--role-prefix") {
     const value = args[index + 1];
     if (value === undefined) usage(`${arg} needs a value`);
     if (arg === "--session") sessionId = value;
@@ -54,15 +66,22 @@ for (let index = 0; index < args.length; index += 1) {
     usage(`Unexpected argument: ${arg}`);
   }
 }
-if (!checkedFile) usage("Missing checked message file");
-if ((sessionId === null) === (sentFile === null)) usage("Pass exactly one of --session or --sent");
+if (lintMode) {
+  if (checkedFile !== null || sentFile !== null) usage("--lint reads the child session; drop the message file and --sent");
+  if (sessionId === null) usage("--lint needs --session <childSessionId>");
+} else {
+  if (!checkedFile) usage("Missing checked message file");
+  if ((sessionId === null) === (sentFile === null)) usage("Pass exactly one of --session or --sent");
+}
 
-let checked;
-try {
-  checked = fs.readFileSync(checkedFile, "utf8");
-} catch (error) {
-  console.error(`Cannot read checked message: ${error.message}`);
-  process.exit(2);
+let checked = null;
+if (!lintMode) {
+  try {
+    checked = fs.readFileSync(checkedFile, "utf8");
+  } catch (error) {
+    console.error(`Cannot read checked message: ${error.message}`);
+    process.exit(2);
+  }
 }
 
 function lodyJson(lodyArgs, label) {
@@ -82,7 +101,7 @@ function lodyJson(lodyArgs, label) {
 }
 
 function firstUserTextFromLody(id) {
-  const payload = lodyJson(["session", "history", id, "--json", "--offline"], "session history");
+  const payload = lodyJson(["session", "history", id, "--json", "--offline", "--all"], "session history");
   const first = (payload.entries || []).find((entry) => entry.role === "user" && typeof entry.text === "string");
   if (!first) throw new Error("no readable user message in the child session");
   return first.text;
@@ -117,9 +136,14 @@ if (!explicitRolePrefix && sessionId !== null) {
   try {
     roleInfo = resolveRolePrefix(sessionId);
   } catch (error) {
-    console.error(`Cannot resolve the child role prompt prefix: ${error.message}`);
-    console.error("Re-run with --role-prefix <text> after checking the Agent Role, or compare manually.");
-    process.exit(2);
+    if (lintMode) {
+      console.error(`Cannot resolve the child role prompt prefix: ${error.message}`);
+      console.error("Linting the delivered text without stripping a role prefix.");
+    } else {
+      console.error(`Cannot resolve the child role prompt prefix: ${error.message}`);
+      console.error("Re-run with --role-prefix <text> after checking the Agent Role, or compare manually.");
+      process.exit(2);
+    }
   }
 }
 
@@ -138,6 +162,36 @@ try {
 }
 
 const normalize = (text) => text.replace(/\r\n/g, "\n").trimEnd();
+
+if (lintMode) {
+  const configuredPrefix = normalize(roleInfo.prefix).trimEnd();
+  let delivered = normalize(sent);
+  if (configuredPrefix) {
+    let stripped = false;
+    for (const separator of ["\n\n", "\n"]) {
+      const prefixed = `${configuredPrefix}${separator}`;
+      if (delivered.startsWith(prefixed)) {
+        delivered = delivered.slice(prefixed.length);
+        stripped = true;
+        break;
+      }
+    }
+    if (!stripped) console.error("configured role prompt prefix not found in the delivered message; linting the full text");
+  }
+  const dispatch = fileURLToPath(new URL("./check-dispatch.mjs", import.meta.url));
+  const result = spawnSync(process.execPath, [dispatch, "--message", "-"], {
+    encoding: "utf8",
+    input: delivered,
+  });
+  if (result.error) {
+    console.error(`Cannot run check-dispatch.mjs: ${result.error.message}`);
+    process.exit(2);
+  }
+  process.stdout.write(result.stdout || "");
+  process.stderr.write(result.stderr || "");
+  process.exit(result.status === null ? 2 : result.status);
+}
+
 const expected = normalize(checked);
 const configuredPrefix = normalize(roleInfo.prefix).trimEnd();
 const delivered = normalize(sent);
