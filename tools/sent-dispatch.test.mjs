@@ -36,11 +36,12 @@ function checkSession(
   delivered,
   sessionId,
   { roleId, roleRevision, sessionRevision = roleRevision, roleName, prefix },
+  { lint = false } = {},
 ) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "sent-dispatch-"));
   try {
     const checkedPath = path.join(dir, "message.md");
-    fs.writeFileSync(checkedPath, checked);
+    if (!lint) fs.writeFileSync(checkedPath, checked);
     const bin = path.join(dir, "bin");
     fs.mkdirSync(bin);
     const fakeLody = path.join(bin, "lody");
@@ -67,7 +68,8 @@ function checkSession(
       ].join("\n"),
     );
     fs.chmodSync(fakeLody, 0o755);
-    const result = spawnSync(process.execPath, [script, checkedPath, "--session", sessionId], {
+    const args = lint ? [script, "--session", sessionId, "--lint"] : [script, checkedPath, "--session", sessionId];
+    const result = spawnSync(process.execPath, args, {
       encoding: "utf8",
       env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` },
     });
@@ -181,6 +183,73 @@ test("missing checked message exits before comparing", () => {
     });
     assert.equal(result.status, 2);
     assert.match(`${result.stdout}${result.stderr}`, /Cannot read checked message/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("lint mode lints the delivered message without a saved file", () => {
+  const result = checkSession("", message.trimEnd(), "child-1", {
+    roleId: "role-1",
+    roleRevision: 4,
+    roleName: "worker+",
+    prefix: "",
+  }, { lint: true });
+  assert.equal(result.code, 0, result.output);
+  assert.match(result.output, /dispatch message: 0 problems/);
+});
+
+test("lint mode catches an inline task body in the delivered message", () => {
+  const inline =
+    "你是 Reviewer。只读审查 /tmp/repo 的 R0 代码，不要修改文件、提交、推送或创建集群任务。重点是核对探针与汇总逻辑。";
+  const result = checkSession("", inline, "child-2", {
+    roleId: "role-1",
+    roleRevision: 4,
+    roleName: "Reviewer",
+    prefix: "",
+  }, { lint: true });
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /no package pointer/);
+  assert.match(result.output, /no receipt requirement/);
+});
+
+test("lint mode strips the configured role prompt prefix before linting", () => {
+  const inline =
+    "你是 Reviewer。只读审查 /tmp/repo 的 R0 代码，不要修改文件、提交、推送或创建集群任务。重点是核对探针与汇总逻辑。";
+  const result = checkSession("", `${workerPrefix}\n\n${inline}`, "child-3", {
+    roleId: "role-1",
+    roleRevision: 4,
+    roleName: "Reviewer",
+    prefix: workerPrefix,
+  }, { lint: true });
+  assert.equal(result.code, 1, result.output);
+  assert.doesNotMatch(result.output, /prompt prefix not found/);
+  assert.match(result.output, /no package pointer/);
+});
+
+test("lint mode still lints when the role revision changed", () => {
+  const inline =
+    "你是 Reviewer。只读审查 /tmp/repo 的 R0 代码，不要修改文件、提交、推送或创建集群任务。重点是核对探针与汇总逻辑。";
+  const result = checkSession("", inline, "child-4", {
+    roleId: "role-1",
+    roleRevision: 5,
+    sessionRevision: 4,
+    roleName: "Reviewer",
+    prefix: workerPrefix,
+  }, { lint: true });
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /Linting the delivered text without stripping a role prefix/);
+  assert.match(result.output, /no package pointer/);
+});
+
+test("lint mode rejects a message file or --sent", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "sent-dispatch-"));
+  try {
+    const result = spawnSync(process.execPath, [script, path.join(dir, "message.md"), "--session", "child-1", "--lint"], {
+      encoding: "utf8",
+    });
+    assert.equal(result.status, 2);
+    assert.match(`${result.stdout}${result.stderr}`, /--lint reads the child session/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
