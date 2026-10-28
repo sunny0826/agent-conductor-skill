@@ -60,10 +60,11 @@ docs/subsystems/studio-panel.md
 完成回执写回本会话：改了哪些文件、测试命令与结果、未改的范围。不要提交。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /no package pointer/);
   assert.match(result.output, /execution-suppression opener/);
   assert.match(result.output, /thought-suppression opener/);
   assert.match(result.output, /blanket no-initiative opener/);
-  assert.match(result.output, /dispatch message: 3 problems/);
+  assert.match(result.output, /dispatch message: 4 problems/);
 });
 
 test("boundary clauses in dispatch messages are rejected", () => {
@@ -124,4 +125,27 @@ test("common compounds are exempted from the prohibition pattern", () => {
   const result = checkMessage(boundary);
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /prohibition\/boundary clauses/);
+});
+
+test("incidental markdown references are not a package pointer", () => {
+  // 2026-10-27 sessions b3c5f708 and da113c7f were sent full task bodies with
+  // document paths hundreds of characters in. The old any-.md test treated
+  // those references as pointers; a task body with a receipt line would have
+  // passed message mode without ever naming the package to execute.
+  const msg = `任务：检查项目文档是否最新。
+
+背景：${"上一轮已更新玩法、设计稿与验证记录，本轮只核对残留。".repeat(12)}README.md 与 docs/usage.md 的主体已更新。
+
+最终回复给出回执。`;
+  const result = checkMessage(msg);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /no package pointer/);
+});
+
+test("a task-package pointer later in the message still counts", () => {
+  const msg = `${"范围说明：只核对文档，不改代码。".repeat(20)}
+请读取任务包 /Users/x/tasks/impl.md，最终回复给回执。`;
+  const result = checkMessage(msg);
+  assert.equal(result.code, 0, result.output);
+  assert.match(result.output, /dispatch message: 0 problems/);
 });
