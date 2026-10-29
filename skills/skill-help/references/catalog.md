@@ -32,5 +32,4 @@
 - [automate-me](../../automate-me/SKILL.md)
 - [reflect](../../reflect/SKILL.md)
 - [correct](../../correct/SKILL.md)
-- [make-bot-ui](../../make-bot-ui/SKILL.md)
 - [skill-help](../../skill-help/SKILL.md)

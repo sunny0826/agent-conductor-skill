@@ -1,0 +1,152 @@
+[
+  {
+    "name": "agent-conductor",
+    "kind": "任务",
+    "description": "组织 Agent 协作完成任务：核对目标和授权，分配角色、拆解依赖、路由子任务、协调执行并以真实结果决定继续、返工或交付。用于用户要求组织多个 Agent、分配工作、协调执行、检查 AI 执行链路或验证任务结果。需要发现本地 Agent、配置角色模型或调整预算时，调用配套 agent-conductor-setup。",
+    "source": "../skills/agent-conductor/SKILL.md",
+    "sha256": "ffd0d91790d5202ef378fa91b7c3ac88967e03aa373ccbd29aa3d4b7d8d30563",
+    "added": "2026-10-10",
+    "name_mentions": 178,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "明确写出“本轮通过 agent-conductor 分工”，并链接技能文件。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "4fbd9d1d-2a8f-4014-b205-bc250c06ce6a",
+        "index": 7,
+        "message_id": "assistant:3e4affc2-83d9-48ac-a4e4-ac6444eaae9e",
+        "timestamp": "2026-10-19T03:14:05.707Z",
+        "role": "assistant",
+        "title": "(fork) $rogor 需求：高效开发环境，需要在本地启动 studio，这个 studio 为当前分支最新代码，同时这个 studio 连接的 CLI 也是当前分支最新",
+        "note": "明确写出“本轮通过 agent-conductor 分工”，并链接技能文件。",
+        "url": "lody://session/4fbd9d1d-2a8f-4014-b205-bc250c06ce6a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "agent-conductor-setup",
+    "kind": "任务",
+    "description": "基于 Lody 发现全部 Agent 和模型，配置角色模型与推理预算：分页枚举 Lody 的机器、Agent 配置（含推理档位）与 Agent 角色，让用户选择角色组合与预算，生成项目级角色配置。用于用户要求发现 Agent 或模型、首次配置、更新角色模型、调整预算或修复调用配置；也供 agent-conductor 在任务组织前调用。",
+    "source": "../skills/agent-conductor-setup/SKILL.md",
+    "sha256": "56e5cb24226d9f0a23fee1aaa3edf7c61dc8ea49f6240395f74bcac928a43b01",
+    "added": "2026-10-10",
+    "name_mentions": 6,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "引用 setup 的角色配置规则并据此保留用户的模型选择。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "4fbd9d1d-2a8f-4014-b205-bc250c06ce6a",
+        "index": 7,
+        "message_id": "assistant:3e4affc2-83d9-48ac-a4e4-ac6444eaae9e",
+        "timestamp": "2026-10-19T03:14:05.707Z",
+        "role": "assistant",
+        "title": "(fork) $rogor 需求：高效开发环境，需要在本地启动 studio，这个 studio 为当前分支最新代码，同时这个 studio 连接的 CLI 也是当前分支最新",
+        "note": "引用 setup 的角色配置规则并据此保留用户的模型选择。",
+        "url": "lody://session/4fbd9d1d-2a8f-4014-b205-bc250c06ce6a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "arena",
+    "kind": "任务",
+    "description": "对同一问题独立探索多个方案，由独立评判和协调者比较、选基础、吸收并验证。",
+    "source": "../skills/arena/SKILL.md",
+    "sha256": "ef65dd8abc8599707317f04055aa3fcb51185a9ea7a0b2049f05f7654d2506c2",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "派发指令明确依据 architect/arena；同会话回执选择 B 并吸收 A 的两项，形成对应产物。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "870b9943-a85c-401d-9f6e-94c40d0f934d",
+        "index": 0,
+        "message_id": "7fa9074e-2f7a-4cc5-9638-e19c31ecea02",
+        "timestamp": "2026-10-17T13:24:34.173Z",
+        "role": "user",
+        "title": "圆屏收件箱方案候选A/B独立评判修订",
+        "note": "派发指令明确依据 architect/arena；同会话回执选择 B 并吸收 A 的两项，形成对应产物。",
+        "url": "lody://session/870b9943-a85c-401d-9f6e-94c40d0f934d?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "rigor",
+    "kind": "任务",
+    "description": "非平凡任务按工程流程执行：匹配包内流程，按相关原则决策，以真实证据交付。闲聊与普通小改动不启用。发现和派发 Agent 用 agent-conductor。",
+    "source": "../skills/rigor/SKILL.md",
+    "sha256": "fe94ada56ccec7ecbb8e485b066502c305e36994a37e1a1f29e97cf8ada6d4d0",
+    "added": "2026-10-10",
+    "name_mentions": 314,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "用户明确调用 $rigor 规划 C/C++ 扫描调优。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "7a7cae56-6f27-4628-b866-b4a03c2bb532",
+        "index": 0,
+        "message_id": "07c13aa3-8b93-4701-a077-9bfdaf569eb1",
+        "timestamp": "2026-10-28T10:06:01.754Z",
+        "role": "user",
+        "title": "Rigor C/C++ 扫描 preflight 专项调优规划",
+        "note": "用户明确调用 $rigor 规划 C/C++ 扫描调优。",
+        "url": "lody://session/7a7cae56-6f27-4628-b866-b4a03c2bb532?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "skill-help",
+    "kind": "任务",
+    "description": "用户询问提取版技能如何配置、选择或使用时，读取对应说明并给一个适合的提示示例；帮助问题不自动启动工作。",
+    "source": "../skills/skill-help/SKILL.md",
+    "sha256": "44b1e26961552ee9b355b6bf8d138bcb16fc35ceb9d37bf566086f8e5b4ee512",
+    "added": "2026-10-10",
+    "name_mentions": 3,
+    "status": "历史使用",
+    "priority": "保留",
+    "reason": "补充归档 9f626a70 明确说“当前这次介绍就在使用它”；发生于 10-10，不计入近两周新增使用。",
+    "action": "不能因为近期调用少就判定从未使用；保留按需帮助入口。",
+    "evidence": [
+      {
+        "session_id": "9f626a70-6b8a-4a3f-accb-b459f6f77135",
+        "index": 3,
+        "message_id": "assistant:b745a609-f2e0-42e0-93a1-9ae95cc6d343",
+        "timestamp": "2026-10-10T03:14:00.452Z",
+        "role": "assistant",
+        "title": "授权保存并梳理 SKILL 使用",
+        "note": "补充归档 9f626a70 明确说“当前这次介绍就在使用它”；发生于 10-10，不计入近两周新增使用。",
+        "url": "lody://session/9f626a70-6b8a-4a3f-accb-b459f6f77135?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "swarm",
+    "kind": "任务",
+    "description": "用户要求并行检查多个范围、竞赛或覆盖矩阵时，分配独立任务，等待实际终态并汇总；不把模型人数当作证据。",
+    "source": "../skills/swarm/SKILL.md",
+    "sha256": "bcf2d87b6264d3422009065245f985560e567633663ff60ebdb038f22b3538db",
+    "added": "2026-10-10",
+    "name_mentions": 5,
+    "status": "间接证据",
+    "priority": "间接证据",
+    "reason": "转录有“swarm 要重跑”和 swarm verdict，也有并行审核，但未找到明确读取/采用 swarm 技能的声明。",
+    "action": "保留为待核实。记录分片/竞赛模式及最终覆盖矩阵；已有 conductor 的普通并行不必重复套完整 swarm。",
+    "evidence": [
+      {
+        "session_id": "ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a",
+        "index": 171,
+        "message_id": "assistant:operation-completion:ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a:shell-verify-audit",
+        "timestamp": "2026-10-16T13:39:35.186Z",
+        "role": "assistant",
+        "title": "基于设计系统生成 Studio 原型",
+        "note": "助手说新 head 落地后 swarm 要重跑。",
+        "url": "lody://session/ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  }
+]

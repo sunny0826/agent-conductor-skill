@@ -1,0 +1,37 @@
+{
+  "as_of": "2026-10-29T03:18:00Z",
+  "window_start": "2026-10-15T03:18:00Z",
+  "head": "f45eb3a6f549f36a0a001cc709e4baaac1d8fec1",
+  "scope": {
+    "targets": 590,
+    "main": 576,
+    "read": 583,
+    "missing": [
+      "886d9ea8-89bf-4c0e-a8b0-ab22b693657c",
+      "a52cf278-6dec-4342-9e48-b9bd99c08ea4",
+      "7737b132-4764-47a0-92e7-4701ca8fb9d4",
+      "0fae397e-6a3e-49fd-8a9a-7ff17f5b3d15",
+      "38cf769b-60d5-47e4-847f-da24489a8533",
+      "e8d8a9bb-6edb-459c-b9cb-bef9a82b0d16",
+      "516ab573-1505-480e-a2f3-ef3d66e18c28"
+    ],
+    "empty": [],
+    "partial": [],
+    "messages_all": 3399,
+    "messages_in_window": 3335,
+    "unique_messages_in_window": 3260,
+    "primary_read": 576,
+    "supplement_read": 7,
+    "machines": 5
+  },
+  "counts": {
+    "明确证据": 15,
+    "未见明确证据": 14,
+    "间接证据": 3,
+    "无法判定": 23,
+    "历史使用": 1
+  },
+  "removed_after_audit": [
+    "make-bot-ui"
+  ]
+}

@@ -27,4 +27,3 @@
 | 个人模式：[automate-me](../../automate-me/SKILL.md)、[rigor](../../rigor/SKILL.md) | 用 automate-me 把 `<工作偏好>` 写成项目技能，沿用当前宿主支持的位置，明确触发范围并给出调用方式。不假定它会自动常驻或影响其他会话。 |
 | 技能位置：[create-verification-skill](../../create-verification-skill/SKILL.md) | 为 `<项目>` 创建验收技能并实跑一个用户功能。使用项目已有且宿主能发现的技能位置；无自动发现能力时给出文件引用方式。 |
 | 历史回顾：[recall](../../recall/SKILL.md) | 用 recall 回顾 `<项目／主题>` 在 `<时间范围>` 内的决定和未完成事项，只读取明确可用且属于该范围的历史接口，并核对当前状态。 |
-| webhook 页面：[make-bot-ui](../../make-bot-ui/SKILL.md) | 用 make-bot-ui 为 `<实际 webhook 提供方>` 做控制页面。先读取该提供方契约，确认认证、请求体和完成回执；密钥留在服务器。验证页面访问、请求接收和 Agent 执行结果，缺少配置时明确列出。 |

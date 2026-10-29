@@ -1,0 +1,130 @@
+[
+  {
+    "name": "benchmark-checklist",
+    "kind": "任务",
+    "description": "核验具体性能主张的瓶颈、公平性、资源上限、正确性、重复性、端到端意义与实际工作。用于执行性能测量、报告提速或退化、据数字选型；不作为普通任务的强制检查。",
+    "source": "../skills/benchmark-checklist/SKILL.md",
+    "sha256": "1f7c7cd6ccd5ac4b2a56180ec89aeb63fc2dcf8aba13efe4574b75d16abdd401",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "未见明确证据",
+    "priority": "优先核查",
+    "reason": "资源档位、利用率和测量任务明确存在，但命中只有维护建议；rigor 和 perf-issue 已经链接它。原因更可能涉及选择未留痕或执行路由未落实，不能证明只是缺触发词。",
+    "action": "在测量产物中记录技能选择与证据：工作量、完成边界、次数/波动、瓶颈；先核对现有路由是否实际采用。",
+    "evidence": [
+      {
+        "session_id": "7a7cae56-6f27-4628-b866-b4a03c2bb532",
+        "index": 30,
+        "message_id": "54f2bbf0-4dbb-4999-866c-ebe8b988c7cd",
+        "timestamp": "2026-10-28T23:13:05.767Z",
+        "role": "user",
+        "title": "Rigor C/C++ 扫描 preflight 专项调优规划",
+        "note": "用户要求核对 C 实验的资源利用率和内存浪费。",
+        "url": "lody://session/7a7cae56-6f27-4628-b866-b4a03c2bb532?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "blast-radius",
+    "kind": "任务",
+    "description": "分析指定改动可能破坏的间接消费方与跨边界行为，用真实代码检验关键安全假设。用于改动影响分析、排查 diff 外风险或回答‘这会影响哪里’；不代替完整功能验收，不自动修复产品。",
+    "source": "../skills/blast-radius/SKILL.md",
+    "sha256": "9a2047c238c2ecc5dc4cb44e8bc8ab99fc54869ab79592663143920af85e48e8",
+    "added": "2026-10-10",
+    "name_mentions": 3,
+    "status": "未见明确证据",
+    "priority": "有场景，先核查",
+    "reason": "审查和跨模块改动很多；名称只见于技能维护讨论。独立 reviewer 可能完成了部分影响分析，不能据名称缺失断言流程没有发生。",
+    "action": "有具体消费者或接口风险时，在既有审查任务包中指向 blast-radius，并返回已核对的消费方；普通审查不强制增加阶段。",
+    "evidence": []
+  },
+  {
+    "name": "control-ui",
+    "kind": "任务",
+    "description": "使用项目已有或宿主可用的浏览器、应用控制工具驱动真实 UI，截图并核对交互结果。用于 Web、Electron 与桌面界面的复现、验收和截图交付；不依赖特定编辑器，不生成模拟界面冒充证据。",
+    "source": "../skills/control-ui/SKILL.md",
+    "sha256": "71d296670da3de256fa937462ceff5470e7e4225394395ff60f6c25c971914e4",
+    "added": "2026-10-17",
+    "name_mentions": 11,
+    "status": "间接证据",
+    "priority": "间接证据",
+    "reason": "有引入、安装和真实截图自测回执；没有找到业务任务中明确采用本技能的声明。它在 10-17 才加入，观察期短于两周。",
+    "action": "保留。核对真实 UI 任务是否经过现有 verification-surfaces 路由，以及执行者拿到的本机技能路径；不再重复添加已有入口。",
+    "evidence": [
+      {
+        "session_id": "6845addc-731b-4885-b14c-49e940001db1",
+        "index": 10,
+        "message_id": "assistant:1441e948-f82a-4898-b526-fdb296ceb332",
+        "timestamp": "2026-10-17T02:18:36.026Z",
+        "role": "assistant",
+        "title": "移除 Skill 中的 Cursor 特性",
+        "note": "引入 control-ui 并报告真实浏览器截图自测。",
+        "url": "lody://session/6845addc-731b-4885-b14c-49e940001db1?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "create-verification-skill",
+    "kind": "任务",
+    "description": "根据项目事实生成可复用的 verify-项目名 验收技能与功能地图，并实际跑通一个功能。用于用户要求建立验收技能，或已授权实施确需且缺少此能力时；执行已有验收请使用项目的 verify 技能，纯解释、只读审查与一次性小修改不触发生成。",
+    "source": "../skills/create-verification-skill/SKILL.md",
+    "sha256": "03a29eaf3c324d5d3ecef3a303ddf22fb3234dcba7d4d902ad5a78dea78dd14c",
+    "added": "2026-10-10",
+    "name_mentions": 2,
+    "status": "未见明确证据",
+    "priority": "优先核查",
+    "reason": "多轮设备烧录和验证需求明确存在，未见生成器采用声明。仅凭转录不能确认各项目是否已经存在 verify 技能。",
+    "action": "先检查项目已有验收入口；确实缺少且需要复用时，选 PokeTrail 的一个重复验收场景建 verify-poketrail，并实际跑通后复用。",
+    "evidence": [
+      {
+        "session_id": "79a4db1e-a174-40f0-ba8b-0e42421c7919",
+        "index": 13,
+        "message_id": "f2bd36b7-2e65-46a8-a8f3-672c6155d39f",
+        "timestamp": "2026-10-28T05:26:31.408Z",
+        "role": "user",
+        "title": "创建 issue：每日步数变为 --，需重新校准时间",
+        "note": "用户再次要求连接设备后烧录并验证。",
+        "url": "lody://session/79a4db1e-a174-40f0-ba8b-0e42421c7919?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "interrogate",
+    "kind": "任务",
+    "description": "多模型交叉审核：让不同模型独立检查同一证据包，由主审核实、去重并裁决。用于明确要求交叉审核、对抗审查或具体任务需要多模型排查盲点；普通 review 不强制启用，不替代影响分析或功能验收。",
+    "source": "../skills/interrogate/SKILL.md",
+    "sha256": "56488ec14123a45f7c6ab035c493b3e7de19b68569992ed8866f51827cc61ac5",
+    "added": "2026-10-10",
+    "name_mentions": 13,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "子会话回传明确说“按计划使用 interrogate 技能”进行只读复核。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a",
+        "index": 137,
+        "message_id": "operation-completion:ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a:studio-children-1",
+        "timestamp": "2026-10-16T12:46:05.870Z",
+        "role": "system",
+        "title": "基于设计系统生成 Studio 原型",
+        "note": "子会话回传明确说“按计划使用 interrogate 技能”进行只读复核。",
+        "url": "lody://session/ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "maintain-verification-skill",
+    "kind": "任务",
+    "description": "用户要求审计或维护已有 verify 技能及功能地图时，逐功能读源码并实跑，修正说明或 harness；不修改产品代码。",
+    "source": "../skills/maintain-verification-skill/SKILL.md",
+    "sha256": "0b701f80409402cd6994cea91fba3101768bd11643d9be95bd1711b860547469",
+    "added": "2026-10-10",
+    "name_mentions": 0,
+    "status": "未见明确证据",
+    "priority": "低频合理",
+    "reason": "只有已有 verify 技能的全量审计才适用；是否有足够此类任务未获证实。create-verification-skill 已覆盖日常增量维护。",
+    "action": "保留“全量验收流程审计”的清晰定位；不要与生成器的日常维护重复触发。暂无依据删除或强制调用。",
+    "evidence": []
+  }
+]

@@ -1,0 +1,1087 @@
+{
+  "as_of": "2026-10-29T03:18:00Z",
+  "window_start": "2026-10-15T03:18:00Z",
+  "head": "f45eb3a6f549f36a0a001cc709e4baaac1d8fec1",
+  "scope": {
+    "targets": 590,
+    "main": 576,
+    "read": 583,
+    "missing": [
+      "886d9ea8-89bf-4c0e-a8b0-ab22b693657c",
+      "a52cf278-6dec-4342-9e48-b9bd99c08ea4",
+      "7737b132-4764-47a0-92e7-4701ca8fb9d4",
+      "0fae397e-6a3e-49fd-8a9a-7ff17f5b3d15",
+      "38cf769b-60d5-47e4-847f-da24489a8533",
+      "e8d8a9bb-6edb-459c-b9cb-bef9a82b0d16",
+      "516ab573-1505-480e-a2f3-ef3d66e18c28"
+    ],
+    "empty": [],
+    "partial": [],
+    "messages_all": 3399,
+    "messages_in_window": 3335,
+    "unique_messages_in_window": 3260,
+    "primary_read": 576,
+    "supplement_read": 7,
+    "machines": 5
+  },
+  "counts": {
+    "明确证据": 15,
+    "未见明确证据": 14,
+    "间接证据": 3,
+    "无法判定": 23,
+    "历史使用": 1
+  },
+  "removed_after_audit": [
+    "make-bot-ui"
+  ],
+  "skills": [
+    {
+      "name": "agent-conductor",
+      "kind": "任务",
+      "description": "组织 Agent 协作完成任务：核对目标和授权，分配角色、拆解依赖、路由子任务、协调执行并以真实结果决定继续、返工或交付。用于用户要求组织多个 Agent、分配工作、协调执行、检查 AI 执行链路或验证任务结果。需要发现本地 Agent、配置角色模型或调整预算时，调用配套 agent-conductor-setup。",
+      "source": "../skills/agent-conductor/SKILL.md",
+      "sha256": "ffd0d91790d5202ef378fa91b7c3ac88967e03aa373ccbd29aa3d4b7d8d30563",
+      "added": "2026-10-10",
+      "name_mentions": 178,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "明确写出“本轮通过 agent-conductor 分工”，并链接技能文件。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "4fbd9d1d-2a8f-4014-b205-bc250c06ce6a",
+          "index": 7,
+          "message_id": "assistant:3e4affc2-83d9-48ac-a4e4-ac6444eaae9e",
+          "timestamp": "2026-10-19T03:14:05.707Z",
+          "role": "assistant",
+          "title": "(fork) $rogor 需求：高效开发环境，需要在本地启动 studio，这个 studio 为当前分支最新代码，同时这个 studio 连接的 CLI 也是当前分支最新",
+          "note": "明确写出“本轮通过 agent-conductor 分工”，并链接技能文件。",
+          "url": "lody://session/4fbd9d1d-2a8f-4014-b205-bc250c06ce6a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "agent-conductor-setup",
+      "kind": "任务",
+      "description": "基于 Lody 发现全部 Agent 和模型，配置角色模型与推理预算：分页枚举 Lody 的机器、Agent 配置（含推理档位）与 Agent 角色，让用户选择角色组合与预算，生成项目级角色配置。用于用户要求发现 Agent 或模型、首次配置、更新角色模型、调整预算或修复调用配置；也供 agent-conductor 在任务组织前调用。",
+      "source": "../skills/agent-conductor-setup/SKILL.md",
+      "sha256": "56e5cb24226d9f0a23fee1aaa3edf7c61dc8ea49f6240395f74bcac928a43b01",
+      "added": "2026-10-10",
+      "name_mentions": 6,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "引用 setup 的角色配置规则并据此保留用户的模型选择。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "4fbd9d1d-2a8f-4014-b205-bc250c06ce6a",
+          "index": 7,
+          "message_id": "assistant:3e4affc2-83d9-48ac-a4e4-ac6444eaae9e",
+          "timestamp": "2026-10-19T03:14:05.707Z",
+          "role": "assistant",
+          "title": "(fork) $rogor 需求：高效开发环境，需要在本地启动 studio，这个 studio 为当前分支最新代码，同时这个 studio 连接的 CLI 也是当前分支最新",
+          "note": "引用 setup 的角色配置规则并据此保留用户的模型选择。",
+          "url": "lody://session/4fbd9d1d-2a8f-4014-b205-bc250c06ce6a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "architect",
+      "kind": "任务",
+      "description": "先理解现有系统，再比较结构方案，从调用者用法推导类型、接口与模块归属，并在实施中复核设计。用于架构设计、模块边界或非平凡结构变更；只要求设计时不自动实施，普通小改动不强制启用。",
+      "source": "../skills/architect/SKILL.md",
+      "sha256": "f919aa5d182cc7ec657cc75bbbdb5cf58f5fc930c833596b4e98526906afd0cf",
+      "added": "2026-10-10",
+      "name_mentions": 4,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "子会话回传中明确说采用 architect 技能；不是把架构师角色名当作技能。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "d56683c4-6b35-413e-8dfc-5cea8c9b57d6",
+          "index": 124,
+          "message_id": "operation-completion:d56683c4-6b35-413e-8dfc-5cea8c9b57d6:architect-review-pr49-01",
+          "timestamp": "2026-10-15T11:25:54.599Z",
+          "role": "system",
+          "title": "优化 studio 模型下载选择与自动启动体验",
+          "note": "子会话回传中明确说采用 architect 技能；不是把架构师角色名当作技能。",
+          "url": "lody://session/d56683c4-6b35-413e-8dfc-5cea8c9b57d6?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "arena",
+      "kind": "任务",
+      "description": "对同一问题独立探索多个方案，由独立评判和协调者比较、选基础、吸收并验证。",
+      "source": "../skills/arena/SKILL.md",
+      "sha256": "ef65dd8abc8599707317f04055aa3fcb51185a9ea7a0b2049f05f7654d2506c2",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "派发指令明确依据 architect/arena；同会话回执选择 B 并吸收 A 的两项，形成对应产物。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "870b9943-a85c-401d-9f6e-94c40d0f934d",
+          "index": 0,
+          "message_id": "7fa9074e-2f7a-4cc5-9638-e19c31ecea02",
+          "timestamp": "2026-10-17T13:24:34.173Z",
+          "role": "user",
+          "title": "圆屏收件箱方案候选A/B独立评判修订",
+          "note": "派发指令明确依据 architect/arena；同会话回执选择 B 并吸收 A 的两项，形成对应产物。",
+          "url": "lody://session/870b9943-a85c-401d-9f6e-94c40d0f934d?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "automate-me",
+      "kind": "任务",
+      "description": "用户要求创建或更新个人 mode 技能、让 Agent 遵循其工作习惯时，结合明确偏好与范围内重复证据编写短技能；普通任务技能不挖历史。",
+      "source": "../skills/automate-me/SKILL.md",
+      "sha256": "d721df9c4780233afb5ee7fe263b9ce17ee12cdd0308c589d4312bcd880162ad",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "未见明确证据",
+      "priority": "按需保留",
+      "reason": "需要创建个人 mode 才适用；本期未发现明确的个人模式提取请求。普通任务技能创建不属于其触发范围。",
+      "action": "保留专用入口，不因“写技能”就自动挖掘个人历史。",
+      "evidence": []
+    },
+    {
+      "name": "benchmark-checklist",
+      "kind": "任务",
+      "description": "核验具体性能主张的瓶颈、公平性、资源上限、正确性、重复性、端到端意义与实际工作。用于执行性能测量、报告提速或退化、据数字选型；不作为普通任务的强制检查。",
+      "source": "../skills/benchmark-checklist/SKILL.md",
+      "sha256": "1f7c7cd6ccd5ac4b2a56180ec89aeb63fc2dcf8aba13efe4574b75d16abdd401",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "未见明确证据",
+      "priority": "优先核查",
+      "reason": "资源档位、利用率和测量任务明确存在，但命中只有维护建议；rigor 和 perf-issue 已经链接它。原因更可能涉及选择未留痕或执行路由未落实，不能证明只是缺触发词。",
+      "action": "在测量产物中记录技能选择与证据：工作量、完成边界、次数/波动、瓶颈；先核对现有路由是否实际采用。",
+      "evidence": [
+        {
+          "session_id": "7a7cae56-6f27-4628-b866-b4a03c2bb532",
+          "index": 30,
+          "message_id": "54f2bbf0-4dbb-4999-866c-ebe8b988c7cd",
+          "timestamp": "2026-10-28T23:13:05.767Z",
+          "role": "user",
+          "title": "Rigor C/C++ 扫描 preflight 专项调优规划",
+          "note": "用户要求核对 C 实验的资源利用率和内存浪费。",
+          "url": "lody://session/7a7cae56-6f27-4628-b866-b4a03c2bb532?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "blast-radius",
+      "kind": "任务",
+      "description": "分析指定改动可能破坏的间接消费方与跨边界行为，用真实代码检验关键安全假设。用于改动影响分析、排查 diff 外风险或回答‘这会影响哪里’；不代替完整功能验收，不自动修复产品。",
+      "source": "../skills/blast-radius/SKILL.md",
+      "sha256": "9a2047c238c2ecc5dc4cb44e8bc8ab99fc54869ab79592663143920af85e48e8",
+      "added": "2026-10-10",
+      "name_mentions": 3,
+      "status": "未见明确证据",
+      "priority": "有场景，先核查",
+      "reason": "审查和跨模块改动很多；名称只见于技能维护讨论。独立 reviewer 可能完成了部分影响分析，不能据名称缺失断言流程没有发生。",
+      "action": "有具体消费者或接口风险时，在既有审查任务包中指向 blast-radius，并返回已核对的消费方；普通审查不强制增加阶段。",
+      "evidence": []
+    },
+    {
+      "name": "bro",
+      "kind": "任务",
+      "description": "用户要求再说简单一点、去掉术语或重述上一条回答时，用清楚简短的日常语言重述，不另起调查或丢掉关键事实。",
+      "source": "../skills/bro/SKILL.md",
+      "sha256": "ae1515abc2c8aa6e9dca7d46e5120c5fb6cc41fe431754429ddbe33c55072f17",
+      "added": "2026-10-10",
+      "name_mentions": 9,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "用户明确调用 $bro。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "d56683c4-6b35-413e-8dfc-5cea8c9b57d6",
+          "index": 54,
+          "message_id": "9a9c89a3-b9d3-481b-8975-bd3d21366a08",
+          "timestamp": "2026-10-15T05:22:38.277Z",
+          "role": "user",
+          "title": "优化 studio 模型下载选择与自动启动体验",
+          "note": "用户明确调用 $bro。",
+          "url": "lody://session/d56683c4-6b35-413e-8dfc-5cea8c9b57d6?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "control-ui",
+      "kind": "任务",
+      "description": "使用项目已有或宿主可用的浏览器、应用控制工具驱动真实 UI，截图并核对交互结果。用于 Web、Electron 与桌面界面的复现、验收和截图交付；不依赖特定编辑器，不生成模拟界面冒充证据。",
+      "source": "../skills/control-ui/SKILL.md",
+      "sha256": "71d296670da3de256fa937462ceff5470e7e4225394395ff60f6c25c971914e4",
+      "added": "2026-10-17",
+      "name_mentions": 11,
+      "status": "间接证据",
+      "priority": "间接证据",
+      "reason": "有引入、安装和真实截图自测回执；没有找到业务任务中明确采用本技能的声明。它在 10-17 才加入，观察期短于两周。",
+      "action": "保留。核对真实 UI 任务是否经过现有 verification-surfaces 路由，以及执行者拿到的本机技能路径；不再重复添加已有入口。",
+      "evidence": [
+        {
+          "session_id": "6845addc-731b-4885-b14c-49e940001db1",
+          "index": 10,
+          "message_id": "assistant:1441e948-f82a-4898-b526-fdb296ceb332",
+          "timestamp": "2026-10-17T02:18:36.026Z",
+          "role": "assistant",
+          "title": "移除 Skill 中的 Cursor 特性",
+          "note": "引入 control-ui 并报告真实浏览器截图自测。",
+          "url": "lody://session/6845addc-731b-4885-b14c-49e940001db1?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "correct",
+      "kind": "任务",
+      "description": "用户要求防止本仓库反复出现的 Agent 错误时，收集重复实例并优先用架构、类型、检查或测试消除错误，文档只保留判断规则。",
+      "source": "../skills/correct/SKILL.md",
+      "sha256": "69cc6541bf272ae33cf9fb0c816b1cedd348fbfb610b39ea3156890197430375",
+      "added": "2026-10-10",
+      "name_mentions": 3,
+      "status": "未见明确证据",
+      "priority": "优先核查",
+      "reason": "14 次例行复盘持续处理重复错误，但未见 correct 的采用声明。reflect 目前链接结构编码原则，没有直接路由到 correct。",
+      "action": "同类错误至少有两个真实样本时，由复盘转入 correct 的“结构/检查/测试”选择；在已有授权内修执行机制，避免只追加文字。",
+      "evidence": [
+        {
+          "session_id": "660f7a5f-0aaa-8ca6-b23e-32f78412072d",
+          "index": 2,
+          "message_id": "assistant:836bf5e5-760b-8d70-8b25-966bb31a89a5",
+          "timestamp": "2026-10-28T17:00:03.260Z",
+          "role": "assistant",
+          "title": "Agent Skill 进化",
+          "note": "复盘报告仍记录派发契约复发及验收措辞问题。",
+          "url": "lody://session/660f7a5f-0aaa-8ca6-b23e-32f78412072d?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "create-verification-skill",
+      "kind": "任务",
+      "description": "根据项目事实生成可复用的 verify-项目名 验收技能与功能地图，并实际跑通一个功能。用于用户要求建立验收技能，或已授权实施确需且缺少此能力时；执行已有验收请使用项目的 verify 技能，纯解释、只读审查与一次性小修改不触发生成。",
+      "source": "../skills/create-verification-skill/SKILL.md",
+      "sha256": "03a29eaf3c324d5d3ecef3a303ddf22fb3234dcba7d4d902ad5a78dea78dd14c",
+      "added": "2026-10-10",
+      "name_mentions": 2,
+      "status": "未见明确证据",
+      "priority": "优先核查",
+      "reason": "多轮设备烧录和验证需求明确存在，未见生成器采用声明。仅凭转录不能确认各项目是否已经存在 verify 技能。",
+      "action": "先检查项目已有验收入口；确实缺少且需要复用时，选 PokeTrail 的一个重复验收场景建 verify-poketrail，并实际跑通后复用。",
+      "evidence": [
+        {
+          "session_id": "79a4db1e-a174-40f0-ba8b-0e42421c7919",
+          "index": 13,
+          "message_id": "f2bd36b7-2e65-46a8-a8f3-672c6155d39f",
+          "timestamp": "2026-10-28T05:26:31.408Z",
+          "role": "user",
+          "title": "创建 issue：每日步数变为 --，需重新校准时间",
+          "note": "用户再次要求连接设备后烧录并验证。",
+          "url": "lody://session/79a4db1e-a174-40f0-ba8b-0e42421c7919?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "figure-it-out",
+      "kind": "任务",
+      "description": "复杂迁移、多部分变更或没有更窄流程可用时，先设计按风险缩放的阶段流程，再用假设、实证和决策轨迹推进。",
+      "source": "../skills/figure-it-out/SKILL.md",
+      "sha256": "b51c08f4a0d94e99e54acd10d7c91fedffe5d1fbe2f68b8842cc1555beaff571",
+      "added": "2026-10-10",
+      "name_mentions": 2,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "助手明确声明用 figure-it-out 拆分验证步骤。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "c717347b-4723-439f-bb18-0f23e4e0dd38",
+          "index": 5,
+          "message_id": "assistant:197b4259-1e7e-494d-87a7-2163e3366f13",
+          "timestamp": "2026-10-15T14:57:46.024Z",
+          "role": "assistant",
+          "title": "拉取最新代码",
+          "note": "助手明确声明用 figure-it-out 拆分验证步骤。",
+          "url": "lody://session/c717347b-4723-439f-bb18-0f23e4e0dd38?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "how",
+      "kind": "任务",
+      "description": "从真实源码解释系统如何工作，追踪入口、调用链、数据流、状态归属与模块边界。用于代码导读、修改前理解子系统，或回答‘放在哪里、由谁负责、属于哪一层’；设计动机需要历史证据，不凭现状猜测。",
+      "source": "../skills/how/SKILL.md",
+      "sha256": "6c3b5a1dd3301372269b106416d0debd88b341aba3d4c2cebfe747f4f967b892",
+      "added": "2026-10-10",
+      "name_mentions": 14,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "用户明确调用 $how。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "850b5dae-0468-4c95-999f-905132d728d1",
+          "index": 5,
+          "message_id": "ffe26bf5-dc50-4149-a831-a6f603634295",
+          "timestamp": "2026-10-26T00:02:14.216Z",
+          "role": "user",
+          "title": "询问目前工作进度",
+          "note": "用户明确调用 $how。",
+          "url": "lody://session/850b5dae-0468-4c95-999f-905132d728d1?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "in-your-own-words",
+      "kind": "任务",
+      "description": "用户要求用自己的话复述目标或问题时，先给出复述；单独的复述请求不启动工作，明确要求随后执行则继续。",
+      "source": "../skills/in-your-own-words/SKILL.md",
+      "sha256": "a8501167f9a5495bfc19f3368642884e965874e2d99add56456191f7fcb5357c",
+      "added": "2026-10-16",
+      "name_mentions": 11,
+      "status": "未见明确证据",
+      "priority": "按需保留",
+      "reason": "10-16 新加入；命中均为新增或修订讨论。需要“先复述”的明确请求，低频本身合理。",
+      "action": "显示为“复述目标”，保持稳定技能名；保留“先复述再执行”与“只复述”的边界，不设每次开工必经步骤。",
+      "evidence": []
+    },
+    {
+      "name": "interrogate",
+      "kind": "任务",
+      "description": "多模型交叉审核：让不同模型独立检查同一证据包，由主审核实、去重并裁决。用于明确要求交叉审核、对抗审查或具体任务需要多模型排查盲点；普通 review 不强制启用，不替代影响分析或功能验收。",
+      "source": "../skills/interrogate/SKILL.md",
+      "sha256": "56488ec14123a45f7c6ab035c493b3e7de19b68569992ed8866f51827cc61ac5",
+      "added": "2026-10-10",
+      "name_mentions": 13,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "子会话回传明确说“按计划使用 interrogate 技能”进行只读复核。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a",
+          "index": 137,
+          "message_id": "operation-completion:ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a:studio-children-1",
+          "timestamp": "2026-10-16T12:46:05.870Z",
+          "role": "system",
+          "title": "基于设计系统生成 Studio 原型",
+          "note": "子会话回传明确说“按计划使用 interrogate 技能”进行只读复核。",
+          "url": "lody://session/ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "ketchup",
+      "kind": "任务",
+      "description": "用户要求 ketchup、追上进度或问上次发言后发生了什么时，用几句白话和已有的小图说明变化，并列出只有用户能做的决定。摘要阶段只读，不另起工作；已有任务按用户指令继续。",
+      "source": "../skills/ketchup/SKILL.md",
+      "sha256": "7f2f1bf484b03604f2a5b67c417253c108359e64cd7ba9f32a4a946f3fb3dc04",
+      "added": "2026-10-16",
+      "name_mentions": 18,
+      "status": "未见明确证据",
+      "priority": "有场景，先核查",
+      "reason": "进度询问确实存在，用户常用普通中文或 $how；未见 ketchup 调用。英文命名增加识别成本是推断，不是已证实原因。",
+      "action": "使用中文展示名“进度简报（ketchup）”，与跨会话 recall 区分；沿现有规则简短答复后继续已授权任务。",
+      "evidence": [
+        {
+          "session_id": "850b5dae-0468-4c95-999f-905132d728d1",
+          "index": 3,
+          "message_id": "3ac5161e-4927-43a3-930f-ac949848aab0",
+          "timestamp": "2026-10-25T23:46:50.242Z",
+          "role": "user",
+          "title": "询问目前工作进度",
+          "note": "用户询问 R1–R4 整体执行进度。",
+          "url": "lody://session/850b5dae-0468-4c95-999f-905132d728d1?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "maintain-verification-skill",
+      "kind": "任务",
+      "description": "用户要求审计或维护已有 verify 技能及功能地图时，逐功能读源码并实跑，修正说明或 harness；不修改产品代码。",
+      "source": "../skills/maintain-verification-skill/SKILL.md",
+      "sha256": "0b701f80409402cd6994cea91fba3101768bd11643d9be95bd1711b860547469",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "未见明确证据",
+      "priority": "低频合理",
+      "reason": "只有已有 verify 技能的全量审计才适用；是否有足够此类任务未获证实。create-verification-skill 已覆盖日常增量维护。",
+      "action": "保留“全量验收流程审计”的清晰定位；不要与生成器的日常维护重复触发。暂无依据删除或强制调用。",
+      "evidence": []
+    },
+    {
+      "name": "make-bot-ui",
+      "kind": "任务",
+      "description": "用户要求构建按钮或页面唤醒 webhook Agent 时，使用服务器保管发送密钥、明确 payload 契约，并验证访问与唤醒边界；不假定 webhook 提供方或访问网络已配置。",
+      "source": "../skills/make-bot-ui/SKILL.md",
+      "sha256": "300f13c815824edc19271d4f463c24b79d5acbf28b8b39dd3093e1bfed9fd191",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "未见明确证据",
+      "priority": "低频合理",
+      "reason": "本期只见适配维护提及；普通 webhook、消息收件箱或 SAST 任务并不自动等于“网页按钮唤醒 Agent”。",
+      "action": "保留窄触发范围；出现明确的唤醒页面需求时再评估，不推广到所有 Bot 项目。",
+      "evidence": []
+    },
+    {
+      "name": "no-comments",
+      "kind": "任务",
+      "description": "用户要求清理指定范围的注释和 workaround 时，使用独立注释审查、核对例外及根因，并在授权范围处理；不无差别删除法律、契约和外部约束。",
+      "source": "../skills/no-comments/SKILL.md",
+      "sha256": "9d885a18c00247776ffbd9cc9cfb34004ebaeb389175cea368f11cba918262a3",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "间接证据",
+      "priority": "间接证据",
+      "reason": "有独立注释审查及 MUST KILL/例外/删除数回执，明显接近技能流程，但未点名技能文件；不能列为完全闲置。",
+      "action": "先在既有注释审查回执标明技能来源，复用已有流程；不要再添一轮同样审查。",
+      "evidence": [
+        {
+          "session_id": "ba5f99b5-56c5-4d64-94ea-00ea0f8fc03e",
+          "index": 1,
+          "message_id": "assistant:fa697dcb-56aa-4353-a6ca-3d8ce2dcd488",
+          "timestamp": "2026-10-28T06:18:21.988Z",
+          "role": "assistant",
+          "title": "读取并执行 `/home/guo/.lody/repos/local---83bdb4a8417d/",
+          "note": "独立注释审查回执：零 MUST KILL、保留编译器指令和真实同步契约。",
+          "url": "lody://session/ba5f99b5-56c5-4d64-94ea-00ea0f8fc03e?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "principle-attack-the-premise",
+      "kind": "原则",
+      "description": "多次修复在同一检查失败且共享同一前提时，先写下前提并直接检验，再决定下一修。",
+      "source": "../skills/principle-attack-the-premise/SKILL.md",
+      "sha256": "cba2917277e691da9933a2de9187d9d0cc8ee2c6efa740c40b5af2fad74f5c6d",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-boundary-discipline",
+      "kind": "原则",
+      "description": "在外部边界验证输入，内部依赖明确契约，隔离传输与领域逻辑。",
+      "source": "../skills/principle-boundary-discipline/SKILL.md",
+      "sha256": "965ed7a4f3e2cb10bc6defb8acfea3d76ee251c2612f7ad33bda1aa42d1e8998",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-build-the-lever",
+      "kind": "原则",
+      "description": "非平凡编辑、迁移、分析或验证时，将做法做成最小可复跑工具，而不是重复手工操作。",
+      "source": "../skills/principle-build-the-lever/SKILL.md",
+      "sha256": "31e642f80ed474641270914be127a826ba527f013f1fb6b4ca3064f1869befeb",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-encode-lessons-in-structure",
+      "kind": "原则",
+      "description": "将反复出现的错误约束编码到类型、检查或单一实现中。",
+      "source": "../skills/principle-encode-lessons-in-structure/SKILL.md",
+      "sha256": "b1b81735afce6bd80d42e49f5283b773051397c89ad7331af3a39a4c2afc6b24",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-exhaust-the-design-space",
+      "kind": "原则",
+      "description": "新结构没有明确先例时，比较结构不同的设计，不把改名当作探索。",
+      "source": "../skills/principle-exhaust-the-design-space/SKILL.md",
+      "sha256": "31d347dcc1b05ab7528c38c5458effd72ba39ec45cbc772d078fcca2af6740d6",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-experience-first",
+      "kind": "原则",
+      "description": "产品、交互或功能取舍时，从实际使用者和维护者的体验选择目标，减少粗糙功能和无用选项。",
+      "source": "../skills/principle-experience-first/SKILL.md",
+      "sha256": "d42d5edb76b97cf0d4e8153cafb73103635ee0d692626e84016a99a97fb85369",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-explain-the-number",
+      "kind": "原则",
+      "description": "相信、报告或据测量选型前，找到真实瓶颈，并排除错误、跳过工作、未调优和噪声。",
+      "source": "../skills/principle-explain-the-number/SKILL.md",
+      "sha256": "c8e1d8a78ccfc40e39bf622737218c663a7e9b3ba26ceca8cd1b372a42bcafda",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-fix-root-causes",
+      "kind": "原则",
+      "description": "修复问题时复现并追到系统第一次出错的地方。状态合法时，就地处理是修复；状态不该存在时，防御分支只是掩盖。",
+      "source": "../skills/principle-fix-root-causes/SKILL.md",
+      "sha256": "923543e857abc796cfc514fe446b74ee0a027cc92c7eecaa0a2015c0734ea1d5",
+      "added": "2026-10-10",
+      "name_mentions": 2,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "助手明确点名该原则，检查实际触摸路径。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "fa17fa6f-28e1-4607-8311-eaa6fcae120f",
+          "index": 12,
+          "message_id": "assistant:fc2b8d77-cff8-440e-80af-a337eb19538f",
+          "timestamp": "2026-10-25T04:40:47.598Z",
+          "role": "assistant",
+          "title": "规范 Agent 任务执行、验证与交付闭环",
+          "note": "助手明确点名该原则，检查实际触摸路径。",
+          "url": "lody://session/fa17fa6f-28e1-4607-8311-eaa6fcae120f?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "principle-foundational-thinking",
+      "kind": "原则",
+      "description": "设计时先确定数据形状、访问模式和归属，再设计逻辑与抽象。",
+      "source": "../skills/principle-foundational-thinking/SKILL.md",
+      "sha256": "b308c86ba0bd82e4433d0bb4b848014a3587fa9c4e362a09ad75b4ea740fe146",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-guard-the-context-window",
+      "kind": "原则",
+      "description": "大输出与长任务分阶段读取，保留必要证据并控制主上下文负担。",
+      "source": "../skills/principle-guard-the-context-window/SKILL.md",
+      "sha256": "2f6d00e009c3504fc3a818b868cfa7dfca63b3cb3c713a4d381b37a731811b8c",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-laziness-protocol",
+      "kind": "原则",
+      "description": "优先少代码、单一事实来源和隐藏复杂度的接口，减少无价值透传。",
+      "source": "../skills/principle-laziness-protocol/SKILL.md",
+      "sha256": "ae9c952ee2faad67f365857d3ecd24931e18018308672198f482ae6f60fbe8f0",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-make-operations-idempotent",
+      "kind": "原则",
+      "description": "有重试、启动恢复或重复执行时，从当前状态推导下一步，使部分失败后仍能收敛到同一终态。",
+      "source": "../skills/principle-make-operations-idempotent/SKILL.md",
+      "sha256": "458dbbd1f35126ffee2946c96cad6a47e4f05752c4e7c9fa94d25cffd94007f6",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-migrate-callers-then-delete-legacy-apis",
+      "kind": "原则",
+      "description": "没有外部兼容承诺且允许协调迁移时，同一轮迁移内部调用者并删除旧接口，避免双路径长期并存。",
+      "source": "../skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
+      "sha256": "38a2b23ffde879ac030dfeb04cec383bf669e60d26813a7b1a4e30d65a00285c",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-minimize-reader-load",
+      "kind": "原则",
+      "description": "减少理解任务必须追踪的层级、隐含状态与手工同步。",
+      "source": "../skills/principle-minimize-reader-load/SKILL.md",
+      "sha256": "638b247edaa444e1b4a3d9b9c3a772c4d8afb95fd82675e52eaf31e25804eaeb",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-model-the-domain",
+      "kind": "原则",
+      "description": "写状态逻辑或重复分支时，用符合领域的数据结构表达状态、归属与约束，避免散落的布尔值和重复假设。",
+      "source": "../skills/principle-model-the-domain/SKILL.md",
+      "sha256": "cfce18d015ebc7b48a717ccbe73a674493a7c5e3fcd38fd927f54bba976adb42",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-never-block-on-the-human",
+      "kind": "原则",
+      "description": "已授权的可逆工作可自主推进并交付可评审结果，保留用户指定关口，不把执行自主性当作外部操作授权。",
+      "source": "../skills/principle-never-block-on-the-human/SKILL.md",
+      "sha256": "2d53a646f3e2e577ab14b08eb8c1930450ce080ec7b1f3a88f0624a2818f34aa",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-outcome-oriented-execution",
+      "kind": "原则",
+      "description": "授权迁移以完整最终状态为目标，限定中间破坏范围并验证最终行为。",
+      "source": "../skills/principle-outcome-oriented-execution/SKILL.md",
+      "sha256": "9d616771c9c3b8c8ddb430120d2548fc4e60b1382f53bf0cfb0a5fab0169428d",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-prove-it-works",
+      "kind": "原则",
+      "description": "完成前核验真实产物与行为，不能以摘要、编译或时间戳替代效果证明。",
+      "source": "../skills/principle-prove-it-works/SKILL.md",
+      "sha256": "8cf995aaad9107a65ab65671b30b362f607d2a1d007a14e6b14afbaeb13ad9f2",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-redesign-from-first-principles",
+      "kind": "原则",
+      "description": "新约束使结构失效时，重新设计并同步类型、调用者、文档和例子。",
+      "source": "../skills/principle-redesign-from-first-principles/SKILL.md",
+      "sha256": "7e76b46592e5c3db1a3e106dbdf66497a2f2cdbe7228e3ac552717a40904116c",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-separate-before-serializing-shared-state",
+      "kind": "原则",
+      "description": "并行工作前划分写入归属，确需共享的状态使用真实并发机制。",
+      "source": "../skills/principle-separate-before-serializing-shared-state/SKILL.md",
+      "sha256": "a59188e9a717a4f722e702741f64748289734d9e7e022b5197ec285c95a8c01a",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-sequence-verifiable-units",
+      "kind": "原则",
+      "description": "多步迁移、批量改动或交付时，每个单元以可检验状态结束，先验证当前单元再依赖它继续。",
+      "source": "../skills/principle-sequence-verifiable-units/SKILL.md",
+      "sha256": "cd6931db189c774df92340865717b1d24f95b7de8b7b7c8d0e952ad4997374de",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-subtract-before-you-add",
+      "kind": "原则",
+      "description": "增加抽象或补丁前，先删除本轮替代的冗余与不必要状态。",
+      "source": "../skills/principle-subtract-before-you-add/SKILL.md",
+      "sha256": "ac4948a5d8533c396060ebba48492bf0576f75247e6e5e8d4521cc2e3c129fa8",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-test-behavior-not-implementation",
+      "kind": "原则",
+      "description": "编写或保留测试时，断言使用者能观察到的结果：行为坏了必须失败，只改内部实现必须仍通过。",
+      "source": "../skills/principle-test-behavior-not-implementation/SKILL.md",
+      "sha256": "b899e3e7c442625401cd22d176e827aa6af9162db3fc0f2fe7a2ef2ad65e002d",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "principle-type-system-discipline",
+      "kind": "原则",
+      "description": "设计类型或签名时编码合法状态、语义标识与穷尽分支，在边界解析外部数据，并从权威模式派生类型。",
+      "source": "../skills/principle-type-system-discipline/SKILL.md",
+      "sha256": "563eca566d54b55fecf9304b6e840b72857e5c908c1fc8daf0538c4629457742",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "无法判定",
+      "priority": "不据此删除",
+      "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+      "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+      "evidence": []
+    },
+    {
+      "name": "recall",
+      "kind": "任务",
+      "description": "用户要求回顾某主题最近工作或继续之前工作时，从范围内历史和当前状态恢复目标、决定、问题和下一步，不将旧记录当作实时事实。",
+      "source": "../skills/recall/SKILL.md",
+      "sha256": "4414445b2acb6e78607f5a38f6cc9294ef139b671b60f2e7517ba1cc7d2891bd",
+      "added": "2026-10-10",
+      "name_mentions": 2,
+      "status": "未见明确证据",
+      "priority": "有场景，先核查",
+      "reason": "跨会话恢复与历史分析已有需求，但名称只见于包清单和建议；行为可能被普通检索流程承担。",
+      "action": "恢复跨会话状态时再使用 recall；无需把它和 reflect 强制串成每个定时任务的两个步骤。",
+      "evidence": []
+    },
+    {
+      "name": "reflect",
+      "kind": "任务",
+      "description": "用户明确要求 reflect 或会话复盘时，从本次证据提炼持久改进，综合三种视角并提出技能修改；不自动应用或写外部工单。",
+      "source": "../skills/reflect/SKILL.md",
+      "sha256": "ffca57a32cdc26a7e73cd72a83704948b78b823fd720a821181722e7c0df0759",
+      "added": "2026-10-10",
+      "name_mentions": 7,
+      "status": "未见明确证据",
+      "priority": "优先核查",
+      "reason": "14 个例行复盘请求都使用“本 SKILL”而未明确点名 reflect；修改 reflect 文件本身不证明采用了该流程。",
+      "action": "将例行复盘任务明确指向 reflect，保留当前已授权边界；重复错误再路由 correct，不额外叠加一套同义流程。",
+      "evidence": [
+        {
+          "session_id": "660f7a5f-0aaa-8ca6-b23e-32f78412072d",
+          "index": 1,
+          "message_id": "836bf5e5-760b-8d70-8b25-966bb31a89a5",
+          "timestamp": "2026-10-28T17:00:02.767Z",
+          "role": "user",
+          "title": "Agent Skill 进化",
+          "note": "定时任务写的是分析前一天归档 session 和修复本 SKILL。",
+          "url": "lody://session/660f7a5f-0aaa-8ca6-b23e-32f78412072d?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "rigor",
+      "kind": "任务",
+      "description": "非平凡任务按工程流程执行：匹配包内流程，按相关原则决策，以真实证据交付。闲聊与普通小改动不启用。发现和派发 Agent 用 agent-conductor。",
+      "source": "../skills/rigor/SKILL.md",
+      "sha256": "fe94ada56ccec7ecbb8e485b066502c305e36994a37e1a1f29e97cf8ada6d4d0",
+      "added": "2026-10-10",
+      "name_mentions": 314,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "用户明确调用 $rigor 规划 C/C++ 扫描调优。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "7a7cae56-6f27-4628-b866-b4a03c2bb532",
+          "index": 0,
+          "message_id": "07c13aa3-8b93-4701-a077-9bfdaf569eb1",
+          "timestamp": "2026-10-28T10:06:01.754Z",
+          "role": "user",
+          "title": "Rigor C/C++ 扫描 preflight 专项调优规划",
+          "note": "用户明确调用 $rigor 规划 C/C++ 扫描调优。",
+          "url": "lody://session/7a7cae56-6f27-4628-b866-b4a03c2bb532?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "sharpen",
+      "kind": "任务",
+      "description": "用户要求 sharpen 或开工前收紧任务时，对齐做法、真实目标和规格松紧，再按已有授权执行；只问专家会怎么做时交付解释。",
+      "source": "../skills/sharpen/SKILL.md",
+      "sha256": "2c62af5782b4945c35dacabb744836fe5df671787ab5bb17d52d000f2cb29af2",
+      "added": "2026-10-16",
+      "name_mentions": 15,
+      "status": "未见明确证据",
+      "priority": "按需保留",
+      "reason": "10-16 新加入；命中均为维护与触发边界讨论。多数请求直接给目标并让 rigor 开工，未见专门收紧规格的调用。",
+      "action": "显示为“收紧任务”，只在范围/完成条件需要对齐时采用；不在清晰任务前追加问答。",
+      "evidence": []
+    },
+    {
+      "name": "show-me-your-work",
+      "kind": "任务",
+      "description": "为长任务或异步工作保留可复核的决策、证据与结果轨迹。",
+      "source": "../skills/show-me-your-work/SKILL.md",
+      "sha256": "69f10185391dc599f32f95aeb3f400312e0e6eff7c5f32b11abe39a6f0980a8f",
+      "added": "2026-10-10",
+      "name_mentions": 1,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "助手明确声明用 show-me-your-work 记录证据和取舍。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "c717347b-4723-439f-bb18-0f23e4e0dd38",
+          "index": 5,
+          "message_id": "assistant:197b4259-1e7e-494d-87a7-2163e3366f13",
+          "timestamp": "2026-10-15T14:57:46.024Z",
+          "role": "assistant",
+          "title": "拉取最新代码",
+          "note": "助手明确声明用 show-me-your-work 记录证据和取舍。",
+          "url": "lody://session/c717347b-4723-439f-bb18-0f23e4e0dd38?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "skill-help",
+      "kind": "任务",
+      "description": "用户询问提取版技能如何配置、选择或使用时，读取对应说明并给一个适合的提示示例；帮助问题不自动启动工作。",
+      "source": "../skills/skill-help/SKILL.md",
+      "sha256": "44b1e26961552ee9b355b6bf8d138bcb16fc35ceb9d37bf566086f8e5b4ee512",
+      "added": "2026-10-10",
+      "name_mentions": 3,
+      "status": "历史使用",
+      "priority": "保留",
+      "reason": "补充归档 9f626a70 明确说“当前这次介绍就在使用它”；发生于 10-10，不计入近两周新增使用。",
+      "action": "不能因为近期调用少就判定从未使用；保留按需帮助入口。",
+      "evidence": [
+        {
+          "session_id": "9f626a70-6b8a-4a3f-accb-b459f6f77135",
+          "index": 3,
+          "message_id": "assistant:b745a609-f2e0-42e0-93a1-9ae95cc6d343",
+          "timestamp": "2026-10-10T03:14:00.452Z",
+          "role": "assistant",
+          "title": "授权保存并梳理 SKILL 使用",
+          "note": "补充归档 9f626a70 明确说“当前这次介绍就在使用它”；发生于 10-10，不计入近两周新增使用。",
+          "url": "lody://session/9f626a70-6b8a-4a3f-accb-b459f6f77135?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "swarm",
+      "kind": "任务",
+      "description": "用户要求并行检查多个范围、竞赛或覆盖矩阵时，分配独立任务，等待实际终态并汇总；不把模型人数当作证据。",
+      "source": "../skills/swarm/SKILL.md",
+      "sha256": "bcf2d87b6264d3422009065245f985560e567633663ff60ebdb038f22b3538db",
+      "added": "2026-10-10",
+      "name_mentions": 5,
+      "status": "间接证据",
+      "priority": "间接证据",
+      "reason": "转录有“swarm 要重跑”和 swarm verdict，也有并行审核，但未找到明确读取/采用 swarm 技能的声明。",
+      "action": "保留为待核实。记录分片/竞赛模式及最终覆盖矩阵；已有 conductor 的普通并行不必重复套完整 swarm。",
+      "evidence": [
+        {
+          "session_id": "ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a",
+          "index": 171,
+          "message_id": "assistant:operation-completion:ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a:shell-verify-audit",
+          "timestamp": "2026-10-16T13:39:35.186Z",
+          "role": "assistant",
+          "title": "基于设计系统生成 Studio 原型",
+          "note": "助手说新 head 落地后 swarm 要重跑。",
+          "url": "lody://session/ad26bdc1-f4a9-407a-a0fa-fd76ccbd859a?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "tdd",
+      "kind": "任务",
+      "description": "在修复错误前用最小回归检查证明失败，修复后用同一检查证明通过。用于用户要求 TDD、失败测试或回归测试，或错误存在明确且低成本的本地测试路径时；不为测试路径不清或代价过高的小改动强行搭建测试环境。",
+      "source": "../skills/tdd/SKILL.md",
+      "sha256": "70e21c0cb759d1730544edfba9c641f6cf0b41c35bdcc5921c87c92e83546493",
+      "added": "2026-10-10",
+      "name_mentions": 10,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "助手明确声明按 tdd 先复现两类时间窗口问题再修正。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "caeec9e4-e8ee-41e7-9635-a987acb8399c",
+          "index": 1,
+          "message_id": "assistant:66a39dd3-c9b2-4120-913b-20d0a845cdca",
+          "timestamp": "2026-10-17T08:24:29.175Z",
+          "role": "assistant",
+          "title": "为何仍需手动授权",
+          "note": "助手明确声明按 tdd 先复现两类时间窗口问题再修正。",
+          "url": "lody://session/caeec9e4-e8ee-41e7-9635-a987acb8399c?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "teach",
+      "kind": "任务",
+      "description": "用户要求理解改动、子系统或设计选择时，结合机制与有证据的动机分层解释；只教学不自动修改产品。",
+      "source": "../skills/teach/SKILL.md",
+      "sha256": "6c0e80ce5633002d528146474b5c7a03a28988ea10014db0698c1bb2a0a0e067",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "未见明确证据",
+      "priority": "入口重叠",
+      "reason": "how、why、bro 有明确调用；teach 无名称证据。其教学需求可能被这三个更直接的入口承担，属于推断。",
+      "action": "按“理解概念与取舍”展示 teach，源码机制仍用 how、历史动机用 why；暂不要求用户额外记一个默认入口。",
+      "evidence": []
+    },
+    {
+      "name": "technical-writing",
+      "kind": "任务",
+      "description": "撰写或审阅技术文档、RFC、README、PR 描述与提交说明时，选择文档目的并写出清楚准确的句子；不替代产品文案规则。",
+      "source": "../skills/technical-writing/SKILL.md",
+      "sha256": "f294bdab7209ed9638161a9e891fe2194e2c6642a0b3ddd7063532d71047e8c2",
+      "added": "2026-10-10",
+      "name_mentions": 3,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "助手明确说正在按 technical-writing 复核报告。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "efb8bea4-a0df-4d76-9fcd-a9725f887e64",
+          "index": 1,
+          "message_id": "assistant:52f0cce8-0f23-44ab-b8c3-f2842a515abc",
+          "timestamp": "2026-10-22T14:05:03.614Z",
+          "role": "assistant",
+          "title": "请执行任务包 /Users/guoxudong/codes/mym5/.pio/verification/progression-design/candidat",
+          "note": "助手明确说正在按 technical-writing 复核报告。",
+          "url": "lody://session/efb8bea4-a0df-4d76-9fcd-a9725f887e64?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "typescript-best-practices",
+      "kind": "任务",
+      "description": "阅读或修改 .ts、.tsx 时，建模合法状态、校验外部输入并保持穷尽与可观察测试；不为一个检查新增框架或重构无关代码。",
+      "source": "../skills/typescript-best-practices/SKILL.md",
+      "sha256": "f201f261600efffbd99168c5af302424aa1c8eb1ff9c9bd35ff397f2c2454337",
+      "added": "2026-10-10",
+      "name_mentions": 0,
+      "status": "未见明确证据",
+      "priority": "先看适用分母",
+      "reason": "未见使用证据，但不能用所有 session 作分母判断 TS 技能失效；本次没有逐任务确认实际 TS/TSX 编辑范围。",
+      "action": "先只统计读写 .ts/.tsx 的任务，再检查宿主选择；保持语言条件触发，不对 Go/C++/Python 任务增加该技能。",
+      "evidence": []
+    },
+    {
+      "name": "unslop",
+      "kind": "任务",
+      "description": "清理写作中的套话、虚假归因、术语堆积和机械表达，保留原意、事实、引用与证据强度。用于撰写或润色解释、文档、报告和评审文字；不为风格改动代码、逐字引用或用户指定格式。",
+      "source": "../skills/unslop/SKILL.md",
+      "sha256": "7bf037a9247d19e090de1b3f6e1b3641e6c975a9fe6cec1961e44f6bcdb9dede",
+      "added": "2026-10-10",
+      "name_mentions": 4,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "与 technical-writing 一同明确用于报告复核。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "efb8bea4-a0df-4d76-9fcd-a9725f887e64",
+          "index": 1,
+          "message_id": "assistant:52f0cce8-0f23-44ab-b8c3-f2842a515abc",
+          "timestamp": "2026-10-22T14:05:03.614Z",
+          "role": "assistant",
+          "title": "请执行任务包 /Users/guoxudong/codes/mym5/.pio/verification/progression-design/candidat",
+          "note": "与 technical-writing 一同明确用于报告复核。",
+          "url": "lody://session/efb8bea4-a0df-4d76-9fcd-a9725f887e64?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    },
+    {
+      "name": "why",
+      "kind": "任务",
+      "description": "从源码历史和实际可访问材料追溯设计动机，区分直接证据、支持、推导、假设和未知。",
+      "source": "../skills/why/SKILL.md",
+      "sha256": "d8e89b6b591e6963ea46f176bfbb6e536ab82b5350f31d283af43dcf6f33c524",
+      "added": "2026-10-10",
+      "name_mentions": 7,
+      "status": "明确证据",
+      "priority": "保留",
+      "reason": "用户明确调用 $why。",
+      "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+      "evidence": [
+        {
+          "session_id": "52c243f5-1f65-4503-a290-14e9f8d990d6",
+          "index": 47,
+          "message_id": "038116b7-a938-482d-a0b0-8c61607457f5",
+          "timestamp": "2026-10-27T03:54:46.986Z",
+          "role": "user",
+          "title": "ACR 镜像推送",
+          "note": "用户明确调用 $why。",
+          "url": "lody://session/52c243f5-1f65-4503-a290-14e9f8d990d6?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+        }
+      ]
+    }
+  ]
+}

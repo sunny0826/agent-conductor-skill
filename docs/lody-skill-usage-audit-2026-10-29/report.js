@@ -1,0 +1,3 @@
+const search=document.getElementById('search');const filter=document.getElementById('filter');const rows=[...document.querySelectorAll('tbody tr')];
+function update(){const q=search.value.toLowerCase().trim();const f=filter.value;let n=0;for(const row of rows){const match=f==='all'||(f==='candidate'?row.dataset.candidate==='true':row.dataset.state===f);row.hidden=!(match&&row.textContent.toLowerCase().includes(q));if(!row.hidden)n++;}document.getElementById('visible-count').textContent=`显示 ${n} / 56 个技能`;}
+search.addEventListener('input',update);filter.addEventListener('change',update);update();

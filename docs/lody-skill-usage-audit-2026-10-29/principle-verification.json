@@ -1,0 +1,111 @@
+[
+  {
+    "name": "principle-attack-the-premise",
+    "kind": "原则",
+    "description": "多次修复在同一检查失败且共享同一前提时，先写下前提并直接检验，再决定下一修。",
+    "source": "../skills/principle-attack-the-premise/SKILL.md",
+    "sha256": "cba2917277e691da9933a2de9187d9d0cc8ee2c6efa740c40b5af2fad74f5c6d",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "无法判定",
+    "priority": "不据此删除",
+    "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+    "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+    "evidence": []
+  },
+  {
+    "name": "principle-encode-lessons-in-structure",
+    "kind": "原则",
+    "description": "将反复出现的错误约束编码到类型、检查或单一实现中。",
+    "source": "../skills/principle-encode-lessons-in-structure/SKILL.md",
+    "sha256": "b1b81735afce6bd80d42e49f5283b773051397c89ad7331af3a39a4c2afc6b24",
+    "added": "2026-10-10",
+    "name_mentions": 0,
+    "status": "无法判定",
+    "priority": "不据此删除",
+    "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+    "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+    "evidence": []
+  },
+  {
+    "name": "principle-explain-the-number",
+    "kind": "原则",
+    "description": "相信、报告或据测量选型前，找到真实瓶颈，并排除错误、跳过工作、未调优和噪声。",
+    "source": "../skills/principle-explain-the-number/SKILL.md",
+    "sha256": "c8e1d8a78ccfc40e39bf622737218c663a7e9b3ba26ceca8cd1b372a42bcafda",
+    "added": "2026-10-10",
+    "name_mentions": 0,
+    "status": "无法判定",
+    "priority": "不据此删除",
+    "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+    "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+    "evidence": []
+  },
+  {
+    "name": "principle-fix-root-causes",
+    "kind": "原则",
+    "description": "修复问题时复现并追到系统第一次出错的地方。状态合法时，就地处理是修复；状态不该存在时，防御分支只是掩盖。",
+    "source": "../skills/principle-fix-root-causes/SKILL.md",
+    "sha256": "923543e857abc796cfc514fe446b74ee0a027cc92c7eecaa0a2015c0734ea1d5",
+    "added": "2026-10-10",
+    "name_mentions": 2,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "助手明确点名该原则，检查实际触摸路径。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "fa17fa6f-28e1-4607-8311-eaa6fcae120f",
+        "index": 12,
+        "message_id": "assistant:fc2b8d77-cff8-440e-80af-a337eb19538f",
+        "timestamp": "2026-10-25T04:40:47.598Z",
+        "role": "assistant",
+        "title": "规范 Agent 任务执行、验证与交付闭环",
+        "note": "助手明确点名该原则，检查实际触摸路径。",
+        "url": "lody://session/fa17fa6f-28e1-4607-8311-eaa6fcae120f?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "principle-prove-it-works",
+    "kind": "原则",
+    "description": "完成前核验真实产物与行为，不能以摘要、编译或时间戳替代效果证明。",
+    "source": "../skills/principle-prove-it-works/SKILL.md",
+    "sha256": "8cf995aaad9107a65ab65671b30b362f607d2a1d007a14e6b14afbaeb13ad9f2",
+    "added": "2026-10-10",
+    "name_mentions": 0,
+    "status": "无法判定",
+    "priority": "不据此删除",
+    "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+    "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+    "evidence": []
+  },
+  {
+    "name": "principle-redesign-from-first-principles",
+    "kind": "原则",
+    "description": "新约束使结构失效时，重新设计并同步类型、调用者、文档和例子。",
+    "source": "../skills/principle-redesign-from-first-principles/SKILL.md",
+    "sha256": "7e76b46592e5c3db1a3e106dbdf66497a2f2cdbe7228e3ac552717a40904116c",
+    "added": "2026-10-10",
+    "name_mentions": 0,
+    "status": "无法判定",
+    "priority": "不据此删除",
+    "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+    "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+    "evidence": []
+  },
+  {
+    "name": "principle-test-behavior-not-implementation",
+    "kind": "原则",
+    "description": "编写或保留测试时，断言使用者能观察到的结果：行为坏了必须失败，只改内部实现必须仍通过。",
+    "source": "../skills/principle-test-behavior-not-implementation/SKILL.md",
+    "sha256": "b899e3e7c442625401cd22d176e827aa6af9162db3fc0f2fe7a2ef2ad65e002d",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "无法判定",
+    "priority": "不据此删除",
+    "reason": "原则由 rigor 等入口按需读取；没有完整加载日志，目录/更新记录不计作采用。",
+    "action": "保留按需读取。它已出现在 rigor 的原则目录中；先记录其改变了哪项具体决定，再评价价值，不以名称出现次数决定删除。",
+    "evidence": []
+  }
+]

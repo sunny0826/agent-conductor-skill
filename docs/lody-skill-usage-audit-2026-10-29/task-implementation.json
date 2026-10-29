@@ -1,0 +1,144 @@
+[
+  {
+    "name": "architect",
+    "kind": "任务",
+    "description": "先理解现有系统，再比较结构方案，从调用者用法推导类型、接口与模块归属，并在实施中复核设计。用于架构设计、模块边界或非平凡结构变更；只要求设计时不自动实施，普通小改动不强制启用。",
+    "source": "../skills/architect/SKILL.md",
+    "sha256": "f919aa5d182cc7ec657cc75bbbdb5cf58f5fc930c833596b4e98526906afd0cf",
+    "added": "2026-10-10",
+    "name_mentions": 4,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "子会话回传中明确说采用 architect 技能；不是把架构师角色名当作技能。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "d56683c4-6b35-413e-8dfc-5cea8c9b57d6",
+        "index": 124,
+        "message_id": "operation-completion:d56683c4-6b35-413e-8dfc-5cea8c9b57d6:architect-review-pr49-01",
+        "timestamp": "2026-10-15T11:25:54.599Z",
+        "role": "system",
+        "title": "优化 studio 模型下载选择与自动启动体验",
+        "note": "子会话回传中明确说采用 architect 技能；不是把架构师角色名当作技能。",
+        "url": "lody://session/d56683c4-6b35-413e-8dfc-5cea8c9b57d6?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "figure-it-out",
+    "kind": "任务",
+    "description": "复杂迁移、多部分变更或没有更窄流程可用时，先设计按风险缩放的阶段流程，再用假设、实证和决策轨迹推进。",
+    "source": "../skills/figure-it-out/SKILL.md",
+    "sha256": "b51c08f4a0d94e99e54acd10d7c91fedffe5d1fbe2f68b8842cc1555beaff571",
+    "added": "2026-10-10",
+    "name_mentions": 2,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "助手明确声明用 figure-it-out 拆分验证步骤。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "c717347b-4723-439f-bb18-0f23e4e0dd38",
+        "index": 5,
+        "message_id": "assistant:197b4259-1e7e-494d-87a7-2163e3366f13",
+        "timestamp": "2026-10-15T14:57:46.024Z",
+        "role": "assistant",
+        "title": "拉取最新代码",
+        "note": "助手明确声明用 figure-it-out 拆分验证步骤。",
+        "url": "lody://session/c717347b-4723-439f-bb18-0f23e4e0dd38?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "make-bot-ui",
+    "kind": "任务",
+    "description": "用户要求构建按钮或页面唤醒 webhook Agent 时，使用服务器保管发送密钥、明确 payload 契约，并验证访问与唤醒边界；不假定 webhook 提供方或访问网络已配置。",
+    "source": "../skills/make-bot-ui/SKILL.md",
+    "sha256": "300f13c815824edc19271d4f463c24b79d5acbf28b8b39dd3093e1bfed9fd191",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "未见明确证据",
+    "priority": "低频合理",
+    "reason": "本期只见适配维护提及；普通 webhook、消息收件箱或 SAST 任务并不自动等于“网页按钮唤醒 Agent”。",
+    "action": "保留窄触发范围；出现明确的唤醒页面需求时再评估，不推广到所有 Bot 项目。",
+    "evidence": []
+  },
+  {
+    "name": "no-comments",
+    "kind": "任务",
+    "description": "用户要求清理指定范围的注释和 workaround 时，使用独立注释审查、核对例外及根因，并在授权范围处理；不无差别删除法律、契约和外部约束。",
+    "source": "../skills/no-comments/SKILL.md",
+    "sha256": "9d885a18c00247776ffbd9cc9cfb34004ebaeb389175cea368f11cba918262a3",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "间接证据",
+    "priority": "间接证据",
+    "reason": "有独立注释审查及 MUST KILL/例外/删除数回执，明显接近技能流程，但未点名技能文件；不能列为完全闲置。",
+    "action": "先在既有注释审查回执标明技能来源，复用已有流程；不要再添一轮同样审查。",
+    "evidence": [
+      {
+        "session_id": "ba5f99b5-56c5-4d64-94ea-00ea0f8fc03e",
+        "index": 1,
+        "message_id": "assistant:fa697dcb-56aa-4353-a6ca-3d8ce2dcd488",
+        "timestamp": "2026-10-28T06:18:21.988Z",
+        "role": "assistant",
+        "title": "读取并执行 `/home/guo/.lody/repos/local---83bdb4a8417d/",
+        "note": "独立注释审查回执：零 MUST KILL、保留编译器指令和真实同步契约。",
+        "url": "lody://session/ba5f99b5-56c5-4d64-94ea-00ea0f8fc03e?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "sharpen",
+    "kind": "任务",
+    "description": "用户要求 sharpen 或开工前收紧任务时，对齐做法、真实目标和规格松紧，再按已有授权执行；只问专家会怎么做时交付解释。",
+    "source": "../skills/sharpen/SKILL.md",
+    "sha256": "2c62af5782b4945c35dacabb744836fe5df671787ab5bb17d52d000f2cb29af2",
+    "added": "2026-10-16",
+    "name_mentions": 15,
+    "status": "未见明确证据",
+    "priority": "按需保留",
+    "reason": "10-16 新加入；命中均为维护与触发边界讨论。多数请求直接给目标并让 rigor 开工，未见专门收紧规格的调用。",
+    "action": "显示为“收紧任务”，只在范围/完成条件需要对齐时采用；不在清晰任务前追加问答。",
+    "evidence": []
+  },
+  {
+    "name": "tdd",
+    "kind": "任务",
+    "description": "在修复错误前用最小回归检查证明失败，修复后用同一检查证明通过。用于用户要求 TDD、失败测试或回归测试，或错误存在明确且低成本的本地测试路径时；不为测试路径不清或代价过高的小改动强行搭建测试环境。",
+    "source": "../skills/tdd/SKILL.md",
+    "sha256": "70e21c0cb759d1730544edfba9c641f6cf0b41c35bdcc5921c87c92e83546493",
+    "added": "2026-10-10",
+    "name_mentions": 10,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "助手明确声明按 tdd 先复现两类时间窗口问题再修正。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "caeec9e4-e8ee-41e7-9635-a987acb8399c",
+        "index": 1,
+        "message_id": "assistant:66a39dd3-c9b2-4120-913b-20d0a845cdca",
+        "timestamp": "2026-10-17T08:24:29.175Z",
+        "role": "assistant",
+        "title": "为何仍需手动授权",
+        "note": "助手明确声明按 tdd 先复现两类时间窗口问题再修正。",
+        "url": "lody://session/caeec9e4-e8ee-41e7-9635-a987acb8399c?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "typescript-best-practices",
+    "kind": "任务",
+    "description": "阅读或修改 .ts、.tsx 时，建模合法状态、校验外部输入并保持穷尽与可观察测试；不为一个检查新增框架或重构无关代码。",
+    "source": "../skills/typescript-best-practices/SKILL.md",
+    "sha256": "f201f261600efffbd99168c5af302424aa1c8eb1ff9c9bd35ff397f2c2454337",
+    "added": "2026-10-10",
+    "name_mentions": 0,
+    "status": "未见明确证据",
+    "priority": "先看适用分母",
+    "reason": "未见使用证据，但不能用所有 session 作分母判断 TS 技能失效；本次没有逐任务确认实际 TS/TSX 编辑范围。",
+    "action": "先只统计读写 .ts/.tsx 的任务，再检查宿主选择；保持语言条件触发，不对 Go/C++/Python 任务增加该技能。",
+    "evidence": []
+  }
+]

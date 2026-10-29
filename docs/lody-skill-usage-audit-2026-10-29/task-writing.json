@@ -1,0 +1,166 @@
+[
+  {
+    "name": "automate-me",
+    "kind": "任务",
+    "description": "用户要求创建或更新个人 mode 技能、让 Agent 遵循其工作习惯时，结合明确偏好与范围内重复证据编写短技能；普通任务技能不挖历史。",
+    "source": "../skills/automate-me/SKILL.md",
+    "sha256": "d721df9c4780233afb5ee7fe263b9ce17ee12cdd0308c589d4312bcd880162ad",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "未见明确证据",
+    "priority": "按需保留",
+    "reason": "需要创建个人 mode 才适用；本期未发现明确的个人模式提取请求。普通任务技能创建不属于其触发范围。",
+    "action": "保留专用入口，不因“写技能”就自动挖掘个人历史。",
+    "evidence": []
+  },
+  {
+    "name": "bro",
+    "kind": "任务",
+    "description": "用户要求再说简单一点、去掉术语或重述上一条回答时，用清楚简短的日常语言重述，不另起调查或丢掉关键事实。",
+    "source": "../skills/bro/SKILL.md",
+    "sha256": "ae1515abc2c8aa6e9dca7d46e5120c5fb6cc41fe431754429ddbe33c55072f17",
+    "added": "2026-10-10",
+    "name_mentions": 9,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "用户明确调用 $bro。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "d56683c4-6b35-413e-8dfc-5cea8c9b57d6",
+        "index": 54,
+        "message_id": "9a9c89a3-b9d3-481b-8975-bd3d21366a08",
+        "timestamp": "2026-10-15T05:22:38.277Z",
+        "role": "user",
+        "title": "优化 studio 模型下载选择与自动启动体验",
+        "note": "用户明确调用 $bro。",
+        "url": "lody://session/d56683c4-6b35-413e-8dfc-5cea8c9b57d6?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "correct",
+    "kind": "任务",
+    "description": "用户要求防止本仓库反复出现的 Agent 错误时，收集重复实例并优先用架构、类型、检查或测试消除错误，文档只保留判断规则。",
+    "source": "../skills/correct/SKILL.md",
+    "sha256": "69cc6541bf272ae33cf9fb0c816b1cedd348fbfb610b39ea3156890197430375",
+    "added": "2026-10-10",
+    "name_mentions": 3,
+    "status": "未见明确证据",
+    "priority": "优先核查",
+    "reason": "14 次例行复盘持续处理重复错误，但未见 correct 的采用声明。reflect 目前链接结构编码原则，没有直接路由到 correct。",
+    "action": "同类错误至少有两个真实样本时，由复盘转入 correct 的“结构/检查/测试”选择；在已有授权内修执行机制，避免只追加文字。",
+    "evidence": [
+      {
+        "session_id": "660f7a5f-0aaa-8ca6-b23e-32f78412072d",
+        "index": 2,
+        "message_id": "assistant:836bf5e5-760b-8d70-8b25-966bb31a89a5",
+        "timestamp": "2026-10-28T17:00:03.260Z",
+        "role": "assistant",
+        "title": "Agent Skill 进化",
+        "note": "复盘报告仍记录派发契约复发及验收措辞问题。",
+        "url": "lody://session/660f7a5f-0aaa-8ca6-b23e-32f78412072d?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "reflect",
+    "kind": "任务",
+    "description": "用户明确要求 reflect 或会话复盘时，从本次证据提炼持久改进，综合三种视角并提出技能修改；不自动应用或写外部工单。",
+    "source": "../skills/reflect/SKILL.md",
+    "sha256": "ffca57a32cdc26a7e73cd72a83704948b78b823fd720a821181722e7c0df0759",
+    "added": "2026-10-10",
+    "name_mentions": 7,
+    "status": "未见明确证据",
+    "priority": "优先核查",
+    "reason": "14 个例行复盘请求都使用“本 SKILL”而未明确点名 reflect；修改 reflect 文件本身不证明采用了该流程。",
+    "action": "将例行复盘任务明确指向 reflect，保留当前已授权边界；重复错误再路由 correct，不额外叠加一套同义流程。",
+    "evidence": [
+      {
+        "session_id": "660f7a5f-0aaa-8ca6-b23e-32f78412072d",
+        "index": 1,
+        "message_id": "836bf5e5-760b-8d70-8b25-966bb31a89a5",
+        "timestamp": "2026-10-28T17:00:02.767Z",
+        "role": "user",
+        "title": "Agent Skill 进化",
+        "note": "定时任务写的是分析前一天归档 session 和修复本 SKILL。",
+        "url": "lody://session/660f7a5f-0aaa-8ca6-b23e-32f78412072d?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "show-me-your-work",
+    "kind": "任务",
+    "description": "为长任务或异步工作保留可复核的决策、证据与结果轨迹。",
+    "source": "../skills/show-me-your-work/SKILL.md",
+    "sha256": "69f10185391dc599f32f95aeb3f400312e0e6eff7c5f32b11abe39a6f0980a8f",
+    "added": "2026-10-10",
+    "name_mentions": 1,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "助手明确声明用 show-me-your-work 记录证据和取舍。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "c717347b-4723-439f-bb18-0f23e4e0dd38",
+        "index": 5,
+        "message_id": "assistant:197b4259-1e7e-494d-87a7-2163e3366f13",
+        "timestamp": "2026-10-15T14:57:46.024Z",
+        "role": "assistant",
+        "title": "拉取最新代码",
+        "note": "助手明确声明用 show-me-your-work 记录证据和取舍。",
+        "url": "lody://session/c717347b-4723-439f-bb18-0f23e4e0dd38?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "technical-writing",
+    "kind": "任务",
+    "description": "撰写或审阅技术文档、RFC、README、PR 描述与提交说明时，选择文档目的并写出清楚准确的句子；不替代产品文案规则。",
+    "source": "../skills/technical-writing/SKILL.md",
+    "sha256": "f294bdab7209ed9638161a9e891fe2194e2c6642a0b3ddd7063532d71047e8c2",
+    "added": "2026-10-10",
+    "name_mentions": 3,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "助手明确说正在按 technical-writing 复核报告。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "efb8bea4-a0df-4d76-9fcd-a9725f887e64",
+        "index": 1,
+        "message_id": "assistant:52f0cce8-0f23-44ab-b8c3-f2842a515abc",
+        "timestamp": "2026-10-22T14:05:03.614Z",
+        "role": "assistant",
+        "title": "请执行任务包 /Users/guoxudong/codes/mym5/.pio/verification/progression-design/candidat",
+        "note": "助手明确说正在按 technical-writing 复核报告。",
+        "url": "lody://session/efb8bea4-a0df-4d76-9fcd-a9725f887e64?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  },
+  {
+    "name": "unslop",
+    "kind": "任务",
+    "description": "清理写作中的套话、虚假归因、术语堆积和机械表达，保留原意、事实、引用与证据强度。用于撰写或润色解释、文档、报告和评审文字；不为风格改动代码、逐字引用或用户指定格式。",
+    "source": "../skills/unslop/SKILL.md",
+    "sha256": "7bf037a9247d19e090de1b3f6e1b3641e6c975a9fe6cec1961e44f6bcdb9dede",
+    "added": "2026-10-10",
+    "name_mentions": 4,
+    "status": "明确证据",
+    "priority": "保留",
+    "reason": "与 technical-writing 一同明确用于报告复核。",
+    "action": "已有采用证据，不纳入未使用清单；声明采用不等于全部步骤执行成功。",
+    "evidence": [
+      {
+        "session_id": "efb8bea4-a0df-4d76-9fcd-a9725f887e64",
+        "index": 1,
+        "message_id": "assistant:52f0cce8-0f23-44ab-b8c3-f2842a515abc",
+        "timestamp": "2026-10-22T14:05:03.614Z",
+        "role": "assistant",
+        "title": "请执行任务包 /Users/guoxudong/codes/mym5/.pio/verification/progression-design/candidat",
+        "note": "与 technical-writing 一同明确用于报告复核。",
+        "url": "lody://session/efb8bea4-a0df-4d76-9fcd-a9725f887e64?workspace=jh731nqq74z6j0p3252qrjxryh8e707a"
+      }
+    ]
+  }
+]

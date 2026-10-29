@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lody 技能使用分析 · 2026-10-29</title>
+<style>
+__STYLE__
+</style></head><body><main>
+<header><div class="eyebrow">AGENT-CONDUCTOR-SKILL / LODY ARCHIVE AUDIT</div><h1>17 个任务技能，缺少明确采用证据</h1><p class="lead">先核实调用，再减少重复流程。<strong>其中 3 个已有间接迹象</strong>；原则技能按需加载，不能凭对话中没出现名称就判定闲置。</p><p class="muted">2026-10-15 11:18 → 2026-10-29 11:18 · 北京时间 · 仓库 f45eb3a</p></header>
+<p class="note">后续决定（2026-10-29）：用户确认移除 <code>make-bot-ui</code>，其余技能全部保留。下方统计与原建议保留移除前的审计快照；当前仓库为 55 个技能。</p>
+<div class="stats"><div><strong>576 / 576</strong><span>主样本已读取</span></div><div><strong>7 / 14</strong><span>归档事件补查可读</span></div><div><strong>56</strong><span>仓库技能 · 本机副本一致</span></div></div>
+<section aria-label="任务技能证据分布"><h2>32 个任务技能的证据分布</h2><div class="bar" role="img" aria-label="14 个本期有明确证据，1 个有历史使用，17 个缺少明确证据"><div class="green" style="width:43.75%">14</div><div class="blue" style="width:3.125%">1</div><div class="amber" style="width:53.125%">17</div></div><div class="legend"><span><i class="dot green"></i>14 本期有明确证据</span><span><i class="dot blue"></i>1 旧会话有使用</span><span><i class="dot amber"></i>17 无明确证据（含 3 个间接迹象）</span></div><p class="note">另外 24 个原则技能：<strong>1 个有明确声明，23 个无法判定</strong>。采用声明证明选择了方法，不证明加载成功或全部步骤执行正确。</p></section>
+<h2>先做这三件事</h2><div class="actions"><div class="action"><div class="num">01 / 让证据可见</div><b>复用已有任务记录</b><p>记录技能、触发原因和证据。benchmark-checklist 等已有路由，先核对是否执行，避免继续堆触发词。</p></div><div class="action"><div class="num">02 / 减少重复验收</div><b>核对 verify-poketrail</b><p>已有则复用；确实缺少再用生成器建立一个稳定的设备验收场景，并真实跑通。</p></div><div class="action"><div class="num">03 / 阻止错误复发</div><b>reflect → correct</b><p>定时复盘明确入口。同类问题至少两次出现时，检查能否用结构、lint 或测试阻止它。</p></div></div>
+<h2>56 个技能，逐项核对</h2><p class="muted">默认显示 17 个待核查任务技能。点开“原因与证据”可跳转原 session。</p><div class="filters"><input id="search" type="search" placeholder="搜索技能、原因或建议" aria-label="搜索技能"><select id="filter" aria-label="筛选证据状态"><option value="candidate">17 个待核查任务技能</option value="all">全部 56 个技能</option value="明确证据">15 个本期有明确证据</option><option value="历史使用">1 个历史使用</option><option value="间接证据">3 个间接证据</option><option value="未见明确证据">14 个未见明确证据</option><option value="无法判定">23 个原则不可判定</option></select></div><div id="visible-count" aria-live="polite"></div><div class="table-wrap"><table><thead><tr><th>技能</th><th>判断</th><th>建议</th></tr></thead><tbody>__ROWS__</tbody></table></div>
+<h2>这次更正了什么</h2><p class="scope">两周范围已找到 architect、arena、figure-it-out、interrogate、tdd、technical-writing、show-me-your-work 的明确采用证据，不能沿用 10-28 单日的“49 个无证据”。skill-help 的使用声明发生在 10-10，属于近期归档的旧活动。no-comments 有真实注释审查产物，control-ui 有自测回执，swarm 有流程迹象，三者都保留为待核实。</p>
+<details class="scope"><summary>查看方法与覆盖缺口</summary><ul><li>主样本为 5 台机器中，最近两周有活动且查询时已归档的 576 个 session，全部可读。</li><li>本机归档日志另补 14 个候选，7 个可读、7 个 CLI 与 MCP 都返回 SESSION_NOT_FOUND。</li><li>共读取 583 个 session、3399 条消息。时间窗内 3335 条，去重后 3260 条。目录、安装、角色名、维护提及不算采用。</li><li>MCP 没有完整归档时间，本机日志只保留到 10-22；不能宣称严格按归档日覆盖全部机器。</li><li>无完整技能加载日志，原因推断未验证。23 个原则已有 rigor 路由，不据此删除。</li><li>本次只产出报告，未修改技能、调度、角色或部署。</li></ul></details>
+<footer><div class="links"><a href="lody-skill-usage-audit-2026-10-29.md">完整分析与来源</a><a href="lody-skill-usage-audit-2026-10-29.csv" download>下载 56 项 CSV</a><a href="lody-skill-usage-audit-2026-10-29.json">证据索引 JSON</a></div></footer>
+</main><script>
+__SCRIPT__
+</script></body></html>

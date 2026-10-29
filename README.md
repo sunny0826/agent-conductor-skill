@@ -1,8 +1,8 @@
 # agent-conductor-skill
 
-[按任务选技能：可搜索的使用指南](docs/skill-usage.html)（32 个任务技能、24 个原则技能）。下载或在本地浏览器打开 HTML 查看。
+[按任务选技能：可搜索的使用指南](docs/skill-usage.html)（31 个任务技能、24 个原则技能）。下载或在本地浏览器打开 HTML 查看。
 
-[不依赖特定编辑器的提示模式](skills/skill-help/references/recipes.md#不依赖特定编辑器的提示模式)：代码审查、审查意见核实、PR 状态、持续执行、个人模式和 webhook 页面。
+[不依赖特定编辑器的提示模式](skills/skill-help/references/recipes.md#不依赖特定编辑器的提示模式)：代码审查、审查意见核实、PR 状态、持续执行和个人模式。
 
 两套技能分开使用。
 
@@ -41,14 +41,13 @@ mise exec -- python3 tools/package_skills.py --check
 | [ketchup](skills/ketchup/SKILL.md) | 用户要求 ketchup、追上进度或问上次发言后发生了什么时，用几句白话和已有的小图说明变化，并列出只有用户能做的决定。摘要阶段只读，不另起工作；已有任务按用户指令继续。 | [8 个文件](dist/ketchup.zip) |
 | [interrogate](skills/interrogate/SKILL.md) | 多模型交叉审核：让不同模型独立检查同一证据包，由主审核实、去重并裁决。 | [130 个文件](dist/interrogate.zip) |
 | [maintain-verification-skill](skills/maintain-verification-skill/SKILL.md) | 用户要求审计或维护已有 verify 技能及功能地图时，逐功能读源码并实跑，修正说明或 harness；不修改产品代码。 | [21 个文件](dist/maintain-verification-skill.zip) |
-| [make-bot-ui](skills/make-bot-ui/SKILL.md) | 用户要求构建按钮或页面唤醒 webhook Agent 时，使用服务器保管发送密钥、明确 payload 契约，并验证访问与唤醒边界；不假定 webhook 提供方或访问网络已配置。 | [4 个文件](dist/make-bot-ui.zip) |
 | [no-comments](skills/no-comments/SKILL.md) | 用户要求清理指定范围的注释和 workaround 时，使用独立注释审查、核对例外及根因，并在授权范围处理；不无差别删除法律、契约和外部约束。 | [135 个文件](dist/no-comments.zip) |
 | [recall](skills/recall/SKILL.md) | 用户要求回顾某主题最近工作或继续之前工作时，从范围内历史和当前状态恢复目标、决定、问题和下一步，不将旧记录当作实时事实。 | [236 个文件](dist/recall.zip) |
 | [reflect](skills/reflect/SKILL.md) | 用户明确要求 reflect 或会话复盘时，从本次证据提炼持久改进，综合三种视角并提出技能修改；不自动应用或写外部工单。 | [236 个文件](dist/reflect.zip) |
 | [rigor](skills/rigor/SKILL.md) | 非平凡任务按工程流程执行：匹配包内流程，按相关原则决策，以真实证据交付。 | [228 个文件](dist/rigor.zip) |
 | [sharpen](skills/sharpen/SKILL.md) | 用户要求 sharpen 或开工前收紧任务时，对齐做法、真实目标和规格松紧，再按已有授权执行；只问专家会怎么做时交付解释。 | [4 个文件](dist/sharpen.zip) |
 | [show-me-your-work](skills/show-me-your-work/SKILL.md) | 为长任务或异步工作保留可复核的决策、证据与结果轨迹。 | [6 个文件](dist/show-me-your-work.zip) |
-| [skill-help](skills/skill-help/SKILL.md) | 用户询问技能如何配置、选择或使用时，读取对应说明并给一个适合的提示示例；帮助问题不自动启动工作。 | [283 个文件](dist/skill-help.zip) |
+| [skill-help](skills/skill-help/SKILL.md) | 用户询问技能如何配置、选择或使用时，读取对应说明并给一个适合的提示示例；帮助问题不自动启动工作。 | [279 个文件](dist/skill-help.zip) |
 | [swarm](skills/swarm/SKILL.md) | 用户要求并行检查多个范围、竞赛或覆盖矩阵时，分配独立任务，等待实际终态并汇总；不把模型人数当作证据。 | [14 个文件](dist/swarm.zip) |
 | [tdd](skills/tdd/SKILL.md) | 在修复错误前用最小回归检查证明失败，修复后用同一检查证明通过。 | [4 个文件](dist/tdd.zip) |
 | [teach](skills/teach/SKILL.md) | 用户要求理解改动、子系统或设计选择时，结合机制与有证据的动机分层解释；只教学不自动修改产品。 | [37 个文件](dist/teach.zip) |
