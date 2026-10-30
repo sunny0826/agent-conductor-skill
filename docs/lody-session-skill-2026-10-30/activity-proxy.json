@@ -1,0 +1,136 @@
+[
+  {
+    "id": "1c36ffa3-dd6a-40ce-8c82-8a947f96a822",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "visible-history-read",
+    "total": 2,
+    "returned": 2,
+    "sha256": "a32a68b20755881d83cbd7b7d1597394d1ae63af5edb3156c4d7c6dc8ff5a8ef",
+    "messageIds": [
+      "ce0008c4-3aee-4116-b21d-13241eca53d6",
+      "assistant:ce0008c4-3aee-4116-b21d-13241eca53d6"
+    ]
+  },
+  {
+    "id": "392d1f8d-c840-447f-9133-44f2f492cd43",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "empty",
+    "total": 0,
+    "returned": 0,
+    "sha256": "88e1e6a3c08afa9dcc923508053518015140bd66334756f7ba6e8374225f3b8b",
+    "messageIds": []
+  },
+  {
+    "id": "592c8287-5d11-490c-9658-c5e2e85fd8cd",
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": "fb18141e-f3c7-8c05-a177-1a5280921315",
+    "historyStatus": "visible-history-read",
+    "total": 2,
+    "returned": 2,
+    "sha256": "20bfe5727a2350413adffa365930e99163f1892386886699c6c5b730ed36a11d",
+    "messageIds": [
+      "76b7145c-45b6-47a5-8ed5-fc43c7a869e7",
+      "assistant:76b7145c-45b6-47a5-8ed5-fc43c7a869e7"
+    ]
+  },
+  {
+    "id": "6a32d1f2-0ea6-4a2d-8bf0-626b5313581a",
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "empty",
+    "total": 0,
+    "returned": 0,
+    "sha256": "0de58d317c6fc409bd29c2e5422dff10a024de92c17cd4f5f2a94c5cf3a80a24",
+    "messageIds": []
+  },
+  {
+    "id": "6f181289-2d54-473f-b200-66c58d5468b4",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "visible-history-read",
+    "total": 1,
+    "returned": 1,
+    "sha256": "b5beacb8ad6a1dd3b462ff9418269968e901d128568a8ae85d69d142615542b2",
+    "messageIds": [
+      "c9c1369d-c123-40b1-ac7f-2c4c5c236a09"
+    ]
+  },
+  {
+    "id": "7724b2cd-5523-4205-98ac-a020d26c1512",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "visible-history-read",
+    "total": 2,
+    "returned": 2,
+    "sha256": "dc1c2f7bedd58127ec6d87997a761ea37ec7704e6e0474d7dd5ff22bbf013e70",
+    "messageIds": [
+      "740b94e3-a496-4d3d-9cb7-3f5242d5c9f2",
+      "assistant:740b94e3-a496-4d3d-9cb7-3f5242d5c9f2"
+    ]
+  },
+  {
+    "id": "8546cdf7-d310-4a82-a513-ad27c56ff5b0",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "empty",
+    "total": 0,
+    "returned": 0,
+    "sha256": "3ada49362464d6f9ce9be69beffd48b151b00881d118d2c4c9408d538bdb9a1a",
+    "messageIds": []
+  },
+  {
+    "id": "c67cc58d-a64e-41c4-83bf-9bb74e1a87c0",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "visible-history-read",
+    "total": 2,
+    "returned": 2,
+    "sha256": "ace037c8d1dec76d7a094e1a6ac2e6c7686602ece963b3b129d7e66371ea3af7",
+    "messageIds": [
+      "9ff244db-cbf9-4de1-976f-b9e3d2908e4f",
+      "assistant:9ff244db-cbf9-4de1-976f-b9e3d2908e4f"
+    ]
+  },
+  {
+    "id": "fc05fe97-d905-4f1b-9b23-c0003978d62b",
+    "machineId": "dfe942bd-e1f0-4b79-bca2-cad09c17c4ed",
+    "archivedAt": null,
+    "source": "activity-proxy",
+    "parentSessionId": null,
+    "openedBySessionId": null,
+    "historyStatus": "visible-history-read",
+    "total": 2,
+    "returned": 2,
+    "sha256": "783860cffe196f9c2cc2513f380af02aa5cd7bb5c5122ae3980409739b1b8dd5",
+    "messageIds": [
+      "a5f24606-61c6-49f1-b31f-424a98a96dba",
+      "assistant:a5f24606-61c6-49f1-b31f-424a98a96dba"
+    ]
+  }
+]

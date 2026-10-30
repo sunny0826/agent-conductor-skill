@@ -1,0 +1,114 @@
+[
+  {
+    "id": "317cf582-b8f9-4cf0-8c2b-8ba41a35f2df",
+    "name": "协调者",
+    "revision": 4,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": true
+  },
+  {
+    "id": "51e21ffc-c741-4425-9490-b431f1edca43",
+    "name": "挑刺者",
+    "revision": 11,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "570206a3-689c-46be-9bb6-8b9f9a81a751",
+    "name": "writer",
+    "revision": 4,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "5909b2e4-34d0-4206-94d5-d682ee212347",
+    "name": "Reviewer",
+    "revision": 7,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "7cd66529-6a59-47c9-90d0-8a2f3d97d409",
+    "name": "审核员 (Mac)",
+    "revision": 2,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "f7d4c549-7190-49c0-999a-4ea7a4a20a92",
+    "name": "架构师",
+    "revision": 7,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "f96d8f99-50e0-4516-8936-f31e40b569ab",
+    "name": "mac-worker",
+    "revision": 10,
+    "machineId": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "1e53245e-af70-4300-9d5c-e5f4a2a9d1c9",
+    "name": "review",
+    "revision": 7,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "43443bd2-5505-485b-96df-ca0760fc4c41",
+    "name": "挑刺者 (Omarchy)",
+    "revision": 2,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "7fe0ba02-e991-44fe-bb9b-6375da099f89",
+    "name": "审核员",
+    "revision": 5,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+    "name": "Linux-worker",
+    "revision": 6,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "f4569b31-9150-4d53-a228-81a140b6d6a8",
+    "name": "架构师 (Omarchy)",
+    "revision": 2,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": false
+  },
+  {
+    "id": "f8e183a0-4235-4ca2-8f05-66087c1d6b8d",
+    "name": "协调者 (Omarchy)",
+    "revision": 4,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": true
+  },
+  {
+    "id": "fbfcb2fe-cafe-47d8-8c8d-2c53fadf5478",
+    "name": "writer (Omarchy)",
+    "revision": 4,
+    "machineId": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+    "adoptionReference": true,
+    "integrationReference": false
+  }
+]

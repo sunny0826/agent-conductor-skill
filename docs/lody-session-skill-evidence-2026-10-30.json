@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-30",
+  "timeZone": "Asia/Shanghai",
+  "base": "8356944b95c461bc6ddbee957349753299fdb823",
+  "catalogCount": 1209,
+  "counts": {
+    "candidates": 22,
+    "visibleHistories": 12,
+    "visibleMessages": 70,
+    "emptyHistories": 3,
+    "unavailable": 7
+  },
+  "changedPackages": [
+    "dist/reflect.zip",
+    "dist/blast-radius.zip",
+    "dist/figure-it-out.zip",
+    "dist/agent-conductor.zip",
+    "dist/rigor.zip",
+    "dist/skill-help.zip",
+    "dist/architect.zip",
+    "dist/automate-me.zip",
+    "dist/no-comments.zip",
+    "dist/recall.zip",
+    "dist/interrogate.zip"
+  ],
+  "timestampOnlyPackagesRestored": 44,
+  "recordFiles": [
+    "lody-session-skill-2026-10-30/local-archive-event.json",
+    "lody-session-skill-2026-10-30/activity-proxy.json",
+    "lody-session-skill-2026-10-30/backlog.json"
+  ],
+  "rolesFile": "lody-session-skill-2026-10-30/roles.json"
+}

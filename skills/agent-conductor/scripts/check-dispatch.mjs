@@ -64,7 +64,7 @@ const suppressionOpeners = [
   [/自作主张/, "blanket no-initiative opener"],
   [/不要问.{0,3}问题/, "question-suppression opener"],
 ];
-const receiptPattern = /(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决)/;
+const receiptPattern = /(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决|\bwhen\s+done,?\s+reply\s+with\s*:)/i;
 
 if (messageMode) {
   // Dispatch-message mode: the message must carry a pointer to the package
@@ -79,18 +79,14 @@ if (messageMode) {
   // incidental document 400+ characters in; the old any-.md test counted them
   // as pointers, so the message lint reported only the receipt/boundary
   // problems and would have passed a task body that added a receipt line.
-  // Require the path near the start, or on a line that names the execution
-  // pointer itself.
-  const pointerPattern = /(?:[~/]|[.]{1,2}\/|[A-Za-z]:\\)[^\s，。；）)"'《》`]*\.md/i;
-  const pointerIndex = text.search(pointerPattern);
-  let hasPointer = false;
-  if (pointerIndex !== -1) {
-    const lineStart = text.lastIndexOf("\n", pointerIndex) + 1;
-    const lineEnd = text.indexOf("\n", pointerIndex);
-    const pointerLine = text.slice(lineStart, lineEnd === -1 ? undefined : lineEnd);
-    hasPointer = pointerIndex < 240 ||
-      /(?:任务包|package|请执行|读取并执行)/i.test(pointerLine);
-  }
+  // Require an execution/package cue before a path; a source-document path
+  // near the start is still only context. Inspect later paths as well.
+  const pointerPattern = /(?:[~/]|[.]{1,2}\/|[A-Za-z]:\\)[^\s，。；）)"'《》`]*\.md/gi;
+  const hasPointer = [...text.matchAll(pointerPattern)].some((match) => {
+    const lineStart = text.lastIndexOf("\n", match.index) + 1;
+    const prefix = text.slice(lineStart, match.index);
+    return /(?:任务包|\bpackage\b|请(?:完整)?(?:读取并)?执行|请(?:完整)?读取|先完整读|\bexecute\b)/i.test(prefix);
+  });
   if (!hasPointer && !inlinePackage) {
     fail("dispatch message has no package pointer — point at the package file path, or inline the full package led by its 任务包类型 declaration");
   }
