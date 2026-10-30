@@ -227,19 +227,31 @@ test("lint mode strips the configured role prompt prefix before linting", () => 
   assert.match(result.output, /no package pointer/);
 });
 
-test("lint mode still lints when the role revision changed", () => {
-  const inline =
-    "你是 Reviewer。只读审查 /tmp/repo 的 R0 代码，不要修改文件、提交、推送或创建集群任务。重点是核对探针与汇总逻辑。";
-  const result = checkSession("", inline, "child-4", {
+for (const delivered of [message, `${workerPrefix}\n\n${message}`]) {
+  test("lint mode reports unverifiable when the role revision changed", () => {
+    const result = checkSession("", delivered, "child-4", {
+      roleId: "role-1",
+      roleRevision: 5,
+      sessionRevision: 4,
+      roleName: "Reviewer",
+      prefix: workerPrefix,
+    }, { lint: true });
+    assert.equal(result.code, 2, result.output);
+    assert.match(result.output, /role revision changed/);
+    assert.doesNotMatch(result.output, /dispatch message:|Cancel the child/);
+  });
+}
+
+test("lint mode reports unverifiable when the configured prefix is absent", () => {
+  const result = checkSession("", message, "child-5", {
     roleId: "role-1",
-    roleRevision: 5,
-    sessionRevision: 4,
+    roleRevision: 4,
     roleName: "Reviewer",
     prefix: workerPrefix,
   }, { lint: true });
-  assert.equal(result.code, 1, result.output);
-  assert.match(result.output, /Linting the delivered text without stripping a role prefix/);
-  assert.match(result.output, /no package pointer/);
+  assert.equal(result.code, 2, result.output);
+  assert.match(result.output, /prompt prefix not found/);
+  assert.doesNotMatch(result.output, /dispatch message:|Cancel the child/);
 });
 
 test("lint mode rejects a message file or --sent", () => {
