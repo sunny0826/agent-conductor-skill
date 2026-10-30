@@ -14,6 +14,32 @@ test("clean pointer dispatch messages pass", () => {
   assert.match(result.output, /dispatch message: 0 problems/);
 });
 
+test("English completion replies are recognized without hiding other defects", () => {
+  // Receipt from session 3cf9dc1c, message 23ff69c1 (2026-10-29).
+  const receipt = "When done, reply with: the file path, the list of links you created, and any place where you had to make a judgment call about terminology.";
+  const valid = checkMessage(`Read and execute the task package ./tasks/translate.md. ${receipt}`);
+  assert.equal(valid.code, 0, valid.output);
+  const missingPointer = checkMessage(`Write the English README. ${receipt}`);
+  assert.equal(missingPointer.code, 1, missingPointer.output);
+  assert.match(missingPointer.output, /no package pointer/);
+  assert.doesNotMatch(missingPointer.output, /no receipt requirement/);
+});
+
+test("English receipt wording also works in a bounded package", () => {
+  const result = run("skills/agent-conductor/scripts/check-dispatch.mjs", `package type: verification
+Allowed commands: git diff --check.
+When done, reply with: command results and unresolved issues.`);
+  assert.equal(result.code, 0, result.output);
+});
+
+test("mentioning an English reply without requesting one is insufficient", () => {
+  for (const ending of ["The previous reply with results is archived.", "Read the reply format."]) {
+    const result = checkMessage(`Read and execute the package ./tasks/translate.md. ${ending}`);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /no receipt requirement/);
+  }
+});
+
 test("suppression openers in dispatch messages are rejected", () => {
   // Verbatim shape of the dispatch message sent to session 70f7879c on
   // 2026-10-18 17:18 CST: the opener migrated from packages (linted since
@@ -140,6 +166,17 @@ test("incidental markdown references are not a package pointer", () => {
   const result = checkMessage(msg);
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /no package pointer/);
+});
+
+test("source-document references near the start are not task packages", () => {
+  // Opening shape from 4615b1a6; source paths are context, not a task package.
+  const source = "You are writing the English usage guide (read docs/usage.md first, it is the Chinese source; also skim docs/design/save-migration.md for context).";
+  const result = checkMessage(`${source}\nWhen done, reply with: the file path.`);
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /no package pointer/);
+  assert.doesNotMatch(result.output, /no receipt requirement/);
+  const valid = checkMessage(`${source}\nRead and execute the task package ./tasks/translate.md. When done, reply with: results.`);
+  assert.equal(valid.code, 0, valid.output);
 });
 
 test("a task-package pointer later in the message still counts", () => {
