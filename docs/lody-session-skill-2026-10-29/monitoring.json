@@ -1,0 +1,278 @@
+{
+  "group": "monitoring",
+  "sessions": [
+    {
+      "id": "2ed2d634-785e-4ba2-a35e-1984e7dc0a02",
+      "title": "实施 UI 内置资源监控图表改动",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "dc0f0de62432d86ac09195bc9e07a6047ff0a858802fa726da1d0f786c91d102",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "图表尺寸 1:1（append 后测内容盒）+磁盘图「临时存储 · Pod」单序列+schema 采样链",
+        "applicableCandidates": [
+          "rigor",
+          "control-ui（浏览器截图验证）"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "3f7d75e6-6d19-48ca-8642-843c5439474a",
+      "title": "调查扫描任务 Pod 磁盘指标可用性",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "c39231dc78e448a876cdf8c1d6bdb300b432326f07e64a6180602e39f097698f",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "四问调查：kubelet Summary 字段、ARMS 指标、采集端现状、设计草案开放项",
+        "applicableCandidates": [
+          "rigor（只读调查）",
+          "principle-explain-the-number"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "48e4c4d6-79d0-4a13-a781-871773273261",
+      "title": "文档一致性检查与过程文档清理任务。本轮刚完成「UI 资源监控图表优化」(分支 monitor-charts-optimize,工作区有未提交改动),你的职责:检",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "4273ffe78d371a957e603f295d607458a502ad6cbbbda0a464508dc8de5a57da",
+      "roleId": "fbfcb2fe-cafe-47d8-8c8d-2c53fadf5478",
+      "roleRevision": 2,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 2, current role is 4; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "8 份文档对齐实现、9 断链修复、调查文档历史化、证据目录保护",
+        "applicableCandidates": [
+          "technical-writing"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "title": "资源监控图表优化",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 20,
+      "readable": true,
+      "historySha256": "a2b317e872503c0882c6d7b8781f487ef11fc3f270361e64db52ca7be2c22d55",
+      "roleId": "f8e183a0-4235-4ca2-8f05-66087c1d6b8d",
+      "roleRevision": 2,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "UI 图表尺寸+磁盘口径全链路协调：调查",
+        "applicableCandidates": [
+          "rigor",
+          "agent-conductor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": [
+            "$rigor（entry 0，用户触发）"
+          ]
+        }
+      }
+    },
+    {
+      "id": "aac53914-9e9f-4631-ba8c-7192f3635e51",
+      "title": "修正 ContainerSample.EphemeralStorage 的 json tag 为 omitzero",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "03fbebe65abda277ee1f5ea9c8f33ad23ec783404a0ab04048f702cee18a3f98",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "tag 改 omitzero+两份 fixture 恢复 HEAD+序列化断言",
+        "applicableCandidates": [
+          "rigor",
+          "principle-type-system-discipline"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "c5f4b029-fcc6-45a6-a4d1-67c53be03800",
+      "title": "独立 UI 验证：资源监控图表",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "2adcfb2f6bf7b48317147d0f48dee25e7b23cab88f1d90aa2dbdd9e5b69a010e",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "独立会话复核图表改动：6 类 47 项断言",
+        "applicableCandidates": [
+          "control-ui"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "c6c9a2a5-2f4a-48fa-b213-8dd145d8190a",
+      "title": "反证资源图表尺寸与磁盘指标设计",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "f6ba7916f3305ff916c09ddc03ad8b66c59824acfe977e10e1bb16104dfc23c5",
+      "roleId": "7fe0ba02-e991-44fe-bb9b-6375da099f89",
+      "roleRevision": 4,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 4, current role is 5; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "攻击设计方案：尺寸测量顺序、磁盘分级、schema 合并、范围裁剪",
+        "applicableCandidates": [
+          "interrogate（对抗审查候选，不证明实际加载）"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "f124e295-540d-4c17-b629-09c9899489d5",
+      "title": "代码审查任务(只读,不修改文件)。审查工作区当前未提交改动(分支 monitor-charts-optimize,基线为 HEAD):UI 资源监控图表优化——",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "7da4297f6c1ed491642d289302725ee9a22e99e537ecec3e4132e1f0070b2d0a",
+      "roleId": "1e53245e-af70-4300-9d5c-e5f4a2a9d1c9",
+      "roleRevision": 5,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 7; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "审查 UI 图表改动（尺寸+磁盘指标扩展）",
+        "applicableCandidates": [
+          "rigor（审查流程）",
+          "principle-test-behavior-not-implementation"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "fc03f51e-f9d3-450a-9540-c72ae201434a",
+      "title": "修复磁盘采样丢失及文档同步",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "09964e2c6a3525456ed4f4833edf26a98bb79e0b2ca39b780adb546fa2833728",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "6ab18022-fd13-4a9b-8c97-589a6eb9b77d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "ephemeral 时间戳接入采样门槛+真实入口回归测试+两处文档勘误",
+        "applicableCandidates": [
+          "rigor",
+          "tdd",
+          "principle-fix-root-causes"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    }
+  ]
+}

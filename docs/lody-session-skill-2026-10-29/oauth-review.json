@@ -1,0 +1,125 @@
+{
+  "group": "oauth-review",
+  "sessions": [
+    {
+      "id": "09bd1bf0-b3cc-4284-a215-dbfeabae0055",
+      "title": "修复 R4 帮助输出测试漏检缺陷",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "c53a17e11985955c3d16959a35df830f706c1107cdc5e9531da63ffa62fbe93e",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 6,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "configured role prompt prefix not found in the delivered message; cannot verify the message body"
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "修复 R4：帮助输出测试漏检（只匹配参数行不查默认值行），改为完整 usage 块断言",
+        "applicableCandidates": [
+          "tdd",
+          "rigor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": [
+            "tdd：回执显式声明读取并执行 /home/guo/.agents/skills/tdd/SKILL.md（2026-10-29），动作映射=缺陷复现→最小修复→同一检查失败→通过→附近验证；并说明 rigor 未启用原因（单文件测试修复、已有明确回归入口）"
+          ]
+        }
+      }
+    },
+    {
+      "id": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "title": "Github Oauth",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 27,
+      "readable": true,
+      "historySha256": "4c04a763a993839e9ab3e39390d6413f7b7ba14ef1f68b5f258a0ea27f5db1a4",
+      "roleId": "f8e183a0-4235-4ca2-8f05-66087c1d6b8d",
+      "roleRevision": 3,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "GitHub OAuth 全链路：A/B/C 方案",
+        "applicableCandidates": [
+          "rigor",
+          "agent-conductor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "7d7c6ce1-544d-4b78-835c-db9d561c3c64",
+      "title": "请读取并执行随本消息附件下发的任务包：./.dispatch/package-t5-review.md（独立审查 GitHub OAuth 登录阶段 1–5 全",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 4,
+      "readable": true,
+      "historySha256": "ba588aef947267c9b0e9c5cea6a97a247a2c2974a237969b6a7698f8f5936e10",
+      "roleId": "1e53245e-af70-4300-9d5c-e5f4a2a9d1c9",
+      "roleRevision": 6,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 6, current role is 7; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "独立审查 OAuth 阶段 1-5 全部改动",
+        "applicableCandidates": [
+          "rigor（审查流程）"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "8ccd6dd0-ec38-4e40-afce-8e3a16d499bd",
+      "title": "T5返工：修复R1 secret泄露与R2组织响应缺字段误判",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "28f7374a9b48ce0405bb65610b7073adabd7c2e87ee2bd6854d62d69abf839bd",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 6,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "configured role prompt prefix not found in the delivered message; cannot verify the message body"
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "secretFlag（String() 恒空）+ orgPage 校验 null/空白 login",
+        "applicableCandidates": [
+          "rigor",
+          "tdd",
+          "principle-fix-root-causes"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    }
+  ]
+}

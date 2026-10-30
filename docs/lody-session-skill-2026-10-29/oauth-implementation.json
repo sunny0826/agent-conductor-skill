@@ -1,0 +1,157 @@
+{
+  "group": "oauth-implementation",
+  "sessions": [
+    {
+      "id": "0cf41c70-36be-4b9b-9123-48720d65b5b7",
+      "title": "GitHub OAuth 阶段5：部署清单与B6C隔离",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "9f7f3edacbb08c57dfa28074241609eec4f85d694d46f9d93393d7bec0b67fcb",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "10-server-go.yaml 注入 4 个 OAuth env（secretKeyRef）、b6c-run.py 渲染隔离、部署文档配置段",
+        "applicableCandidates": [
+          "rigor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "0d626d1d-7187-4bd8-b2a0-17184f409b05",
+      "title": "实现 GitHub OAuth 阶段 1+2：github.go 客户端与 session.go 状态原语",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "884fe464796c48184bd3627adb95ad6f94eab738ac6545f3f4e97c23a6acb735",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "github.go（token 交换、/user、/user/orgs 分页短路）与 session.go（state 一次性表、会话表）+双测试文件",
+        "applicableCandidates": [
+          "rigor",
+          "principle-test-behavior-not-implementation"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "71c52d49-0c96-4d6c-9b6b-df7cb31361d2",
+      "title": "实现 GitHub OAuth 阶段 3：auth.go 路由与启动契约",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "2c7755618526e7236c275bd03446977c5ae23e232f367a98377647427d7b5beb",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "auth.go 路由、ServeHTTP 接线、flag/env 启动契约",
+        "applicableCandidates": [
+          "rigor",
+          "principle-type-system-discipline"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "b3434c4a-9071-4340-bb31-89853511dab2",
+      "title": "实现 GitHub OAuth 阶段 4",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "18332a1e4fb703c129c777d95bb7234f3dfd5d9f9b2a7562546b5237dff53b78",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "正式登录页+__USER__ 页面注入+401 跳转+登出交互",
+        "applicableCandidates": [
+          "rigor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "f1afd8d1-81d2-41bd-afff-74b5ef57ebc9",
+      "title": "请读取并执行随本消息附件下发的任务包：./.dispatch/package-c-write-design-doc.md（将 GitHub OAuth 定稿方案",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "493292da611d992799ff7e09a5db905d0e9f08a32bedc11fea40b8d7207af77f",
+      "roleId": "fbfcb2fe-cafe-47d8-8c8d-2c53fadf5478",
+      "roleRevision": 3,
+      "parent": "7550a5dd-adff-4f2d-8a97-1e5615fefacf",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 3, current role is 4; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "将定稿方案（A 底稿+B 反证裁决）写入 docs/design/github-oauth-login.md",
+        "applicableCandidates": [
+          "technical-writing"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    }
+  ]
+}
