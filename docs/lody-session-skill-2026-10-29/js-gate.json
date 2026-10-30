@@ -1,0 +1,217 @@
+{
+  "group": "js-gate",
+  "sessions": [
+    {
+      "id": "0d6c75ed-ca24-4d4d-a11d-a396a4b8e9e3",
+      "title": "任务包类型：只读审查（指针消息） 请阅读任务包 `agent-task-packages/js-scan-restrict-serve-fix-review.m",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "72955258816deb9ae27af570b5c2681b708803b99882a6ec7189ad5f7215921e",
+      "roleId": "1e53245e-af70-4300-9d5c-e5f4a2a9d1c9",
+      "roleRevision": 6,
+      "parent": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 6, current role is 7; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "只读审查 serve 两项修复（默认 auto、失败横幅）与文档同步",
+        "applicableCandidates": [
+          "rigor（审查流程）"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "2b02ddba-8d9b-40d4-8e17-4e311e4b20d7",
+      "title": "js-scan-restrict-serve-fix 任务包实施",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "a922d755fd8da177f576cb6494aa10d808b7cd011ab69c6de78195138f833013",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "UI 默认资源模式改 auto、详情页失败原因横幅、门禁文档同步",
+        "applicableCandidates": [
+          "rigor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "2cca2279-c169-40ec-9716-e4e1fd5d115b",
+      "title": "任务包类型：实施（指针消息） 请阅读任务包 `agent-task-packages/js-scan-restrict-docs.md` 并按其全部条款执行：为",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "c07d9df20f379d4c3870621acff2f378364f0098018a8a8e4141e4c2286e0d52",
+      "roleId": "fbfcb2fe-cafe-47d8-8c8d-2c53fadf5478",
+      "roleRevision": 3,
+      "parent": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 3, current role is 4; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "为 JS 门禁补齐文档记录（3 份 docs）",
+        "applicableCandidates": [
+          "technical-writing"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "3e318ad9-d34a-4ca8-900a-f4df86a8b0be",
+      "title": "js-scan-restrict-rework 任务包实施",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "66cc2877eafbb3fa4d3c607796b872fc1c3deef2ec7e56095f53ffbac9d4c904",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "吸收审查建议：测试断言语义化+文档两处条件限定",
+        "applicableCandidates": [
+          "rigor",
+          "principle-test-behavior-not-implementation"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "64d99498-81b4-4624-97a9-949cf18e3b06",
+      "title": "任务包类型：只读审查（指针消息） 请阅读任务包 `agent-task-packages/js-scan-restrict-review.md` 并按其全部条款",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "6a37e27dc8202f44da1dd08cbca6f8ff25a5f4c770eeea11f76701074b5e1854",
+      "roleId": "1e53245e-af70-4300-9d5c-e5f4a2a9d1c9",
+      "roleRevision": 6,
+      "parent": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 6, current role is 7; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "只读审查 JS 门禁 5 文件改动",
+        "applicableCandidates": [
+          "rigor（审查流程）"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    },
+    {
+      "id": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "title": "协调者角色规范：任务派发、用户确认与执行跟进流程",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 17,
+      "readable": true,
+      "historySha256": "16a215622105c4a9c202fb25df0fbf35e9a8b46f5129c042fa61939cb592f919",
+      "roleId": "f8e183a0-4235-4ca2-8f05-66087c1d6b8d",
+      "roleRevision": 3,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "JS 门禁全链路：实施",
+        "applicableCandidates": [
+          "rigor",
+          "agent-conductor",
+          "bro",
+          "ketchup"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": [
+            "$rigor（entry 0，用户）",
+            "$bro（entry 11：普通话重述交付）",
+            "$ketchup（entry 29：进度追平）"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fd0f0dc0-b600-42d8-bc02-dd24b657b0c4",
+      "title": "JS扫描门禁实施任务",
+      "machine": "d0ca4e65-0840-438c-aa77-bf81ef4d4d1f",
+      "source": "活动代理",
+      "archivedAt": [],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "137b204e79906253c97e70af8d8aa9f30f1de669f848ef7501da609421cb061d",
+      "roleId": "e741b376-49d5-4be3-97a2-fd5544cc0a1e",
+      "roleRevision": 5,
+      "parent": "74272695-0273-4891-bbc6-a96186a6e65d",
+      "checks": [
+        {
+          "type": "dispatch",
+          "exit": 2,
+          "diagnostic": "Cannot resolve the child role prompt prefix: role revision changed: session used 5, current role is 6; pass --role-prefix with the prefix that was used at dispatch\nRe-run with --role-prefix <text> after checking the Agent Role, or compare manually."
+        }
+      ],
+      "assessment": {
+        "reviewer": "proxy reviewer",
+        "task": "JSPrimary 判定+scan_gate 临时门禁+completePreflight 拒绝点",
+        "applicableCandidates": [
+          "rigor"
+        ],
+        "declarations": {
+          "reportedMentionsAndClaims": []
+        }
+      }
+    }
+  ]
+}

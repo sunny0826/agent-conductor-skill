@@ -1,0 +1,92 @@
+{
+  "reviewDate": "2026-10-30",
+  "archiveDate": "2026-10-29",
+  "timeZone": "Asia/Shanghai",
+  "sourceCommit": "2ee1fc8",
+  "counts": {
+    "events": 27,
+    "uniqueLocal": 26,
+    "activityProxies": 39,
+    "backlog": 7,
+    "candidates": 72,
+    "readable": 65,
+    "messages": 354
+  },
+  "limitations": [
+    "仅可见转录，不含完整工具和技能加载回合",
+    "其他机器真实归档日期未核实",
+    "历史角色前缀无法核实样本不计合规或违规",
+    "引用 hash 针对本地采集快照，不证明历史源版本"
+  ],
+  "reviewCoverage": {
+    "local": {
+      "sessions": 26,
+      "messages": 158,
+      "reviewerTask": "task_1793324921394_d7qqd0"
+    },
+    "proxy": {
+      "sessions": 39,
+      "messages": 196,
+      "reviewerTask": "task_1793324929699_51kj1w"
+    },
+    "coordinator": "核对65项ID集合、采集计数、关键原文及最终裁决。子任务全文阅读为执行者回执，不转述为协调者全文自验。"
+  },
+  "files": [
+    {
+      "group": "local-maintenance",
+      "path": "lody-session-skill-2026-10-29/local-maintenance.json",
+      "sessions": 6
+    },
+    {
+      "group": "local-documents",
+      "path": "lody-session-skill-2026-10-29/local-documents.json",
+      "sessions": 8
+    },
+    {
+      "group": "local-device",
+      "path": "lody-session-skill-2026-10-29/local-device.json",
+      "sessions": 8
+    },
+    {
+      "group": "local-other",
+      "path": "lody-session-skill-2026-10-29/local-other.json",
+      "sessions": 4
+    },
+    {
+      "group": "oauth-implementation",
+      "path": "lody-session-skill-2026-10-29/oauth-implementation.json",
+      "sessions": 5
+    },
+    {
+      "group": "oauth-review",
+      "path": "lody-session-skill-2026-10-29/oauth-review.json",
+      "sessions": 4
+    },
+    {
+      "group": "monitoring",
+      "path": "lody-session-skill-2026-10-29/monitoring.json",
+      "sessions": 9
+    },
+    {
+      "group": "js-gate",
+      "path": "lody-session-skill-2026-10-29/js-gate.json",
+      "sessions": 7
+    },
+    {
+      "group": "sarif",
+      "path": "lody-session-skill-2026-10-29/sarif.json",
+      "sessions": 8
+    },
+    {
+      "group": "other-proxy",
+      "path": "lody-session-skill-2026-10-29/other-proxy.json",
+      "sessions": 6
+    },
+    {
+      "group": "backlog",
+      "path": "lody-session-skill-2026-10-29/backlog.json",
+      "sessions": 7
+    }
+  ],
+  "assessmentBoundary": "全部技能加载证据不可见；助手声明不算工具读取成功。执行证据仅为可见历史回执，本轮未重跑其他项目验收。适用候选不是确定调用机会，行为裁决见日报。"
+}

@@ -1,0 +1,177 @@
+{
+  "group": "local-maintenance",
+  "sessions": [
+    {
+      "id": "08e8b74b-74a0-47b8-a680-59d77dfb0244",
+      "title": "拉取最新代码",
+      "machine": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+      "source": "本机归档事件",
+      "archivedAt": [
+        "2026-10-28T23:53:48.212Z"
+      ],
+      "messages": 2,
+      "readable": true,
+      "historySha256": "4bce0b2b3d8a6026e5c351184c60be14d77cb8eac9af8282c674fad7e9f5283c",
+      "roleId": null,
+      "roleRevision": null,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "local reviewer",
+        "task": "拉取新代码：main 快进到 602770e，报告 6 个新提交与未跟踪文件保持",
+        "applicableCandidates": [
+          "无强匹配（普通单步 git 操作）"
+        ],
+        "declarations": {
+          "userMention": "无",
+          "assistantClaim": "无"
+        }
+      }
+    },
+    {
+      "id": "36301bfb-bed1-41c4-ba67-d2b11a279c53",
+      "title": "给 lody 规划一个协调者角色的 Agent",
+      "machine": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+      "source": "本机归档事件",
+      "archivedAt": [
+        "2026-10-29T05:59:42.753Z"
+      ],
+      "messages": 10,
+      "readable": true,
+      "historySha256": "9663f520aaa2efd135ed021c2aa3865cec622753845d64b0a2ed77a5833ea711",
+      "roleId": null,
+      "roleRevision": null,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "local reviewer",
+        "task": "规划协调者角色",
+        "applicableCandidates": [
+          "agent-conductor",
+          "agent-conductor-setup"
+        ],
+        "declarations": {
+          "userMention": "无",
+          "assistantClaim": "建议写入角色提示词（agent-conductor/agent-conductor-setup）"
+        }
+      }
+    },
+    {
+      "id": "48f9b0a9-fdfb-4962-b833-8aa7108eec88",
+      "title": "分析最近 2 周的 Lody 归档 session，找出本项目中哪些 SKILL 没有被使用到，并给出原因和优化建议",
+      "machine": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+      "source": "本机归档事件",
+      "archivedAt": [
+        "2026-10-29T09:01:41.703Z"
+      ],
+      "messages": 22,
+      "readable": true,
+      "historySha256": "084b2e6187b791534daca10faad27702aff947c9b666ec606ea918986edfc105",
+      "roleId": null,
+      "roleRevision": null,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "local reviewer",
+        "task": "分析 2 周 Lody 归档找未用 SKILL",
+        "applicableCandidates": [
+          "reflect（复盘）",
+          "correct（防复发）",
+          "agent-conductor"
+        ],
+        "declarations": {
+          "userMention": "无",
+          "assistantClaim": "仓库内新增 skills/agent-conductor/references/skill-adoption.md；声明 104 项测试、55 技能包校验、code-harness 退出 2"
+        }
+      }
+    },
+    {
+      "id": "660f7a5f-0aaa-8ca6-b23e-32f78412072d",
+      "title": "Agent Skill 进化",
+      "machine": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+      "source": "本机归档事件",
+      "archivedAt": [
+        "2026-10-28T23:52:27.048Z"
+      ],
+      "messages": 5,
+      "readable": true,
+      "historySha256": "89020eb2add15337707fca3eb8817c3ff909ff90493ff11d62d7aae448d3fa31",
+      "roleId": null,
+      "roleRevision": null,
+      "parent": null,
+      "checks": [
+        {
+          "type": "claims",
+          "exit": 1,
+          "diagnostic": "历史错误引用，人工排除。"
+        }
+      ],
+      "assessment": {
+        "reviewer": "local reviewer",
+        "task": "「Agent Skill 进化」定时维护任务：检查 SKILL 最新版本、整理昨日修改 commit、分析 10-28 归档 74 会话并修复 A1/A2/A3、未调用技能建议",
+        "applicableCandidates": [
+          "agent-conductor（维护流程）",
+          "correct",
+          "reflect（承接复盘）"
+        ],
+        "declarations": {
+          "userMention": "无",
+          "assistantClaim": "85/85 测试、56/56 部署核对；check-sent-dispatch --lint 与 check-user-claims.mjs 新增"
+        }
+      }
+    },
+    {
+      "id": "b8c7499c-49d1-48c2-af88-5578f1414838",
+      "title": "GitHub 搜索可用于扫描的语言规格项目",
+      "machine": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+      "source": "本机归档事件",
+      "archivedAt": [
+        "2026-10-29T09:36:05.414Z",
+        "2026-10-29T09:36:05.995Z"
+      ],
+      "messages": 6,
+      "readable": true,
+      "historySha256": "792cb08540f740e6af9dd0badfb194961fa8780953bc42ceb87f763df2aa0b65",
+      "roleId": null,
+      "roleRevision": null,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "local reviewer",
+        "task": "GitHub 搜索扫描用语言规格项目",
+        "applicableCandidates": [
+          "无强匹配（信息查询）"
+        ],
+        "declarations": {
+          "userMention": "无",
+          "assistantClaim": "无"
+        }
+      }
+    },
+    {
+      "id": "fa1fd282-b4e8-4f60-be4c-6df7074c4b0d",
+      "title": "移除网页顶部的 SkillSec 新发布宣传条",
+      "machine": "9b919ec3-3336-42b7-8ed6-f3ef483026f8",
+      "source": "本机归档事件",
+      "archivedAt": [
+        "2026-10-29T03:14:06.001Z"
+      ],
+      "messages": 8,
+      "readable": true,
+      "historySha256": "7a469fd1479b6abb96007a60c386784970ebb8624e8df28dcea8e705b8fc3e93",
+      "roleId": null,
+      "roleRevision": null,
+      "parent": null,
+      "checks": [],
+      "assessment": {
+        "reviewer": "local reviewer",
+        "task": "sectrend-cn/website 移除 SkillSec 顶部宣传条",
+        "applicableCandidates": [],
+        "declarations": {
+          "userMention": "无 $ 标记",
+          "assistantClaim": "「我会按 git-helper 和 pr-description 技能检查改动与分支」（index 3）"
+        }
+      }
+    }
+  ]
+}

@@ -136,14 +136,9 @@ if (!explicitRolePrefix && sessionId !== null) {
   try {
     roleInfo = resolveRolePrefix(sessionId);
   } catch (error) {
-    if (lintMode) {
-      console.error(`Cannot resolve the child role prompt prefix: ${error.message}`);
-      console.error("Linting the delivered text without stripping a role prefix.");
-    } else {
-      console.error(`Cannot resolve the child role prompt prefix: ${error.message}`);
-      console.error("Re-run with --role-prefix <text> after checking the Agent Role, or compare manually.");
-      process.exit(2);
-    }
+    console.error(`Cannot resolve the child role prompt prefix: ${error.message}`);
+    console.error("Re-run with --role-prefix <text> after checking the Agent Role, or compare manually.");
+    process.exit(2);
   }
 }
 
@@ -176,7 +171,10 @@ if (lintMode) {
         break;
       }
     }
-    if (!stripped) console.error("configured role prompt prefix not found in the delivered message; linting the full text");
+    if (!stripped) {
+      console.error("configured role prompt prefix not found in the delivered message; cannot verify the message body");
+      process.exit(2);
+    }
   }
   const dispatch = fileURLToPath(new URL("./check-dispatch.mjs", import.meta.url));
   const result = spawnSync(process.execPath, [dispatch, "--message", "-"], {
