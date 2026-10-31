@@ -21,12 +21,12 @@ const run = promisify(execFile);
 const line = (timestamp, id) =>
   `${timestamp} [DEBUG] [W:example-workspace] [start] [${id}] Archived session runtime released`;
 
-test("parses a real archive log line", () => {
+test("parses a synthetic archive log line", () => {
   const event = parseArchiveLine(
-    line("2026-10-21T03:13:18.496Z", "00000000-0000-4000-8000-000000000001"),
+    line("2030-01-02T03:13:18.496Z", "00000000-0000-4000-8000-000000000001"),
   );
   assert.deepEqual(event, {
-    archivedAt: "2026-10-21T03:13:18.496Z",
+    archivedAt: "2030-01-02T03:13:18.496Z",
     sessionId: "00000000-0000-4000-8000-000000000001",
   });
 });
@@ -34,7 +34,7 @@ test("parses a real archive log line", () => {
 test("ignores unrelated log lines", () => {
   assert.equal(
     parseArchiveLine(
-      "2026-10-21T03:13:18.496Z [DEBUG] [start] [00000001] Releasing archived session runtime",
+      "2030-01-02T03:13:18.496Z [DEBUG] [start] [00000001] Releasing archived session runtime",
     ),
     null,
   );
@@ -42,38 +42,38 @@ test("ignores unrelated log lines", () => {
 });
 
 test("filters by Asia/Shanghai date across the UTC boundary", () => {
-  assert.equal(dateInTimeZone("2026-10-20T23:55:16.317Z"), "2026-10-21");
-  assert.equal(dateInTimeZone("2026-10-21T15:59:59.999Z"), "2026-10-21");
-  assert.equal(dateInTimeZone("2026-10-21T16:00:00.000Z"), "2026-10-22");
+  assert.equal(dateInTimeZone("2030-01-01T23:55:16.317Z"), "2030-01-02");
+  assert.equal(dateInTimeZone("2030-01-02T15:59:59.999Z"), "2030-01-02");
+  assert.equal(dateInTimeZone("2030-01-02T16:00:00.000Z"), "2030-01-03");
 });
 
-test("includes the 2026-10-21 archived session missed by the activity proxy", () => {
+test("selects sessions by archive date rather than activity date", () => {
   const events = [
     {
-      archivedAt: "2026-10-21T03:13:18.496Z",
+      archivedAt: "2030-01-02T03:13:18.496Z",
       sessionId: "00000000-0000-4000-8000-000000000001",
     },
     {
-      archivedAt: "2026-10-21T23:07:49.702Z",
+      archivedAt: "2030-01-02T23:07:49.702Z",
       sessionId: "00000000-0000-4000-8000-000000000002",
     },
   ];
-  assert.deepEqual(eventsOnDate(events, "2026-10-21"), [events[0]]);
-  assert.deepEqual(eventsOnDate(events, "2026-10-22"), [events[1]]);
+  assert.deepEqual(eventsOnDate(events, "2030-01-02"), [events[0]]);
+  assert.deepEqual(eventsOnDate(events, "2030-01-03"), [events[1]]);
 });
 
 test("reads plain and gzipped log files and deduplicates events", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "archived-sessions-"));
   try {
     const id = "00000000-0000-4000-8000-000000000001";
-    const archive = line("2026-10-21T03:13:18.496Z", id);
+    const archive = line("2030-01-02T03:13:18.496Z", id);
     await writeFile(
-      path.join(dir, "2026-10-21.log"),
-      `${archive}\n${line("2026-10-21T03:13:18.496Z", id)}\n`,
+      path.join(dir, "2030-01-02.log"),
+      `${archive}\n${line("2030-01-02T03:13:18.496Z", id)}\n`,
     );
     await writeFile(
-      path.join(dir, "2026-10-21.log.1.gz"),
-      gzipSync(`${line("2026-10-20T23:55:16.317Z", "00000000-0000-4000-8000-000000000003")}\n`),
+      path.join(dir, "2030-01-02.log.1.gz"),
+      gzipSync(`${line("2030-01-01T23:55:16.317Z", "00000000-0000-4000-8000-000000000003")}\n`),
     );
     const events = await readArchiveEvents(dir);
     assert.equal(events.length, 2);
@@ -97,10 +97,10 @@ test("CLI filters one archive date and prints JSON", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "archived-sessions-cli-"));
   try {
     await writeFile(
-      path.join(dir, "2026-10-21.log"),
+      path.join(dir, "2030-01-02.log"),
       [
-        line("2026-10-21T03:13:18.496Z", "00000000-0000-4000-8000-000000000001"),
-        line("2026-10-21T23:07:49.702Z", "00000000-0000-4000-8000-000000000002"),
+        line("2030-01-02T03:13:18.496Z", "00000000-0000-4000-8000-000000000001"),
+        line("2030-01-02T23:07:49.702Z", "00000000-0000-4000-8000-000000000002"),
       ].join("\n"),
     );
     const { stdout } = await run(process.execPath, [
@@ -108,11 +108,11 @@ test("CLI filters one archive date and prints JSON", async () => {
       "--log-root",
       dir,
       "--date",
-      "2026-10-21",
+      "2030-01-02",
       "--json",
     ]);
     const report = JSON.parse(stdout);
-    assert.equal(report.date, "2026-10-21");
+    assert.equal(report.date, "2030-01-02");
     assert.equal(report.timeZone, "Asia/Shanghai");
     assert.equal(report.events.length, 1);
     assert.equal(

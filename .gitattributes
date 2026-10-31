@@ -3,9 +3,3 @@
 # demand), so they are exempted from the staged-token limit like other config.
 # Contract scripts and tests stay under the limit; see tools/*.test.mjs.
 skills/*/SKILL.md token-limit-ignore
-
-# Reproducible exports; authored evidence and templates stay token-checked.
-# See docs/lody-skill-usage-audit-2026-10-29/README.md.
-docs/lody-skill-usage-audit-2026-10-29.csv linguist-generated=true
-docs/lody-skill-usage-audit-2026-10-29.html linguist-generated=true
-docs/lody-skill-usage-audit-2026-10-29.json linguist-generated=true

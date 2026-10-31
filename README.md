@@ -1,6 +1,8 @@
 # agent-conductor-skill
 
-[按任务选技能：可搜索的使用指南](docs/skill-usage.html)（31 个任务技能、24 个原则技能）。下载或在本地浏览器打开 HTML 查看。
+本仓库提供 31 个任务技能和 24 个原则技能。按下方目录选择，或阅读[技能使用帮助](skills/skill-help/SKILL.md)。
+
+`docs/` 整个目录仅供本地使用，不纳入 Git 跟踪，不上传 GitHub，也不打包进发布产物。私人会话分析、索引和审计产物保存在仓库外，不随技能修改提交或附入公开 PR。
 
 [不依赖特定编辑器的提示模式](skills/skill-help/references/recipes.md#不依赖特定编辑器的提示模式)：代码审查、审查意见核实、PR 状态、持续执行和个人模式。
 
@@ -58,4 +60,4 @@ mise exec -- python3 tools/package_skills.py --check
 
 ## 原则
 
-24 个原则技能按需读取，完整清单与 ZIP 见 [原则技能目录](docs/principles-catalog.md)。
+24 个原则技能按需读取，完整清单见 [rigor 原则索引](skills/rigor/references/principles.md)。各技能的 ZIP 位于 `dist/`。

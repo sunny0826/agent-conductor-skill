@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# Local-only documentation: never commit or publish this directory.
+/docs/

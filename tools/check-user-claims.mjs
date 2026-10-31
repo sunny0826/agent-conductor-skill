@@ -1,21 +1,14 @@
 #!/usr/bin/env node
-// Delivery-claim audit: user confirmations must point at words the user
-// actually wrote. On 2026-10-28 two device sessions turned serial/log evidence
-// into "你的目视确认" and "你已确认首页显示具体步数" although the user had only
-// said the device was connected. The transcript is the authority, so this check
-// reads the user turns and flags a confirmation claim unless the same sentence
-// quotes text that appears verbatim in one of those turns.
-//
-// A blanket approval ("真机验证通过", "没有问题了") is a separate problem: it
-// cannot be expanded into specific pass claims (步行计数通过). That needs the
-// delivery to keep the uncovered items as unverified; see agent-conductor
-// step 9 and docs/session-review.md.
+// Check user-confirmation claims against the user's own messages. Logs,
+// screenshots, and test results are product evidence, not user confirmations.
+// A claim is flagged unless its sentence quotes text found in a user turn.
+// Matching text alone does not prove that the quote supports the whole claim;
+// review broad approvals and uncovered acceptance items using skills/agent-conductor/SKILL.md.
 //
 // Usage:
-//   node check-user-claims.mjs --session <sessionId> [--delivery <draft.md>] [--json]
-// Without --delivery every assistant turn is audited; a claim made in an
-// intermediate report still reaches the user and can be absorbed by the final
-// delivery, so checking only the last turn misses it.
+//   mise exec -- node tools/check-user-claims.mjs --session <sessionId> [--delivery <draft.md>] [--json]
+// Without --delivery every assistant turn is audited, including intermediate reports.
+// Keep drafts and audit output in an authorized private directory outside the repository.
 // Exit 0: no unsupported claims; 1: at least one unsupported claim; 2: unreadable.
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
