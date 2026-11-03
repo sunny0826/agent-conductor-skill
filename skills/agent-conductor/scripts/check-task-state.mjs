@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import process from "node:process";
+import { checkSkillAdoption } from "./skill-adoption.mjs";
 
 const [file, mode] = process.argv.slice(2);
 if (!file || (mode && mode !== "--complete") || process.argv.length > 4) {
@@ -67,6 +68,7 @@ for (const task of tasks) {
   if (!strings(task.evidence)) fail(`${task.id}: evidence must be an array`);
   if (["done", "stopped"].includes(task.status) && !evidence(task.evidence)) fail(`${task.id}: ${task.status} needs a result or stop acknowledgement`);
   if (mode === "--complete" && active(task)) fail(`${task.id}: ${task.status}; work has not reached a terminal state`);
+  checkSkillAdoption(task, mode === "--complete" && goal?.status === "active" && task.status !== "stopped", fail);
 }
 const writers = tasks.filter((t) => t.status === "running" && strings(t.writes));
 for (let i = 0; i < writers.length; i++) {

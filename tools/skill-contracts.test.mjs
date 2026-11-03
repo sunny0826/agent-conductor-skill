@@ -76,7 +76,9 @@ function state() {
     goals: [{ id: "G1", source: "User: verify the two-bundle report contains 19 files", status: "active",
       acceptance: [{ id: "A1", expected: "Two bundles and report: 19 files", status: "pending", observed: "", evidence: [] }] }],
     tasks: [{ id: "T1", goal: "G1", owner: "worker", workspace: "checkout-1", status: "running",
-      writes: ["src/model.py"], constraints: ["No external downloads"], evidence: [] }],
+      writes: ["src/model.py"], constraints: ["No external downloads"], evidence: [],
+      skill_review: { assessed_by: "coordinator", catalog_evidence: ["catalog.json"],
+        selection_reason: "This fixture exercises task ownership and goal acceptance", skills: [] } }],
   };
 }
 const checkState = (value, ...args) => run("skills/agent-conductor/scripts/check-task-state.mjs", JSON.stringify(value), ...args);
