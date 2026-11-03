@@ -24,7 +24,13 @@
       "status": "pending",
       "writes": [],
       "constraints": [],
-      "evidence": []
+      "evidence": [],
+      "skill_review": {
+        "assessed_by": "coordinator",
+        "catalog_evidence": [],
+        "selection_reason": "",
+        "skills": []
+      }
     }
   ]
 }

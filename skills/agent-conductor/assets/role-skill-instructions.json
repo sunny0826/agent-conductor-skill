@@ -1,0 +1,18 @@
+{
+  "heading": "技能选择、读取与采用",
+  "common": [
+    "按任务类型、角色职责和当前宿主技能目录选择适用技能；下列入口是优先线索，不是封闭清单。具体触发条件、流程和要求以本次读取的当前 SKILL.md 及必要引用为准，不固定技能版本、提交或长期复制旧步骤。",
+    "开工时核对权威技能源和本机实际读取内容，记录来源、读取时间与依据；无法确认最新内容时明确缺口。阶段切换、重新派发或发现相关内容更新时重读，调整受影响的后续计划。技能更新不改变现有范围、权限或派发确认要求。",
+    "按当前内容列出本次适用要求，把实际决定、动作或产物与要求对应。可读取时遵循 agent-conductor/references/skill-adoption.md 的当前契约；已有任务记录就复用，不另建竞争状态。缺少说明或检查器时回报缺口，仍提供选择理由、读取证据、本次要求、执行证据及未完成项，不声称检查器已通过。",
+    "完成前核对实际采用：仅提及名称、读取正文或自述已使用都不足以证明采用。受委派时回传原始证据，由协调者或已安排的验证角色核验；单会话自验明确标注。不适用项说明原因，受阻或证据不足如实保留。执行者只承担已分配阶段，需要其他角色时向协调者提出需求，不自行再派发。"
+  ],
+  "roles": {
+    "coordinator": "优先入口：协作组织 agent-conductor，发现或核对角色 agent-conductor-setup；角色增减或职责变化时，读取 agent-conductor/references/role-integration.md 的当前要求重新检查覆盖，不沿用旧名单。非平凡工程任务 rigor，复杂跨范围流程 figure-it-out，长任务证据轨迹 show-me-your-work。arena、swarm、interrogate 等协作流程由你在已确认派发范围内组织。任务包提供技能入口、选择理由和证据要求；对照当前目录与原始产物核对执行者是否漏选、漏做或误触发，在同一任务记录中完成采用核验。",
+    "architect": "优先入口：理解现状 how，结构设计 architect，历史动机 why，间接影响 blast-radius；原则按具体问题选读。作为候选参与者，读取 architect/references/runner-prompt.md，只完成本会话方案；独立候选、评判和运行测量需求交协调者安排，不把顺序自评称为完整独立探索。",
+    "worker": "优先入口：非平凡工程流程 rigor，修改前理解 how，修复与回归 tdd，TS/TSX 类型 typescript-best-practices，真实 UI 操作 control-ui，性能主张 benchmark-checklist；是否适用按当前技能触发条件判断。验证先找已有项目验收入口；创建或维护验收技能才考虑 create-verification-skill、maintain-verification-skill。只执行本次分配的实施、验证或测量阶段。",
+    "reviewer": "优先入口：真实调用链 how，跨边界影响 blast-radius，TS/TSX 契约 typescript-best-practices，性能数字 benchmark-checklist；按当前触发条件选用，必要时读取 rigor/references/code-review.md。普通审查不自动组织跨模型流程；参加交叉审核时只执行分配给本会话的独立审查。",
+    "challenger": "优先入口：冗余与补丁 principle-subtract-before-you-add，抽象与透传 principle-laziness-protocol，理解成本 principle-minimize-reader-load，重复失败的共同前提 principle-attack-the-premise；具体适用性以当前正文为准。按需用 how、blast-radius 核对事实和影响，说明所用原则改变了哪项判断，以可达条件和证据支持结论。",
+    "cross_reviewer": "优先入口：参与交叉审核时读取 interrogate/references/reviewer-prompt.md 的当前要求；按需用 how、blast-radius 追踪行为和间接影响。模型名单、派发和最终裁决由协调者负责。只完成本会话独立审查并提供原始证据，不以单份报告宣称整个跨模型审核完成。",
+    "writer": "优先入口：技术文档撰写或审阅 technical-writing，措辞与证据强度整理 unslop；解释实现按需用 how，追溯动机 why，教学 teach。按当前正文判断触发与要求，先核对事实再写作；实际文档、修改差异和必要的链接或构建结果作为采用证据。"
+  }
+}
