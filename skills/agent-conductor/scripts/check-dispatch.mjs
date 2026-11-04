@@ -66,6 +66,12 @@ const suppressionOpeners = [
 ];
 const receiptPattern = /(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决|\bwhen\s+done,?\s+reply\s+with\s*:)/i;
 
+function hasReceiptRequirement(value) {
+  if (receiptPattern.test(value)) return true;
+  return value.split(/[\n。；，!?！？]/).some((clause) =>
+    /^\s*(?:(?:请|完成后|结束后|交付时)\s*回传(?!了|过)\s*[:：]?\s*[^\s:：]|回传\s*[:：]\s*[^\s:：])/.test(clause));
+}
+
 if (messageMode) {
   // Dispatch-message mode: the message must carry a pointer to the package
   // file (or be an inline package led by its type declaration) plus a receipt
@@ -90,8 +96,8 @@ if (messageMode) {
   if (!hasPointer && !inlinePackage) {
     fail("dispatch message has no package pointer — point at the package file path, or inline the full package led by its 任务包类型 declaration");
   }
-  if (!receiptPattern.test(text)) {
-    fail("no receipt requirement (回执 / 回报 / 最终报告 / 最终回复 / 最终结论 / 裁决) in the dispatch message");
+  if (!hasReceiptRequirement(text)) {
+    fail("no receipt requirement (回执 / 回报 / 回传要求 / 最终报告 / 最终回复 / 最终结论 / 裁决) in the dispatch message");
   }
   for (const [pattern, label] of suppressionOpeners) {
     if (pattern.test(text)) {
@@ -149,8 +155,8 @@ for (const [pattern, label] of suppressionOpeners) {
 // 4. Every package needs a receipt channel so completion claims stay checkable.
 // 最终{0,4}(报告|回复|结论) covers wording like 最终完整报告 / 最终回复 /
 // 最终结论 seen in real packages.
-if (!receiptPattern.test(stripped)) {
-  fail("no receipt requirement (回执 / 回报 / 最终报告 / 最终回复 / 最终结论 / 裁决) — completion claims need a checkable channel");
+if (!hasReceiptRequirement(stripped)) {
+  fail("no receipt requirement (回执 / 回报 / 回传要求 / 最终报告 / 最终回复 / 最终结论 / 裁决) — completion claims need a checkable channel");
 }
 
 // 5. Write grants. Sentences that merely prohibit or deny a write ("git push
