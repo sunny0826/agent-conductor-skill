@@ -1,13 +1,13 @@
 ---
 name: show-me-your-work
-description: "为长任务或异步工作保留可复核的决策、证据与结果轨迹。"
+description: "长任务、异步工作或需要事后审计时，保留可复核的决策、证据与结果轨迹；普通短任务不启用。"
 ---
 
 # 可复核的决策轨迹
 
 为长任务保留一个规范的 TSV 日志，记录选择、原因、证据与结果，不逐条记录机械动作。使用 [表头](references/decision-log-template.tsv)，列为 ts、phase、decision、why、evidence、result；时间为 ISO8601，每格单行，证据写可定位路径、提交或链接。日志默认是工作产物，只有已有提交授权才提交。
 
-用包内 `scripts/log.sh <logfile> <phase> <decision> <why> <evidence> <result>` 追加记录；脚本清理换行与制表符并防止表格公式注入。多个写者各自日志，由单一拥有者汇总，不并发争写一个文件。
+用 `<本技能目录>/scripts/log.sh <logfile> <phase> <decision> <why> <evidence> <result>` 追加记录；脚本清理换行与制表符并防止表格公式注入。多个写者各自日志，由单一拥有者汇总，不并发争写一个文件。
 
 日志只追加；错误用新行明确取代旧行，不删除历史。新会话或换人接手既有日志，第一行 phase 为 start，注明此前非本会话写入的时间范围和自身身份；续接时先检查是否有别人写入，必要时再记录 start。start 不用于其他含义。只写具体、可读的事实和理由，避免空泛术语，无需外部措辞技能。
 

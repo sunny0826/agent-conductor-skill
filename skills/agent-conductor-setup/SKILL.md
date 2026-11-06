@@ -16,7 +16,7 @@ Lody 是 Agent 与模型的权威目录。发现必须**以 Lody 接口为主、
 
 先读项目 `.agent-conductor/models.json`：
 
-- 存在且版本、字段有效：区分用户显式设置与 conductor 执行前核验，按 [调用场景](references/configuration.md#选择优先级与调用场景) 处理。**凡需要列出候选的修改，一律重新执行第 2 步全量发现**——目录只存在于会话内，新会话没有可列的候选；**要应用（而非仅展示）已保存选择时，同样必须先重新发现核验有效性**（触发条件统一定义在 [配置约定](references/configuration.md) 的"目录刷新条件"）。
+- 存在且版本、字段有效：区分用户显式设置与 conductor 执行前核验，按 [调用场景](references/configuration.md#选择优先级与调用场景) 处理。需要列出候选或应用已保存选择时，按 [目录刷新](references/configuration.md#目录刷新唯一定义处两个技能共用) 判断是否执行第 2 步全量发现。
 - 不存在或已失效：继续第 1 步。
 
 ## 1. 确认宿主与当前上下文

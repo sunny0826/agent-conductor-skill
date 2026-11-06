@@ -1,0 +1,4 @@
+interface:
+  display_name: "比较不同结构"
+  short_description: "新结构没有明确先例时，比较结构不同的设计，不把改名当作探索。"
+  default_prompt: "按 $principle-exhaust-the-design-space 判断当前决定，遵守正文的适用范围和授权边界。"

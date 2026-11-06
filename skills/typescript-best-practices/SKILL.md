@@ -1,6 +1,6 @@
 ---
 name: typescript-best-practices
-description: "阅读或修改 .ts、.tsx 时，建模合法状态、校验外部输入并保持穷尽与可观察测试；不为一个检查新增框架或重构无关代码。"
+description: "修改 .ts、.tsx 的类型、接口或外部输入边界时，建模合法状态、校验外部输入并保持穷尽与可观察测试；纯阅读不启用，不为一个检查新增框架或重构无关代码。"
 ---
 
 # TypeScript 类型与边界

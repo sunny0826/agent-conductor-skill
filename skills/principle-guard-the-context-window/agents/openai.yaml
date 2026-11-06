@@ -1,0 +1,4 @@
+interface:
+  display_name: "保护上下文窗口"
+  short_description: "处理大输出、长任务或大量文件时，分阶段读取，保留必要证据并控制主上下文负担。"
+  default_prompt: "按 $principle-guard-the-context-window 判断当前决定，遵守正文的适用范围和授权边界。"

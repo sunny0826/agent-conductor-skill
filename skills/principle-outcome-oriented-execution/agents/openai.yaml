@@ -1,0 +1,4 @@
+interface:
+  display_name: "以最终状态为目标"
+  short_description: "执行已授权的计划性迁移或重写时，以完整最终状态为目标，限定中间破坏范围并验证最终行为。"
+  default_prompt: "按 $principle-outcome-oriented-execution 判断当前决定，遵守正文的适用范围和授权边界。"

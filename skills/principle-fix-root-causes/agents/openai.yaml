@@ -1,0 +1,4 @@
+interface:
+  display_name: "追到第一次出错的地方"
+  short_description: "修复问题时复现并追到系统第一次出错的地方。状态合法时，就地处理是修复；状态不该存在时，防御分支只是掩盖。"
+  default_prompt: "按 $principle-fix-root-causes 判断当前决定，遵守正文的适用范围和授权边界。"

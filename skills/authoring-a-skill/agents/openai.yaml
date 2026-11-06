@@ -1,0 +1,4 @@
+interface:
+  display_name: "编写或修改技能"
+  short_description: "用户要求创建或修改技能时，确定触发范围、产物和权限，写出精简正文并核对引用、依赖与归档；普通文档不启用。"
+  default_prompt: "使用 $authoring-a-skill 完成当前任务，遵守正文的适用范围、证据和授权边界。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "重复执行仍收敛到同一终态"
+  short_description: "有重试、启动恢复或重复执行时，从当前状态推导下一步，使部分失败后仍能收敛到同一终态。"
+  default_prompt: "按 $principle-make-operations-idempotent 判断当前决定，遵守正文的适用范围和授权边界。"
