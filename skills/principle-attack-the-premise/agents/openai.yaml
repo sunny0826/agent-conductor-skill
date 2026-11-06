@@ -1,4 +1,4 @@
 interface:
   display_name: "质疑共同前提"
   short_description: "多次修复在同一检查失败且共享同一前提时，先写下前提并直接检验，再决定下一修。"
-  default_prompt: "使用 $principle-attack-the-premise 完成当前任务，遵守正文的适用范围、证据和授权边界。"
+  default_prompt: "按 $principle-attack-the-premise 判断当前决定，遵守正文的适用范围和授权边界。"

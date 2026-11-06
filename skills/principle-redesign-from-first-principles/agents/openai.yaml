@@ -1,0 +1,4 @@
+interface:
+  display_name: "从第一性原理重新设计"
+  short_description: "新约束使结构失效时，重新设计并同步类型、调用者、文档和例子。"
+  default_prompt: "按 $principle-redesign-from-first-principles 判断当前决定，遵守正文的适用范围和授权边界。"

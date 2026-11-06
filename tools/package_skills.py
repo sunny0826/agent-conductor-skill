@@ -28,10 +28,69 @@ def validate(name):
         raise ValueError(f"Missing description: {name}")
     if not (BASE / name / "LICENSE").is_file():
         raise ValueError(f"Missing license: {name}")
-    if name == "rigor":
-        playbooks = {p.name for p in (BASE / "rigor/playbooks").glob("*.md")}
-        if len(playbooks) != 23:
-            raise ValueError("rigor does not contain 23 playbooks")
+
+
+def description(name):
+    raw = (BASE / name / "SKILL.md").read_text()
+    return re.search(r'^description: "?(.*?)"?$', raw, re.M).group(1)
+
+
+def replace_block(text, tag, body):
+    pattern = re.compile(rf"(<!-- generated:{tag} -->\n).*?(<!-- /generated -->)", re.S)
+    if not pattern.search(text):
+        raise ValueError(f"Missing generated block: {tag}")
+    return pattern.sub(lambda match: match.group(1) + body + match.group(2), text)
+
+
+def skill_list(names):
+    return "".join(f"- [{name}](../../{name}/SKILL.md)：{description(name)}\n" for name in names)
+
+
+def indexes(names):
+    principles = [name for name in names if name.startswith("principle-")]
+    tasks = [name for name in names if name not in principles]
+    catalog = BASE / "skill-help/references/catalog.md"
+    principle_index = BASE / "rigor/references/principles.md"
+    return {
+        catalog: replace_block(catalog.read_text(), "skills", skill_list(tasks)),
+        principle_index: replace_block(principle_index.read_text(), "principles", skill_list(principles)),
+    }
+
+
+def readme(results):
+    path = ROOT / "README.md"
+    by_name = {item["archive"].removesuffix(".zip"): item for item in results}
+    principles = [name for name in by_name if name.startswith("principle-")]
+    tasks = [name for name in by_name if name not in principles]
+    text = re.sub(
+        r"本仓库提供 \d+ 个任务技能和 \d+ 个原则技能",
+        f"本仓库提供 {len(tasks)} 个任务技能和 {len(principles)} 个原则技能",
+        path.read_text(),
+    )
+    text = re.sub(r"(?m)^\d+ 个原则技能按需读取", f"{len(principles)} 个原则技能按需读取", text)
+    text = re.sub(
+        r"\[下载\]\(dist/([\w-]+)\.zip\)（\d+ 个技能，\d+ 个文件）",
+        lambda match: (
+            f"[下载](dist/{match.group(1)}.zip)"
+            f"（{len(by_name[match.group(1)]['skills'])} 个技能，{by_name[match.group(1)]['files']} 个文件）"
+        ),
+        text,
+    )
+    rows = "".join(
+        f"| [{name}](skills/{name}/SKILL.md) | {description(name)} | "
+        f"[{by_name[name]['files']} 个文件](dist/{name}.zip) |\n"
+        for name in tasks
+    )
+    return {path: replace_block(text, "readme", "| 技能 | 用途 | ZIP |\n|---|---|---|\n" + rows)}
+
+
+def sync(generated, check):
+    for path, text in generated.items():
+        if path.read_text() == text:
+            continue
+        if check:
+            raise ValueError(f"{path.relative_to(ROOT)} is stale; run tools/package_skills.py")
+        path.write_text(text)
 
 
 def dependencies(directory):
@@ -95,8 +154,11 @@ def main():
     names = skill_names()
     for name in names:
         validate(name)
+    sync(indexes(names), args.check)
+    for name in names:
         dependencies(BASE / name)
     results = [package(name, closure([name]), args.check) for name in names]
+    sync(readme(results), args.check)
     if args.json:
         print(json.dumps(results, ensure_ascii=False, indent=2))
         return
