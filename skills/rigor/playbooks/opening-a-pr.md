@@ -8,6 +8,6 @@
 
 采用项目标题约定，适合时 Conventional Commits type(scope): subject。说明先讲具体问题和结果，再写变化、范围、值得评审的取舍、真实影响和验证；空项省略，证据链接到真实产物，不贴整段日志／SHA 列表。性能一项主要数字带单位，其他方法与数据留证据。
 
-优先宿主明确提供的 PR 工具，核对身份、仓库、base、head、实际权限；缺工具 CLI 仅已存在且适用才用，body 用结构参数或文件不插 shell 文本。独立工作从 trunk，依赖子项明确 parent branch，按项目约定选择 ready／draft，不无视用户草稿要求。
+优先宿主明确提供的 PR 工具，核对身份、仓库、base、head、实际权限；缺工具 CLI 仅已存在且适用才用，body 用结构参数或文件不插 shell 文本。独立工作从 trunk，依赖子项明确 parent branch，按项目约定选择 ready／draft，不无视用户草稿要求。在已获全链路或并行审查授权的场景下，本地纯净快照门通过后优先推 **Draft PR**，并行启动远端 CI（轨 A）与零历史污染的独立审查（轨 B）；独立审查包未绑定当前 Head SHA 完成前不转 `Ready`。
 
-创建后读回真实 URL 与状态，不能伪造。创建 PR 不等于启动 babysit，更不授权 merge；继续本来阶段，用户要求处理状态才 [Babysit](babysit.md)。已授权 autopilot owner 才按其 brief 进入后续流程。
+创建后读回真实 URL 与状态，不能伪造。创建 PR 不等于启动 babysit，更不授权 merge；继续本来阶段，用户要求处理状态才 [Babysit](babysit.md)。已授权全链路或 autopilot owner 才按其 brief 进入后续双轨收敛流程。

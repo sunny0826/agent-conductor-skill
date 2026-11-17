@@ -2,7 +2,7 @@
 
 前提是用户明确授权 merge／land／ship 或 merge-when-ready；Babysit 或绿 CI 不提供合并权。
 
-1. 固定实际 forge、仓库、目标分支与自底向上 PR 列表，每 PR 独立验证 parent 与 head 的真实负载／用户路径。验证者不能是作者，记录实际身份和 PASS／PASS+NOTES／FAIL，缺独立能力不宣称安全。对外发布评语须已有授权。
+1. 固定实际 forge、仓库、目标分支与自底向上 PR 列表，每 PR 独立验证 parent 与 head 的真实负载／用户路径。验证者与审查者不能是作者、集成者或本轮方案设计者，记录实际身份和 PASS／PASS+NOTES／FAIL；独立审查未绑定当前 head SHA 就绪前（即使远端 CI 已全绿）保持 `Draft`，不转 `Ready`，缺独立能力不宣称安全。对外发布评语须已有授权。
 2. 从最低未合并项只取连续获证段，遇第一缺口停；上层虽通过也不可跳过父项。
 3. 固定验证的 base SHA、head SHA 和稳定 patch-id。合并前核对当前差异；不变 patch 也要刷新 CI 与 mergeability。patch 改变则重新验证受影响行为。只有文档／测试／lint 差异时，对依赖构建的 lane 在旧版构建两次、新版一次区分噪声或嵌入 SHA；无构建产物的 dev session 不复用。不能用提交消息相同替代证明。
 4. 仅准备当前最低 PR：获取最新 trunk，必要时在已授权拥有者分支变基，先核远端再只用 force-with-lease，不改共享分支；只 retarget 当前底项，变基后重做版本／patch 适用性和当前检查。
