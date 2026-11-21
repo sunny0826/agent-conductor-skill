@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Check skill packaging metadata
+        run: python3 tools/package_skills.py --check
+
+      - name: Lint skills
+        run: node tools/lint-skills.mjs
+
+      - name: Run Node tests
+        run: node --test tools/*.test.mjs
+
+      - name: Run Python tests
+        run: python3 -B -m unittest discover -s tools -p "test_*.py" -v
+
+      - name: Build and verify deterministic archives
+        run: |
+          python3 tools/package_skills.py
+          python3 tools/package_skills.py --check --verify-dist
+
+      - name: Upload packaged skill archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-archives
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    needs: verify
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: skill-archives
+          path: dist
+
+      - name: Publish skill archives to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --generate-notes
+          gh release upload "$TAG" dist/*.zip --clobber

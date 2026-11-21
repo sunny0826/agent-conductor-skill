@@ -123,3 +123,53 @@ test("CLI filters one archive date and prints JSON", async () => {
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+test("CLI finds archives across positive and negative UTC date boundaries", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "archived-sessions-tz-"));
+  try {
+    const shanghaiBoundaryId = "00000000-0000-4000-8000-000000000011";
+    const newYorkBoundaryId = "00000000-0000-4000-8000-000000000012";
+    await writeFile(
+      path.join(dir, "2030-01-02.log"),
+      `${line("2030-01-02T23:07:49.702Z", shanghaiBoundaryId)}\n`,
+    );
+    await writeFile(
+      path.join(dir, "2030-01-06.log"),
+      `${line("2030-01-06T02:00:00.000Z", newYorkBoundaryId)}\n`,
+    );
+
+    const shanghai = await run(process.execPath, [
+      TOOL,
+      "--log-root",
+      dir,
+      "--date",
+      "2030-01-03",
+      "--time-zone",
+      "Asia/Shanghai",
+      "--json",
+    ]);
+    const shanghaiReport = JSON.parse(shanghai.stdout);
+    assert.deepEqual(
+      shanghaiReport.events.map((event) => event.sessionId),
+      [shanghaiBoundaryId],
+    );
+
+    const newYork = await run(process.execPath, [
+      TOOL,
+      "--log-root",
+      dir,
+      "--date",
+      "2030-01-05",
+      "--time-zone",
+      "America/New_York",
+      "--json",
+    ]);
+    const newYorkReport = JSON.parse(newYork.stdout);
+    assert.deepEqual(
+      newYorkReport.events.map((event) => event.sessionId),
+      [newYorkBoundaryId],
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});

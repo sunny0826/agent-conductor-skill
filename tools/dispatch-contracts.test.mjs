@@ -21,15 +21,15 @@ function verificationPackage() {
 function implementationPackage() {
   return `任务包类型：实施
 
-你是 studio-shell 这一个 PR 的 owner。角色是 worker+。执行身份：被派会话自身执行，确需再分工先回报协调者重派。
+你是 example-shell 这一个 PR 的 owner。角色是 worker。执行身份：被派会话自身执行，确需再分工先回报协调者重派。
 
-只能改这些文件：studio/internal/pages/window.go。
+只能改这些文件：app/internal/pages/window.go。
 
 失败基线：主干全绿；完成判定为相对基线无新增失败，预存失败列出。
 
-验证：在 studio/ 目录执行 go test ./internal/pages/ -count=1。
+验证：在 app/ 目录执行 go test ./internal/pages/ -count=1。
 
-检查通过后，只在 studio-shell 上提交你改的文件，git push 后用 gh pr create 开一个普通 PR。
+检查通过后，只在 example-shell 上提交你改的文件，git push 后用 gh pr create 开一个普通 PR。
 
 完成回执必须包含：工作目录、分支名、head 完整 SHA、PR URL、测试命令的退出码。测试没过就不要开 PR，回报失败输出。`;
 }
@@ -66,20 +66,20 @@ test("packages without a receipt channel are rejected", () => {
   assert.equal(result.code, 1);
   assert.match(result.output, /receipt/);
 });
-test("real 2026-10-16 suppression package is caught with all five problems", () => {
-  // Verbatim shape of the dispatch package sent to session 143e2c10 on
-  // 2026-10-16 (prose kept, file lists trimmed to one entry).
+test("suppression package is caught with all five problems", () => {
+  // Legacy package shape carrying suppression opener, missing type, missing
+  // execution identity, and missing failure baseline.
   const pkg = `只执行任务，不要进行额外的思考，不要自作主张
 
-你是 studio-shell 这一个 PR 的替代 owner。角色是 worker+。上一个会话已结束，不要续用它。它没有改任何文件。
+你是 example-shell 这一个 PR 的替代 owner。角色是 worker。上一个会话已结束，不要续用它。它没有改任何文件。
 
-计划只读：studio/docs/plans/studio-ux.md 的「Show the shell (studio-shell)」一节。不要改这份计划。
+计划只读：app/docs/plans/ux.md 的「Show the shell」一节。不要改这份计划。
 
-只能改这些文件：studio/internal/pages/window.go
+只能改这些文件：app/internal/pages/window.go
 
-验证：在 studio/ 目录执行 go test ./internal/pages/ -count=1，再跑 go vet ./...。不要启动模型服务。
+验证：在 app/ 目录执行 go test ./internal/pages/ -count=1，再跑 go vet ./...。不要启动模型服务。
 
-提交与 PR：检查通过后，只在 studio-shell 上提交你改的文件。不要改 git config，不要 --no-verify，不要提交 main，不要合并。然后 git push -u origin studio-shell，并用 gh pr create 开一个普通 PR，base 是 main。
+提交与 PR：检查通过后，只在 example-shell 上提交你改的文件。不要改 git config，不要 --no-verify，不要提交 main，不要合并。然后 git push -u origin example-shell，并用 gh pr create 开一个普通 PR，base 是 main。
 
 完成回执必须包含：工作目录、分支名、head 完整 SHA、PR URL、测试命令的退出码、改过的文件清单。测试没过就不要开 PR，回报失败输出。`;
   const result = checkDispatch(pkg);
@@ -138,8 +138,8 @@ test("stdin input works like a file argument", () => {
 });
 
 test("quoted regex literals do not read as write grants", () => {
-  // Shape of the review package sent to session 5a7ce307 on 2026-10-16: it
-  // quotes this linter's own grant regex, which v1 misread as a write grant.
+  // Review packages quoting this linter's own grant regex must not be misread
+  // as granting writes.
   const pkg = `任务包类型：只读审查
 
 只挑代码和文档中的问题，不要修改。
@@ -155,8 +155,8 @@ test("quoted regex literals do not read as write grants", () => {
 });
 
 test("receipt variants from real packages are recognized", () => {
-  // 2026-10-17 shapes: session 4cdd5eeb used 最终回复 + approve/request
-  // changes; session 870b9943 used 最终完整报告直接回复父会话.
+  // Common Chinese receipt variants: 最终回复 + approve/request changes, and
+  // 最终完整报告直接回复父会话.
   for (const receipt of [
     "最终回复第一行只能是 approve 或 request changes。",
     "最终完整报告直接回复父会话，宿主自动回传。",
@@ -172,11 +172,11 @@ test("receipt variants from real packages are recognized", () => {
 });
 
 test("file-write grants are treated as implementation packages", () => {
-  // Shape of the packages sent to sessions 141a538a/83ff5cc8 on 2026-10-17:
-  // product-file writes with no VCS wording; v1 classified them read-only.
+  // Product-file writes without VCS wording must still classify as
+  // implementation packages.
   const pkg = `任务包类型：实施
 
-实现持久 journal。自身执行，不再分工；你不是唯一写者，禁止覆盖他人改动。产品唯一写入：firmware/grokbot/main/voice_journal.cpp（新建）、firmware/grokbot/tests/voice_journal_test.cpp（新建）。
+实现持久 journal。自身执行，不再分工；你不是唯一写者，禁止覆盖他人改动。产品唯一写入：firmware/example/main/voice_journal.cpp（新建）、firmware/example/tests/voice_journal_test.cpp（新建）。
 
 失败基线：现 voice.cpp 阻塞 Read 时不能 Idle，基线证明已落盘；journal 是新模块，完成判定为对上述行为有可观察验证。
 
@@ -206,8 +206,7 @@ test("unrecognized and missing package types are rejected", () => {
   for (const [pkg, diagnostic] of [
     ["任务包类型：调研\n\n允许只读命令：读取源码。发现问题时回报。", /unrecognized package type/],
     ["允许只读命令：读取源码。发现问题时回报。", /no package-type declaration/],
-    // Real 2026-10-18 sample (session 0923abac, analyze-native-launch.md): the
-    // v2 substring branch /只读|审查|验证/ silently accepted this value.
+    // Substring match must not silently accept out-of-contract type labels.
     ["任务包类型：只读调查\n\n你是核对员。允许只读命令：读取源码。\n\n发现问题时回报。", /unrecognized package type "只读调查"/],
   ]) {
     const result = checkDispatch(pkg);
@@ -217,9 +216,7 @@ test("unrecognized and missing package types are rejected", () => {
 });
 
 test("declared review packages need a command boundary", () => {
-  // Shape of the package sent to session 0f57c6c8 on 2026-10-17: it listed two
-  // ordered commands but no allowed-command boundary; a sibling reviewer then
-  // ran unscoped go vet/go test.
+  // Ordered commands without an explicit allowed-command boundary must fail.
   const pkg = `任务包类型：只读审查
 
 只挑代码和文档中的冗余。不要修改任何文件，不要提交，不要推送，不要切分支。先跑 git show --stat bb23e19 和 git show bb23e19。
@@ -234,9 +231,8 @@ test("declared review packages need a command boundary", () => {
 });
 
 test("review packages quoting audited grants are not misread as write grants", () => {
-  // Adversarial shapes from the 2026-10-17 review of this branch: prose
-  // citations of the audited package's boundaries and denials must not read
-  // as grants of this package.
+  // Prose citations of an audited package's boundaries and denials must not
+  // read as grants of the review package itself.
   for (const pkg of [
     `任务包类型：只读审查
 
@@ -273,12 +269,12 @@ test("bare boundary words do not satisfy the command-boundary check", () => {
 });
 
 test("alternative boundary wordings pass", () => {
-  // Real wordings seen in 2026-10-17 packages: 可用 X/Y/Z 运行 (dc7d1548
-  // line), 可以执行的命令 (adversarial), 验证命令在…运行： (f1da85e9).
+  // Acceptable boundary phrasings: 可用 X/Y/Z 运行, 可以执行的命令,
+  // 验证命令在…运行：.
   for (const boundary of [
     "可用 rg/cat/git diff 和 .venv Python 运行临时数据库检查（仅 /tmp 瞬态写入）。",
     "可以执行的命令：git diff、git show、读取源码。不跑任何其他东西。",
-    "验证命令在 studio/ 目录运行：两条 go test 命令。",
+    "验证命令在 app/ 目录运行：两条 go test 命令。",
   ]) {
     const pkg = `任务包类型：只读审查\n\n审查未提交 diff。${boundary}\n\n回执：第一行 approve 或 request changes。`;
     const result = checkDispatch(pkg);
@@ -309,5 +305,22 @@ test("long quoted regex literals and 最终结论 receipts are handled", () => {
   const result = checkDispatch(pkg);
   assert.equal(result.code, 0, result.output);
   assert.match(result.output, /read-only/);
+});
+
+test("mixed negation and write-grant clauses in one sentence still count as write grants", () => {
+  for (const mixed of [
+    "你可以 git commit，但不要 git push。",
+    "不要 git push，但可以 git commit。",
+    "Do not modify docs, but you may git commit.",
+  ]) {
+    const pkg = `任务包类型：只读审查
+
+允许只读命令：git diff、读取源码。${mixed}
+
+回执：approve 或 request changes。`;
+    const result = checkDispatch(pkg);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, /declared read-only\/review but the text grants writes/);
+  }
 });
 

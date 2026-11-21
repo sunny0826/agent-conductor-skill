@@ -51,7 +51,7 @@ Lody 工具不可用（非 Lody 宿主）时，走附录的本地扫描兜底路
 - **落点**（派发需要在本地项目内工作且已有约定未覆盖时询问，角色或显式组合、同机或跨机均可）：落点机器不由本询问项决定——显式组合的机器随组合选定，Agent 角色的机器由其目录行决定；本项只询问**该落点机器上的项目**。落点机器是当前机器时默认项为"当前项目"；跨机器时默认纯 chat（或列出该机器上的项目供选择）。项目 id 一律用 `lody_session_create_options` 的 `machineId=<实际落点机器> + localProjectQuery` 解析。不指定落点时以纯 chat 启动。
 - **预算**：继承 / 节省 / 均衡 / 高质量。映射到该 Agent 配置实际声明的 `reasoningEffortValues`；未声明档位时保持 `inherit`，不臆造档位。选择 Agent 角色时预算不参与派发（角色目录行覆盖），仅作偏好记录。
 - **生效范围**：仅本次会话 / 写入项目 `.agent-conductor/models.json`。
-- **外部记忆**：是否把结果存入 Nowledge Mem。默认不存；已有授权覆盖本次内容时沿用，不重复询问。
+- **外部记忆**：是否把结果存入外部记忆（若当前宿主提供外部记忆工具）。默认不存；已有授权覆盖本次内容时沿用，不重复询问。
 
 已有配置中的组合失效（机器离线、配置不可用、模型从目录消失）时，列出失效原因让用户决定替换还是回退继承。缺少价格或质量证据时不根据模型名字臆测成本和能力。
 
@@ -60,9 +60,10 @@ Lody 工具不可用（非 Lody 宿主）时，走附录的本地扫描兜底路
 | 角色 | 职责 | 选择依据 |
 |---|---|---|
 | coordinator | 分流、拆解、汇总与授权判断 | 固定为当前主会话（`inherit`） |
+| architect | 结构设计、模块边界与方案比较 | 擅长系统设计与跨模块推演的主力模型或角色 |
 | implementer | 主力代码实现与跨模块改动 | 优先匹配预算的主力编码模型或角色，避免用超轻量模型承担复杂重构引发多轮返工 |
-| reviewer | 结构和差异审查 | 零历史污染的新会话；`T2` 或跨模型对抗审查须与另一审阅席位（如 `挑刺者`）错开底层模型家族 |
-| verifier | 独立运行验证、测量与轻量辅助任务 | 工具权限匹配的独立会话或轻量角色（如 `worker-fast`），不复用本轮实施会话 |
+| reviewer | 方案反证、代码与契约审查 | 代码审查另开独立会话。`T2` 第二席可复用已获准的其他角色（如轻量执行角色），须核对目标机器上的模型家族与主审查角色不同，并按只读审查派发 |
+| verifier | 独立运行验证、测量与轻量辅助任务 | 工具权限匹配的独立会话或轻量执行角色，不复用本轮实施会话 |
 | writer | 文档与交付说明 | 用户偏好及任务所需的表达能力 |
 
 由 `agent-conductor` 在普通任务中调用时，自动完成必要发现并按配置约定复用有效选择，不重新设置角色；默认只建立会话映射。失效选择和保存请求仍按上述约定处理。
@@ -71,7 +72,7 @@ Lody 工具不可用（非 Lody 宿主）时，走附录的本地扫描兜底路
 
 按 [配置约定](references/configuration.md) 生成 `schema_version=2` 配置。只有 `callable` 组合可写为显式选择；`catalog_unknown` 条目不写入显式选择。保留必要诊断（失效项、unknown 条目数）。
 
-已有落盘授权覆盖本次配置时，写入项目 `.agent-conductor/models.json`，保留无关字段，原子替换，写入后做一次 JSON 校验。只写角色、Lody ID（`machineId`/`agentConfigId`/`agentRoleId`/`modelId`）、推理档位、模式开关、配置选项值（`configOptionValues`）、机器基线字段和非敏感标签，不写凭证或本地绝对路径。
+已有落盘授权覆盖本次配置时，写入项目 `.agent-conductor/models.json`，保留无关字段，原子替换，写入后做一次 JSON 校验。只写角色、Lody ID（`machineId`/`agentConfigId`/`agentRoleId`/`agentRoleMachineId`/`modelId`）、推理档位、模式开关、配置选项值（`configOptionValues`）和非敏感标签，不写凭证或本地绝对路径。
 
 已有外部保存授权覆盖本次摘要时，只存能力快照摘要（机器数、配置数、组合数、各角色选择）与时间，不存完整目录。
 
@@ -80,7 +81,7 @@ Lody 工具不可用（非 Lody 宿主）时，走附录的本地扫描兜底路
 派发使用 `lody_session_create` / `lody_session_create_many`：
 
 - 显式组合传 `machineId + agentConfigId + modelId`，该配置声明了 `reasoningEffortValues` 才传 `reasoningEffort`；按需传 `modeId`、`fastMode`、`planMode`、`configOptionValues`（取值必须来自该配置 `runConfig` 的选项列表）。
-- 角色派发传 `agentRoleId`；**`machineId`/`agentConfigId`/模型/推理参数会被角色目录行覆盖，一律不传**。
+- 角色派发传 `agentRoleId`，多机绑定时用 `agentRoleMachineId` 选定目标机器上的绑定；**`machineId`/`agentConfigId`/模型/推理参数会被角色目录行覆盖，一律不传**。
 - 需要在本地项目内工作时传 `workContext`：项目 id 用 `lody_session_create_options` 的 `machineId + localProjectQuery` 解析，其中 `machineId` 必须是**实际落点机器**（显式组合即所选 `machineId`；角色派发即角色目录行的机器）；不传则以纯 chat 启动。
 - `inherit` 省略所有模型覆盖参数。
 - 权限与模式选择不得超出用户授予调用方的授权范围。

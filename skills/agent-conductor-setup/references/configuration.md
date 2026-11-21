@@ -11,6 +11,7 @@
   "catalog_snapshot": "2026-10-08",
   "roles": {
     "coordinator": { "selection": "inherit" },
+    "architect": { "selection": "inherit" },
     "implementer": { "selection": "inherit" },
     "reviewer": { "selection": "inherit" },
     "verifier": { "selection": "inherit" },
@@ -18,6 +19,8 @@
   }
 }
 ```
+
+配置槽位与角色提示词模板键（`agent-conductor/assets/role-skill-instructions.json`）的对应关系：`coordinator → coordinator`、`architect → architect`、`implementer / verifier → worker`、`reviewer → reviewer`、`writer → writer`。
 
 `budget` 允许值为 `inherit`（继承）、`economy`（节省）、`balanced`（均衡）和 `quality`（高质量）。后三项是选择偏好，不是费用上限或模型参数：先依照用户偏好选模型，再依照该 Agent 配置 `runConfig.reasoningEffortValues` 中实际存在的档位映射推理预算；配置未声明档位时保留 `inherit`。角色选择为 `role` 时 budget 不参与派发（角色目录行覆盖推理档位），仅作偏好记录。用户明确给出的费用上限需要通过实际执行接口落实，不能声称这份配置已限制费用。
 
@@ -54,7 +57,8 @@
 ```json
 {
   "selection": "role",
-  "agentRoleId": "<lody_agent_role_list 返回的 id>"
+  "agentRoleId": "<lody_agent_role_list 返回的 id>",
+  "agentRoleMachineId": null
 }
 ```
 
@@ -78,7 +82,7 @@
 - `coordinator` 出现非 `inherit` 条目（如手改配置写入 `explicit`/`role`）时视为失效，按 `inherit` 处理并向用户提示。
 - 占位符必须替换为当次 `lody_machine_list` / `lody_agent_config_list` / `lody_agent_role_list` 实际返回的 id 后才可保存。
 - `modelId`、`reasoningEffort`、`modeId`、`configOptionValues` 等取值必须来自该 Agent 配置 `runConfig` 声明的列表；配置未声明的字段保持 null 并在派发时省略。`configOptionValues` 为 null 或对象，用于完整复现派发意图。
-- 已选条目为 `selection: "role"` 时，派发参数以角色目录行为准，其模型、推理与权限覆盖手动参数；这不改变上述用户选择优先级。保存前用 `lody_agent_role_get` 核对 prompt 前缀是否符合用户预期；模型/推理/权限以 `lody_agent_role_list` 目录行为准。
+- 已选条目为 `selection: "role"` 时，派发参数以角色目录行为准，其模型、推理与权限覆盖手动参数；多机绑定角色在 `agentRoleMachineId` 记录目标机器 id 并在派发时传入，单机角色保持 `null` 且派发时省略。这不改变上述用户选择优先级。保存前用 `lody_agent_role_get` 核对 prompt 前缀是否符合用户预期；模型/推理/权限以 `lody_agent_role_list` 目录行为准。
 - 只有 `callable`（机器在线且配置可用性状态明确为可用）的组合可写为显式选择；`catalog_unknown` 条目不写入。
 - 不得接受 id 或取值中的 shell 命令、换行或凭证。
 
@@ -90,7 +94,7 @@
 
 Lody 目录条目的可用性判定**以实际返回字段为准**：明确可用的标记 `callable`；字段缺失、状态无法识别或结构不符预期的标记 `catalog_unknown`，不臆造字段名。目录确认的是派发接口接受的组合，不等于认证、推理、质量、费用或性能实测。
 
-本地兜底扫描（`scripts/discover_local.py`）只输出白名单元数据，分级为 `installed` / `configured` / `catalog`，不升级为 `callable`。需要 Python 3；TOML 读取使用 Python 3.11+ 的 `tomllib`。只读列表失败时报告诊断，不自动刷新、登录或启动服务。
+本地兜底扫描（`<本技能目录>/scripts/discover_local.py`）只输出白名单元数据，分级为 `installed` / `configured` / `catalog`，不升级为 `callable`。需要 Python 3；TOML 读取使用 Python 3.11+ 的 `tomllib`。只读列表失败时报告诊断，不自动刷新、登录或启动服务。
 
 ## 保存边界
 

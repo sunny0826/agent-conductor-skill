@@ -4,7 +4,7 @@
 
 用实际源码确定边界、约定、入口与命令。状态驱动的界面（按状态/阶段分发动作或文案）必须从解析器或契约声明的枚举全集逐个推导分支清单，禁止照抄旧界面已实现的 switch——旧 switch 只是被实现过的子集，会把旧代码的遗漏继承进新设计。复杂范围可按已有授权与实际能力独立调查，不能假定固定的 Agent 名称或云模型。复制 [计划模板](../assets/plan-template.md)，填每个占位，默认项目约定 docs 路径，每 PR 一可验证单元；保留模板字段顺序。执行流程按独立队列选 [full](autopilot-full.md)、用户落地选 [stack](autopilot-stack.md)，跨会话 standing program 选 [Orchestrate](orchestrate.md)。
 
-按 [technical-writing](../../technical-writing/SKILL.md) 写主体 how-to，解释／参考进附录，再用 [unslop](../../unslop/SKILL.md)。复制模板到计划目录时，将技能与参考链接改成从计划位置可解析、且执行者能读取的实际路径，不能原样沿用模板目录的相对路径。模板固定英文结构标签供确定性检查，字段内容可中文；不对中文强制英语标点规则。运行本技能 `scripts/check-plan.mjs <plan.md>`（Node），修每项诊断。结构通过不证明计划可执行、指标真实或产品已验证。
+按 [technical-writing](../../technical-writing/SKILL.md) 写主体 how-to，解释／参考进附录，再用 [unslop](../../unslop/SKILL.md)。复制模板到计划目录时，将技能与参考链接改成从计划位置可解析、且执行者能读取的实际路径，不能原样沿用模板目录的相对路径。模板固定英文结构标签供确定性检查，字段内容可中文；不对中文强制英语标点规则。运行 `node <本技能目录>/scripts/check-plan.mjs <plan.md>`，修每项诊断。结构通过不证明计划可执行、指标真实或产品已验证。
 
 ## 验证合同
 

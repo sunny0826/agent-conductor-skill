@@ -4,11 +4,10 @@
 // sending. Pre-send linting only proves the file is clean.
 //
 // A host may also inject the configured promptPrefix of the child's Agent Role
-// in front of the message. On 2026-10-24 the worker+ and Reviewer roles both had
-// such prefixes; the eleven "prepended" dispatches blamed on send-time edits in
-// 2026-10-22/23 were those configured prefixes, not rewritten text. Resolve the
-// role prefix from the child session (or pass --role-prefix) and compare the
-// message body, so a legitimate role prefix is not reported as pollution.
+// in front of the message, which can look like a prepended opener if checked
+// naively. Resolve the role prefix from the child session (or pass
+// --role-prefix) and compare the message body, so a legitimate role prefix is
+// not reported as pollution.
 //
 // Usage:
 //   node check-sent-dispatch.mjs <message.md> --session <childSessionId>
@@ -85,7 +84,7 @@ if (!lintMode) {
 }
 
 function lodyJson(lodyArgs, label) {
-  const result = spawnSync("lody", lodyArgs, { encoding: "utf8" });
+  const result = spawnSync("lody", lodyArgs, { encoding: "utf8", maxBuffer: 200 * 1024 * 1024 });
   if (result.error) throw new Error(`cannot run lody: ${result.error.message}`);
   if (result.status !== 0) {
     throw new Error(`lody ${label} exited ${result.status}: ${(result.stderr || "").trim()}`);

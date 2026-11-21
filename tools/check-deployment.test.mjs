@@ -70,6 +70,18 @@ test("host files such as .DS_Store do not count as drift", async (t) => {
   assert.equal(report.ok, true);
 });
 
+test("an omitted deploy root without SKILL_DEPLOY_ROOT is an error", async () => {
+  const prev = process.env.SKILL_DEPLOY_ROOT;
+  delete process.env.SKILL_DEPLOY_ROOT;
+  try {
+    const report = await checkDeployment({ skillsBase: SKILLS, deployRoot: "" });
+    assert.equal(report.ok, false);
+    assert.match(report.error, /deploy root is required/);
+  } finally {
+    if (prev !== undefined) process.env.SKILL_DEPLOY_ROOT = prev;
+  }
+});
+
 test("an unknown skill name is reported", async (t) => {
   const root = await fixture();
   t.after(() => rm(root, { recursive: true, force: true }));
