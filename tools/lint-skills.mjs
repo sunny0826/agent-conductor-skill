@@ -11,7 +11,6 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const MAX_SKILL_BYTES = 20 * 1024;
-const WRAPPER = "以下保留上游原则原文；只在当前任务与既有授权内应用，不因此扩大重构、自动提交、变基、删除用户数据或修改外部系统。";
 const TRIGGER = /用于|时[，,：]|前[，,：]|当/;
 const BARE_SCRIPT = /(?:node|python3?|bash|sh)\s+scripts\/|包内 `scripts\/|本技能 `scripts\/|（`scripts\//;
 const LINK = /\]\(([^)]+)\)/g;
@@ -74,7 +73,6 @@ for (const name of names) {
     fail(`SKILL.md is ${Buffer.byteLength(raw)} bytes, over the ${MAX_SKILL_BYTES} budget — move detail to references or a script`);
   }
   if (!fs.existsSync(path.join(dir, "agents/openai.yaml"))) fail("missing agents/openai.yaml");
-  if (name.startsWith("principle-") && !raw.includes(WRAPPER)) fail("missing the canonical principle wrapper sentence");
 
   for (const doc of walkMarkdown(dir)) {
     const docRaw = fs.readFileSync(doc, "utf8");

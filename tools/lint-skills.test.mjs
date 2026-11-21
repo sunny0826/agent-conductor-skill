@@ -56,10 +56,6 @@ test("a skill without agent metadata is rejected", () => {
   withSkill(goodSkill, (dir) => assert.match(runLint(dir).output, /missing agents\/openai.yaml/), { yaml: false });
 });
 
-test("a principle without the canonical wrapper is rejected", () => {
-  withSkill(goodSkill, (dir) => assert.match(runLint(dir).output, /canonical principle wrapper/), { name: "principle-sample" });
-});
-
 test("every playbook needs an index entry with routing text", () => {
   withSkill(goodSkill, (dir) => {
     const rigor = path.join(dir, "skills/rigor");

@@ -20,8 +20,8 @@
 
 ## 七阶段
 
-1. Frame：固定可计数完成条件、单元、工作量、stack 与预算；有争议的分解或单向决策用包内 [arena](../../arena/SKILL.md)。可逆准备继续。预算约 70% 时停止新派发、收敛已获证工作；未达原目标明确报告剩余，不能把预算当完成。少量工作直接做。
-2. 建存储：先 orders、再 [决策日志](../../show-me-your-work/SKILL.md)，从真实 Git／forge 固定初始 frontier。
+1. Frame：固定可计数完成条件、单元、工作量、stack 与预算；有争议的分解或单向决策用包内 [arena](../../architect/references/arena.md)。可逆准备继续。预算约 70% 时停止新派发、收敛已获证工作；未达原目标明确报告剩余，不能把预算当完成。少量工作直接做。
+2. 建存储：先 orders、再 `decisions.tsv`（按 [持久存储契约](../references/program-store.md) 记录时间、阶段、决定、原因、证据、结果），从真实 Git／forge 固定初始 frontier。
 3. Pilot：一单元跑 brief、实施、验证、入链、ledger、落地，先证伪契约再放大。廉价相似单元的第一个正常获证项即可；昂贵新形状才完整独立 pilot，不把所有工作串行等待。
 4. Scale：滚动窗口补位，在 drain 后重算 ready；报告传下游，兄弟只向上沟通；抽样 audit 不阻挡当前 wave。
 5. Drain：按下面固定点冻结并处理一批，不在通知内深入 review diff。

@@ -11,13 +11,13 @@ Rigor 匹配工程流程，并在某项决定需要时读取对应原则。发�
 
 ## 先确定可证明的目标
 
-明确完成条件、范围与授权，读取实际项目约定。用户给出具体环境入口（本地配置文件、集群上下文、命令）时，先用该入口验证；被纠正后停止沿用旧入口，不反复探测其他机器。实施前需要澄清现有路径时用 [how](../how/SKILL.md) 追踪，涉及动机用 [why](../why/SKILL.md)。先命名数据形状与 [领域结构](../principle-model-the-domain/SKILL.md)，非机械接口／归属变更用 [architect](../architect/SKILL.md)。可观察的行为分歧应调查或做隔离原型，不能把可运行的问题交用户猜；真正产品偏好或必需授权仍由用户决定。用户明确选择一个选项（包括「保持默认／不设置」）后，按该选项实现；需要偏离时先说明并取得同意，不用行为相同或防御性理由替代用户决定。
+明确完成条件、范围与授权，读取实际项目约定。用户给出具体环境入口（本地配置文件、集群上下文、命令）时，先用该入口验证；被纠正后停止沿用旧入口，不反复探测其他机器。实施前需要澄清现有路径时用 [how](../how/SKILL.md) 追踪，涉及动机用 [why](../why/SKILL.md)。先命名数据形状与 [领域结构](references/principles.md#先定数据结构与领域模型)，非机械接口／归属变更用 [architect](../architect/SKILL.md)。可观察的行为分歧应调查或做隔离原型，不能把可运行的问题交用户猜；真正产品偏好或必需授权仍由用户决定。用户明确选择一个选项（包括「保持默认／不设置」）后，按该选项实现；需要偏离时先说明并取得同意，不用行为相同或防御性理由替代用户决定。
 
-采用哪个原则就先读 [原则叶目录](references/principles.md) 的完整条目，说明它改变了哪项具体决定，不罗列所有标签。多步工作记录阻塞前置、独立工作流、共享可变状态和最小安全分解；不适用写原因。
+采用哪个原则就先读 [原则清单](references/principles.md) 的完整条目，说明它改变了哪项具体决定，不罗列所有标签。多步工作记录阻塞前置、独立工作流、共享可变状态和最小安全分解；不适用写原因。
 
 ## 匹配执行流程
 
-用 [流程目录](references/playbooks.md) 匹配任务，读取对应文件，把实际步骤放入待办，跳过项保留原因。复杂、跨范围或没有窄流程匹配时用 [figure-it-out](../figure-it-out/SKILL.md) 设计一次执行；持续多日项目才用 Orchestrate，单任务完成条件用 Autonomous run，不因为措辞宏大强行上多层调度。
+用 [流程目录](references/playbooks.md) 匹配任务，读取对应文件，把实际步骤放入待办，跳过项保留原因。复杂、跨范围或没有窄流程匹配时用 [figure-it-out](playbooks/figure-it-out.md) 设计一次执行；持续多日项目才用 Orchestrate，单任务完成条件用 Autonomous run，不因为措辞宏大强行上多层调度。
 
 只读调查和只做计划不能自动进入开 PR。PR 状态问题选 Babysit 的明确模式；合并请求才选 Shipping，绿 CI 不是独立行为证明。长期工作只用宿主真实活动句柄、事件或定时能力；缺能力交付状态和缺口，不自行启动 Agent CLI 冒充派发或循环。
 
@@ -27,15 +27,15 @@ Rigor 匹配工程流程，并在某项决定需要时读取对应原则。发�
 
 按实际可用工具与用户已有模型选择派发，必要时用包内 [setup](../agent-conductor-setup/SKILL.md)，不复制其他宿主的模型规则、不硬编码家族或自动付费回退。独立性和实际身份须记录；同模型多人不是跨模型。
 
-覆盖／竞赛用 [swarm](../swarm/SKILL.md)，同问题选基础并合成用 [arena](../arena/SKILL.md)，对抗审核用 [interrogate](../interrogate/SKILL.md)。任务包、派发门、事实核对和返工范围按 [派发契约](../agent-conductor/references/dispatch.md) 与 [agent-conductor](../agent-conductor/SKILL.md) 执行。独立写者分离目录／分支，先处理阻塞的共享原语；协调者亲自读产物和证据，不能转发“已完成”自述。
+覆盖／竞赛按 [agent-conductor](../agent-conductor/SKILL.md#并行分片与竞赛)，多方案比较按 [arena](../architect/references/arena.md)，对抗审核用 [interrogate](../interrogate/SKILL.md)。任务包、派发门、事实核对和返工范围按 [派发契约](../agent-conductor/references/dispatch.md) 与 [agent-conductor](../agent-conductor/SKILL.md) 执行。独立写者分离目录／分支，先处理阻塞的共享原语；协调者亲自读产物和证据，不能转发“已完成”自述。
 
 返工续用和复验范围按 agent-conductor 执行。纯文档改动检查内容、链接与格式；若改变可执行契约或生成输入，再验证相应影响。没有委派能力时可自行完成允许的工作，但必须报告要求的独立阶段未完成，不能等不存在的子代理。
 
 ## 写清楚与证明结果
 
-使用 [unslop](../unslop/SKILL.md) 与 [technical-writing](../technical-writing/SKILL.md) 按任务写清楚。先说使用者和维护者实际看到的变化，再写必要技术细节。用户可见的交付回复只写结果、证据和缺口；待办更新、工具步骤、计划复述和自检旁白留在任务状态或证据文件，不写进正文。只引用实际读过或产生的证据，测量、推导与未知在结论附近标明；验收指令里的目标值不是实测对照值。测试脚本注释不做阶段旁白，只保留法律、契约或非显然的原因；范围内注释审查由 [no-comments](../no-comments/SKILL.md) 负责。
+使用 [unslop](../unslop/SKILL.md) 写清楚并按读者目的组织结构。先说使用者和维护者实际看到的变化，再写必要技术细节。用户可见的交付回复只写结果、证据和缺口；待办更新、工具步骤、计划复述和自检旁白留在任务状态或证据文件，不写进正文。只引用实际读过或产生的证据，测量、推导与未知在结论附近标明；验收指令里的目标值不是实测对照值。测试脚本注释不做阶段旁白，只保留法律、契约或非显然的原因；范围内注释与补丁审查按 [代码检查](references/code-review.md#注释与补丁约束) 执行。
 
-运行和驱动步骤使用包内 [真实表面验证](references/verification-surfaces.md)，产品精简审核用 [代码检查](references/code-review.md)，不依赖其他插件的控制／清理技能。性能数值用 [benchmark-checklist](../benchmark-checklist/SKILL.md)。长任务轨迹用 [show-me-your-work](../show-me-your-work/SKILL.md)，是否提交由既有授权决定。
+运行和驱动步骤使用包内 [真实表面验证](references/verification-surfaces.md)，产品精简审核用 [代码检查](references/code-review.md)，不依赖其他插件的控制／清理技能。性能数值用 [benchmark-checklist](../benchmark-checklist/SKILL.md)。长任务在任务状态或工作记录中保留决策、原因、证据与结果轨迹，是否提交由既有授权决定。
 
 可逆工作在既有授权内推进；代码可回滚不等于获得发送消息、生产修改或发布权。模式调用不自动授权 commit、push、合并、部署、删除、外部聊天或全局配置。观察到技能错误可修本轮授权范围内的说明，其他仓库／全局问题交付建议，不无界扩张。
 

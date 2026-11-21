@@ -5,10 +5,10 @@
     "提取本次可核验要求并与实际决定、动作和产物对应（遵循 agent-conductor/references/skill-adoption.md，复用已有任务表）；受委派时只完成本会话阶段并回传原始证据，不以提及或读取冒充已采用，确需协作向协调者申请，严禁自行转派。"
   ],
   "roles": {
-    "coordinator": "优先入口：协作组织 agent-conductor，目录与角色配置 agent-conductor-setup（角色增减读 role-integration.md）；非平凡工程任务 rigor，复杂流程 figure-it-out，长任务轨迹 show-me-your-work；arena、swarm、interrogate 由你在已确认范围内组织，并在同一任务记录中完成技能采用核验。",
-    "architect": "优先入口：理解现状 how，结构设计 architect（作为候选只执行 runner-prompt.md），历史动机 why，间接影响 blast-radius；独立候选、评判和运行测量交协调者安排。",
-    "worker": "优先入口：非平凡工程 rigor，修改前理解 how，修复与回归 tdd，TS/TSX 类型 typescript-best-practices，真实 UI 操作 control-ui，性能主张 benchmark-checklist；验证先复用已有项目入口，建维验收才用 create-/maintain-verification-skill。",
-    "reviewer": "按任务选入口。方案反证用 principle-attack-the-premise 核对前提，用 principle-subtract-before-you-add、principle-laziness-protocol、principle-minimize-reader-load 检查可简化处。代码审查沿 how、blast-radius 核对调用链与影响，TS/TSX 契约用 typescript-best-practices，性能数字用 benchmark-checklist，必要时读 rigor/references/code-review.md。交叉审核读 interrogate/references/reviewer-prompt.md，只执行本会话独立盲审。",
-    "writer": "优先入口：技术文档撰写或审阅 technical-writing，措辞与证据强度 unslop；按需用 how、why、teach 先核对事实再写作，以实际修改差异与链接/构建结果留证。"
+    "coordinator": "优先入口：协作组织（含并行分片与竞赛）agent-conductor，目录与角色配置 agent-conductor-setup（角色增减读 role-integration.md）；非平凡工程任务 rigor（复杂迁移流程读 rigor/playbooks/figure-it-out.md，原则清单见 rigor/references/principles.md）；多方案比较（arena）与独立审阅（interrogate）由你在已确认范围内组织，并在同一任务记录中完成技能采用核验。",
+    "architect": "优先入口：理解现状 how，结构设计 architect（多方案比较按 architect/references/arena.md，作为候选只执行 runner-prompt.md），历史动机 why，间接影响 blast-radius；独立候选、评判和运行测量交协调者安排。",
+    "worker": "优先入口：非平凡工程 rigor，修改前理解 how，修复与回归 tdd，TS/TSX 类型 typescript-best-practices，真实 UI 操作 control-ui，性能主张 benchmark-checklist；验证先复用已有项目入口，建维验收用 create-verification-skill。",
+    "reviewer": "按任务选入口。方案反证与代码简化核对 rigor/references/principles.md（质疑共同前提、先减后加、少代码与读者负担）。代码审查沿 how、blast-radius 核对调用链与影响，TS/TSX 契约用 typescript-best-practices，性能数字用 benchmark-checklist，必要时读 rigor/references/code-review.md（含注释与补丁约束）。交叉审核读 interrogate/references/reviewer-prompt.md，只执行本会话独立盲审。",
+    "writer": "优先入口：技术文档、RFC、PR 描述撰写审阅及措辞与证据强度清理用 unslop；按需用 how、why 先核对事实再写作，以实际修改差异与链接/构建结果留证。"
   }
 }

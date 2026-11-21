@@ -46,32 +46,15 @@ def replace_block(text, tag, body):
     return pattern.sub(lambda match: match.group(1) + body + match.group(2), text)
 
 
-def skill_list(names):
-    return "".join(f"- [{name}](../../{name}/SKILL.md)：{description(name)}\n" for name in names)
-
-
-def indexes(names):
-    principles = [name for name in names if name.startswith("principle-")]
-    tasks = [name for name in names if name not in principles]
-    catalog = BASE / "skill-help/references/catalog.md"
-    principle_index = BASE / "rigor/references/principles.md"
-    return {
-        catalog: replace_block(catalog.read_text(), "skills", skill_list(tasks)),
-        principle_index: replace_block(principle_index.read_text(), "principles", skill_list(principles)),
-    }
-
-
 def readme(results):
     path = ROOT / "README.md"
     by_name = {item["archive"].removesuffix(".zip"): item for item in results}
-    principles = [name for name in by_name if name.startswith("principle-")]
-    tasks = [name for name in by_name if name not in principles]
+    tasks = sorted(by_name)
     text = re.sub(
-        r"本仓库提供 \d+ 个任务技能和 \d+ 个原则技能",
-        f"本仓库提供 {len(tasks)} 个任务技能和 {len(principles)} 个原则技能",
+        r"本仓库提供 \d+ 个技能",
+        f"本仓库提供 {len(tasks)} 个技能",
         path.read_text(),
     )
-    text = re.sub(r"(?m)^\d+ 个原则技能按需读取", f"{len(principles)} 个原则技能按需读取", text)
     for featured in ("rigor", "agent-conductor"):
         item = by_name[featured]
         text = re.sub(
@@ -213,9 +196,17 @@ def main():
     names = skill_names()
     for name in names:
         validate(name)
-    sync(indexes(names), args.check)
     check_cycles(names)
     results = [package(name, closure([name]), args.check, args.verify_dist) for name in names]
+    expected = {f"{name}.zip" for name in names}
+    if not args.check and DIST.is_dir():
+        for stale in DIST.glob("*.zip"):
+            if stale.name not in expected:
+                stale.unlink()
+    elif args.verify_dist and DIST.is_dir():
+        stale = sorted(p.name for p in DIST.glob("*.zip") if p.name not in expected)
+        if stale:
+            raise ValueError(f"Stale archives in {DIST.relative_to(ROOT)}: {', '.join(stale)}")
     sync(readme(results), args.check)
     if args.json:
         print(json.dumps(results, ensure_ascii=False, indent=2))

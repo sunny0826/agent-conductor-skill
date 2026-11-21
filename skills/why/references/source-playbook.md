@@ -1,18 +1,17 @@
-> 上游调查参考原文。厂商工具名和组织 schema 仅作历史示例；以包内 why/SKILL.md 的实际能力、只读权限与证据规则为准。遵守来源引用限额；没有工具不得编造查询结果。
+> 以包内 `why/SKILL.md` 的实际能力、只读权限与证据规则为准；没有对应工具不得编造查询结果。
 
 # Source playbooks
 
-The why skill spawns one investigator per available evidence category, each reading a single source-specific playbook below. The playbooks are concrete examples for common MCPs. Adapt them for a different MCP in the same category.
+`why` 仅在仓库内直接保留源码历史与防御性事件线索两份参考；其余外部来源（工单、长文档、即时聊天、运行监控、错误追踪、产品分析仓库）须先查看当前宿主实际可用的 MCP/CLI 工具 schema，按只读有界查询取证，并准确区分“工具不可用 / 无访问权 / 未搜索 / 搜索无结果”。
 
-| Category | Playbook | Example MCP it documents |
-|---|---|---|
-| Source control history | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` |
-| Issue / ticket tracker | [`linear.md`](./sources/linear.md) | Linear (adapt for Jira, GitHub Issues, Plane, Shortcut) |
-| Long-form documents | [`notion.md`](./sources/notion.md) | Notion (adapt for Confluence, Google Docs, Coda) |
-| Real-time team chat | [`slack.md`](./sources/slack.md) | Slack (adapt for Discord, Microsoft Teams, Mattermost) |
-| Infrastructure observability | [`datadog.md`](./sources/datadog.md) | Datadog (adapt for New Relic, Honeycomb, Grafana, Splunk) |
-| Error / exception tracking | [`sentry.md`](./sources/sentry.md) | Sentry (adapt for Rollbar, Bugsnag, Airbrake) |
-| Product analytics warehouse | [`databricks.md`](./sources/databricks.md) | Databricks SQL (adapt for Snowflake, BigQuery, ClickHouse, dbt) |
+| Category | Playbook / Guidance |
+|---|---|
+| Source control history (`git` / `gh`) | [`code-archaeology.md`](./sources/code-archaeology.md) |
+| Issue / ticket tracker | 按实际工具 schema 检索提交/PR 关联的 ticket ID、状态与完整评论，不凭标题推断 |
+| Long-form documents | 读完整 ADR、设计文档或事后报告正文（非摘要片段），保留日期与版本 |
+| Real-time team chat | 按涉及人与代码引入日期窗口检索原始讨论线程，保留上下文回复 |
+| Infrastructure observability / Error tracking | 核对改动窗口前后的真实指标、报错堆栈与首次出现时间，不将时间相关直接当作因果 |
+| Product analytics warehouse | 先用只读描述确认实际表名与字段，不假设组织特定 schema，queries 限定范围 |
 
 Cross-cutting:
 

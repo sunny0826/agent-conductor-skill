@@ -4,11 +4,11 @@
 
 用实际源码确定边界、约定、入口与命令。状态驱动的界面（按状态/阶段分发动作或文案）必须从解析器或契约声明的枚举全集逐个推导分支清单，禁止照抄旧界面已实现的 switch——旧 switch 只是被实现过的子集，会把旧代码的遗漏继承进新设计。复杂范围可按已有授权与实际能力独立调查，不能假定固定的 Agent 名称或云模型。复制 [计划模板](../assets/plan-template.md)，填每个占位，默认项目约定 docs 路径，每 PR 一可验证单元；保留模板字段顺序。执行流程按独立队列选 [full](autopilot-full.md)、用户落地选 [stack](autopilot-stack.md)，跨会话 standing program 选 [Orchestrate](orchestrate.md)。
 
-按 [technical-writing](../../technical-writing/SKILL.md) 写主体 how-to，解释／参考进附录，再用 [unslop](../../unslop/SKILL.md)。复制模板到计划目录时，将技能与参考链接改成从计划位置可解析、且执行者能读取的实际路径，不能原样沿用模板目录的相对路径。模板固定英文结构标签供确定性检查，字段内容可中文；不对中文强制英语标点规则。运行 `node <本技能目录>/scripts/check-plan.mjs <plan.md>`，修每项诊断。结构通过不证明计划可执行、指标真实或产品已验证。
+按 [unslop](../../unslop/SKILL.md) 写主体 how-to（解释／参考进附录）并清理套话。复制模板到计划目录时，将技能与参考链接改成从计划位置可解析、且执行者能读取的实际路径，不能原样沿用模板目录的相对路径。模板固定英文结构标签供确定性检查，字段内容可中文；不对中文强制英语标点规则。运行 `node <本技能目录>/scripts/check-plan.mjs <plan.md>`，修每项诊断。结构通过不证明计划可执行、指标真实或产品已验证。
 
 ## 验证合同
 
-每 verification block 以模板 RULE 开头；unit、live、perf 缺任何必需证据均不能通过。live 的 lane 数由该 PR 的用户可见风险决定，不设固定十项：覆盖受影响的主要分支、拒绝路径和回归，每项有独立 scenario／artifact／pass predicate。按模板声明 `N lanes on`、`Risk: low|high`、`Coverage:` 和 `Audit lanes:`；Coverage 写场景选择、缩放理由与未覆盖范围。只读或低风险标 low；写路径、并发或安全敏感标 high。缺证据的 lane 标缺口，不凑数补齐。按 [swarm](../../swarm/SKILL.md) 实际可用模型与容量执行，不硬编码模型。至少一项 Regression lane against trunk，基线无功能记录事实并验证新增行为和用户等到的终态，不伪造 trunk 结果。
+每 verification block 以模板 RULE 开头；unit、live、perf 缺任何必需证据均不能通过。live 的 lane 数由该 PR 的用户可见风险决定，不设固定十项：覆盖受影响的主要分支、拒绝路径和回归，每项有独立 scenario／artifact／pass predicate。按模板声明 `N lanes on`、`Risk: low|high`、`Coverage:` 和 `Audit lanes:`；Coverage 写场景选择、缩放理由与未覆盖范围。只读或低风险标 low；写路径、并发或安全敏感标 high。缺证据的 lane 标缺口，不凑数补齐。按 [agent-conductor](../../agent-conductor/SKILL.md#并行分片与竞赛) 实际可用模型与容量执行，不硬编码模型。至少一项 Regression lane against trunk，基线无功能记录事实并验证新增行为和用户等到的终态，不伪造 trunk 结果。
 
 按包内 [真实表面](../references/verification-surfaces.md) 驱动实际 Browser／CLI／TUI／模拟器等；有多个受影响表面时分别覆盖，不为纯 CLI 任务构造 UI 验收。UI 按包内 [control-ui](../../control-ui/SKILL.md) 捕获并读回截图，其他保存真实原始输出等适当产物，不是一律伪造 PNG。缺驱动条件记 Appendix C，但 lane 仍写如何执行。使用实际隔离环境，不假定 cloud VM。
 
