@@ -1,0 +1,4 @@
+interface:
+  display_name: "排查项目冗余与过度防御"
+  short_description: "排查拖慢日常开发与重构的冗余门禁、慢测、强行哈希、重型 CI、打包膨胀与文档隐形锁，按实测分级减负"
+  default_prompt: "使用 $fkgpt6 完成当前任务，遵守正文的适用范围、证据和授权边界。"
