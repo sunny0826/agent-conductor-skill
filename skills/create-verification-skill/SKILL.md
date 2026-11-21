@@ -5,7 +5,7 @@ description: "根据项目事实生成可复用的 verify-项目名 验收技能
 
 # Create Verification Skill · 项目验收技能生成器
 
-为接手项目的 Agent 编写可直接执行的验收说明。产物是项目内的 `verify-<app>/SKILL.md` 和功能地图；日常验收使用该产物。本技能可独立使用，不要求扫描模型或调用 conductor。模型与角色配置仍由包内 [agent-conductor-setup](../agent-conductor-setup/SKILL.md) 负责，不在此建立配置协议。
+为接手项目的 Agent 编写可直接执行的验收说明。产物是项目内的 `verify-<app>/SKILL.md` 和功能地图；日常验收使用该产物。本技能可独立使用，不要求扫描模型或调用 conductor。模型与角色配置仍由包内 `agent-conductor-setup` 负责，不在此建立配置协议。
 
 ## 1. 读取项目事实并确定落点
 

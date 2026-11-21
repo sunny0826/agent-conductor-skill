@@ -51,6 +51,13 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, (character) => `\\${character}`);
 }
 
+function adjacentDates(date) {
+  const [year, month, day] = date.split("-").map(Number);
+  return [-1, 0, 1].map((offset) =>
+    new Date(Date.UTC(year, month - 1, day + offset)).toISOString().slice(0, 10),
+  );
+}
+
 async function* linesIn(file) {
   const stream = createReadStream(file);
   const input = file.endsWith(".gz") ? stream.pipe(createGunzip()) : stream;
@@ -61,8 +68,9 @@ async function* linesIn(file) {
 export async function readArchiveEvents(logRoot = DEFAULT_LOG_ROOT, options = {}) {
   if (!existsSync(logRoot)) return [];
   const { date } = options;
-  const namePattern = date
-    ? new RegExp(`^${escapeRegExp(date)}\\.log(?:\\.\\d+)?(?:\\.gz)?$`)
+  const dateAlternation = date ? adjacentDates(date).map(escapeRegExp).join("|") : null;
+  const namePattern = dateAlternation
+    ? new RegExp(`^(?:${dateAlternation})\\.log(?:\\.\\d+)?(?:\\.gz)?$`)
     : /\.log(?:\.\d+)?(?:\.gz)?$/;
   const files = (await readdir(logRoot)).filter((file) => namePattern.test(file));
   const events = new Map();

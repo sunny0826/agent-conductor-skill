@@ -13,6 +13,7 @@
 // Exit codes: 0 pass, 1 violation, 2 could not verify or bad usage.
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -41,8 +42,25 @@ function run(script, args) {
 
 function pointsAtPackage(messagePath, packagePath) {
   const message = fs.readFileSync(messagePath, "utf8");
-  const resolved = path.resolve(packagePath);
-  return message.includes(resolved) || message.includes(packagePath);
+  const target = path.resolve(packagePath);
+  const messageDir = path.dirname(path.resolve(messagePath));
+  const home = os.homedir();
+  const tokens = new Set();
+  const tokenPattern =
+    /(?:^|[\s"'`()[\]{}<>，。；：！？、“”‘’（）《》【】]|(?<![A-Za-z]):)([^\s"'`()[\]{}<>，。；：！？、“”‘’（）《》【】]+\.md)(?=$|[\s"'`()[\]{}<>，。；：！？、“”‘’（）《》【】])/gi;
+  for (const match of message.matchAll(tokenPattern)) tokens.add(match[1]);
+  for (const quoted of message.matchAll(/`([^`\n]+\.md)`|"([^"\n]+\.md)"|'([^'\n]+\.md)'/gi)) {
+    tokens.add(quoted[1] || quoted[2] || quoted[3]);
+  }
+  for (const raw of tokens) {
+    const expanded = raw.startsWith("~/") || raw.startsWith("~\\")
+      ? path.join(home, raw.slice(2))
+      : raw;
+    if (path.resolve(expanded) === target || path.resolve(messageDir, expanded) === target) {
+      return true;
+    }
+  }
+  return false;
 }
 
 const [command, ...args] = process.argv.slice(2);

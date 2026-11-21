@@ -1,21 +1,23 @@
-"""Behavior regressions. All fixtures/output require an explicit evidence root.
+"""Behavior regressions for discover_local.py.
 
-Run: python3 -B test_discovery_paths.py SCRIPT EVIDENCE_DIRECTORY
+Run: python3 -B -m unittest discover -s tools -p "test_*.py"
 """
 import importlib.util
 import json
 import os
-import shutil
 from pathlib import Path
+import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 
-SCRIPT = Path(sys.argv[1]).absolute()
-ROOT = Path(sys.argv[2]).absolute()
-sys.argv[1:] = []
-ROOT.mkdir(parents=True, exist_ok=True)
+DEFAULT_SCRIPT = (
+    Path(__file__).resolve().parents[1]
+    / "skills/agent-conductor-setup/scripts/discover_local.py"
+)
+SCRIPT = Path(os.environ.get("DISCOVER_SCRIPT", DEFAULT_SCRIPT)).resolve()
 SECRET = 'sk-' + 'A' * 24
 BODY = 'BODY-CANARY-DO-NOT-EMIT'
 ENV = 'ENV-CANARY-DO-NOT-EMIT'
@@ -35,8 +37,9 @@ def agent(home, filename='normal.md'):
 
 class ScannerTests(unittest.TestCase):
     def setUp(self):
-        self.root = ROOT / self._testMethodName
-        self.root.mkdir()
+        self._tmpdir = tempfile.TemporaryDirectory(prefix='discover-paths-')
+        self.addCleanup(self._tmpdir.cleanup)
+        self.root = Path(self._tmpdir.name)
         self.home = self.root / 'home'
         self.project = self.root / 'project'
         self.bin = self.root / 'bin'
@@ -225,37 +228,42 @@ class ScannerTests(unittest.TestCase):
         self.assertTrue(data['diagnostics']['cli']['ran'])
 
     def test_no_forbidden_target_access(self):
-        sys.path.insert(0, str(SCRIPT.parent))
-        helper = SCRIPT.parent / 'discovery_paths.py'
-        self.assertTrue(helper.exists(), 'baseline lacks safe lookup')
-        spec = importlib.util.spec_from_file_location('paths_under_test', helper)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        blocked = self.root / '.cursor/bin'
-        self.fake(blocked)
-        alias = self.root / 'alias'
-        alias.symlink_to(blocked)
-        executable = self.bin / 'dim'
-        executable.symlink_to(blocked / 'dim')
-        forbidden = lambda p: bool(set(str(p).lower().split('/')) & {'.cursor', 'cursor'})
-        calls = []
-        def watched(original):
-            def check(path, *args, **kwargs):
-                self.assertFalse(forbidden(path), 'touched forbidden lexical path')
-                calls.append(str(path))
-                return original(path, *args, **kwargs)
-            return check
-        with patch.object(module.os, 'lstat', watched(os.lstat)), \
-             patch.object(module.os, 'stat', watched(os.stat)), \
-             patch.object(module.os, 'access', watched(os.access)):
-            for candidate in (blocked / 'dim', alias / 'dim', executable):
-                target, reason = module.checked_target(str(candidate), forbidden)
-                self.assertIsNone(target)
-                self.assertIn('forbidden', reason)
-        self.assertNotIn(str(alias / 'dim'), calls)
-        target, reason = module.checked_target(str(alias) + '/../bin/dim', forbidden)
-        self.assertIsNone(target)
-        self.assertEqual(reason, 'forbidden_symlink_target')
+        added = str(SCRIPT.parent)
+        sys.path.insert(0, added)
+        try:
+            helper = SCRIPT.parent / 'discovery_paths.py'
+            self.assertTrue(helper.exists(), 'baseline lacks safe lookup')
+            spec = importlib.util.spec_from_file_location('paths_under_test', helper)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            blocked = self.root / '.cursor/bin'
+            self.fake(blocked)
+            alias = self.root / 'alias'
+            alias.symlink_to(blocked)
+            executable = self.bin / 'dim'
+            executable.symlink_to(blocked / 'dim')
+            forbidden = lambda p: bool(set(str(p).lower().split('/')) & {'.cursor', 'cursor'})
+            calls = []
+            def watched(original):
+                def check(path, *args, **kwargs):
+                    self.assertFalse(forbidden(path), 'touched forbidden lexical path')
+                    calls.append(str(path))
+                    return original(path, *args, **kwargs)
+                return check
+            with patch.object(module.os, 'lstat', watched(os.lstat)), \
+                 patch.object(module.os, 'stat', watched(os.stat)), \
+                 patch.object(module.os, 'access', watched(os.access)):
+                for candidate in (blocked / 'dim', alias / 'dim', executable):
+                    target, reason = module.checked_target(str(candidate), forbidden)
+                    self.assertIsNone(target)
+                    self.assertIn('forbidden', reason)
+            self.assertNotIn(str(alias / 'dim'), calls)
+            target, reason = module.checked_target(str(alias) + '/../bin/dim', forbidden)
+            self.assertIsNone(target)
+            self.assertEqual(reason, 'forbidden_symlink_target')
+        finally:
+            if added in sys.path:
+                sys.path.remove(added)
 
     def test_root_and_descendant_symlinks(self):
         agent(self.home)

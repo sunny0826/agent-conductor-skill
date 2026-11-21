@@ -75,18 +75,43 @@ const assistantTurns = deliveryFile
       .map(({ entry, index }) => ({ turn: index + 1, text: entry.text }));
 
 const normalize = (text) => text.replace(/\s+/g, " ").trim();
+const stripCore = (text) => text.replace(/[\s\p{P}\p{S}]+/gu, "");
+const GENERIC_QUOTES = new Set([
+  "好的", "好", "通过", "完成", "可以", "没问题", "行", "同意",
+  "ok", "yes", "lgtm", "done", "pass", "approved",
+]);
 const normalizedUsers = userMessages.map(normalize);
-const claimPattern = /(?:你|用户)已确认|(?:你|用户)的目视确认|用户验收通过|(?:你|用户)已验收/;
+const userCores = normalizedUsers.map((user) => stripCore(user).toLowerCase());
+const claimPattern =
+  /(?:你|用户)已确认|(?:你|用户)的目视确认|用户验收通过|(?:你|用户)已验收|\b(?:you|the user|user)\s+(?:have\s+|already\s+)?(?:confirmed|verified|approved|visually confirmed)\b/i;
 const quotePattern = /[“"「『]([^”"」』\n]{2,200})[”"」』]/g;
+const sentencePattern = /(?:[\n。；]|(?<=[A-Za-z0-9"'”」』)])\.(?=\s+[A-Z"“「『]|$))/;
 const claims = [];
 const unsupported = [];
+
+function isSpecificQuote(quote) {
+  const core = stripCore(quote);
+  const lowerCore = core.toLowerCase();
+  if (core.length >= 4 && !GENERIC_QUOTES.has(lowerCore)) return true;
+  return normalizedUsers.some(
+    (user, index) => user === quote || (lowerCore.length > 0 && userCores[index] === lowerCore),
+  );
+}
+
 for (const { turn, text } of assistantTurns) {
-  const sentences = text.split(/[\n。；]/).map((sentence) => sentence.trim()).filter(Boolean);
+  const sentences = text.split(sentencePattern).map((sentence) => sentence.trim()).filter(Boolean);
   for (const sentence of sentences) {
     if (!claimPattern.test(sentence)) continue;
     const quotes = [...sentence.matchAll(quotePattern)].map((match) => normalize(match[1])).filter(Boolean);
-    const supported = quotes.length > 0 && quotes.some((quote) => normalizedUsers.some((user) => user.includes(quote)));
-    const claim = { turn, sentence, quotes, supported };
+    const matchedQuotes = quotes.filter((quote) => normalizedUsers.some((user) => user.includes(quote)));
+    const supported = matchedQuotes.some(isSpecificQuote);
+    let reason = null;
+    if (!supported) {
+      if (!quotes.length) reason = "no quoted user words";
+      else if (!matchedQuotes.length) reason = "quoted text not found in any user message";
+      else reason = "quoted text is too short or generic";
+    }
+    const claim = supported ? { turn, sentence, quotes, supported } : { turn, sentence, quotes, supported, reason };
     claims.push(claim);
     if (!supported) unsupported.push(claim);
   }
@@ -97,8 +122,7 @@ if (json) {
 } else {
   console.log(`${sessionId}: ${claims.length} user-confirmation claims, ${unsupported.length} unsupported`);
   for (const claim of unsupported) {
-    const reason = claim.quotes.length ? "quoted text not found in any user message" : "no quoted user words";
-    console.log(`- unsupported (${reason}, turn ${claim.turn}): ${claim.sentence}`);
+    console.log(`- unsupported (${claim.reason}, turn ${claim.turn}): ${claim.sentence}`);
   }
   if (!claims.length) console.log("No user-confirmation claims in the delivery.");
   if (unsupported.length) {

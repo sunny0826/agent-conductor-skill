@@ -80,3 +80,31 @@ test("the conductor keeps the dispatch gate reachable from its entry file", () =
   assert.ok(skill.includes("references/dispatch.md"));
   assert.ok(skill.includes("scripts/dispatch-gate.mjs"));
 });
+
+test("bare script paths in references/playbooks, broken anchors, and cross-skill cycles are rejected", () => {
+  withSkill(goodSkill, (dir) => {
+    const refDir = path.join(dir, "skills/sample/references");
+    fs.mkdirSync(refDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(refDir, "guide.md"),
+      "# 指南\n\n运行 `python3 scripts/helper.py`，见 [缺失锚点](../SKILL.md#不存在的锚点)。\n",
+    );
+    const first = runLint(dir);
+    assert.equal(first.code, 1, first.output);
+    assert.match(first.output, /references\/guide\.md: script path is relative/);
+    assert.match(first.output, /references\/guide\.md: broken anchor -> \.\.\/SKILL\.md#不存在的锚点/);
+
+    // Now test cross-skill cycle detection cleanly without broken anchors.
+    fs.writeFileSync(path.join(refDir, "guide.md"), "# 指南\n\n见 [other](../../other/SKILL.md)。\n");
+    const other = path.join(dir, "skills/other");
+    fs.mkdirSync(path.join(other, "agents"), { recursive: true });
+    fs.writeFileSync(path.join(other, "agents/openai.yaml"), "interface: {}\n");
+    fs.writeFileSync(
+      path.join(other, "SKILL.md"),
+      '---\nname: other\ndescription: "用于测试循环时。"\n---\n\n# 另一技能\n\n见 [sample](../sample/SKILL.md)。\n',
+    );
+    const second = runLint(dir);
+    assert.equal(second.code, 1, second.output);
+    assert.match(second.output, /dependency cycle: other -> sample -> other/);
+  });
+});

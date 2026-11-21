@@ -80,3 +80,49 @@ test("usage errors exit 2", () => {
   assert.equal(runGate().code, 2);
   assert.equal(runGate("pre", "only-one.md").code, 2);
 });
+
+test("pre rejects substring matches like other-package.md when package.md is relative", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "dispatch-gate-rel-"));
+  try {
+    fs.writeFileSync(path.join(dir, "package.md"), reviewPackage);
+    fs.writeFileSync(
+      path.join(dir, "bad-message.md"),
+      "请读取并执行任务包 other-package.md，完成后给出最终回执。\n",
+    );
+    fs.writeFileSync(
+      path.join(dir, "good-message.md"),
+      "请读取并执行任务包 ./package.md，完成后给出最终回执。\n",
+    );
+    const bad = spawnSync(process.execPath, [gate, "pre", "package.md", "bad-message.md"], {
+      cwd: dir,
+      encoding: "utf8",
+    });
+    assert.equal(bad.status, 1, bad.stdout + bad.stderr);
+    assert.match(bad.stdout + bad.stderr, /does not point at the checked package/);
+
+    const good = spawnSync(process.execPath, [gate, "pre", "package.md", "good-message.md"], {
+      cwd: dir,
+      encoding: "utf8",
+    });
+    assert.equal(good.status, 0, good.stdout + good.stderr);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("pre resolves ~/ package pointers against HOME", () => {
+  const homeDir = fs.mkdtempSync(path.join(os.tmpdir(), "dispatch-gate-home-"));
+  try {
+    const pkg = path.join(homeDir, "package.md");
+    const msg = path.join(homeDir, "message.md");
+    fs.writeFileSync(pkg, reviewPackage);
+    fs.writeFileSync(msg, "请读取并执行任务包 ~/package.md，完成后给出最终回执。\n");
+    const result = spawnSync(process.execPath, [gate, "pre", pkg, msg], {
+      encoding: "utf8",
+      env: { ...process.env, HOME: homeDir },
+    });
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+  } finally {
+    fs.rmSync(homeDir, { recursive: true, force: true });
+  }
+});

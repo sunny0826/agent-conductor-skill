@@ -109,3 +109,26 @@ test("unreadable history exits 2", () => {
   assert.equal(result.code, 2, result.output);
   assert.match(result.output, /lody session history exited 7/);
 });
+
+test("short or generic quotes matched inside longer user text are rejected", () => {
+  const result = check(["请帮我通过测试"], "你已确认“通过”全部断电恢复测试。");
+  assert.equal(result.code, 1, result.output);
+  assert.match(result.output, /quoted text is too short or generic/);
+
+  const englishGeneric = check(["Please check if this is approved by CI"], 'The user already confirmed "approved" for release.');
+  assert.equal(englishGeneric.code, 1, englishGeneric.output);
+  assert.match(englishGeneric.output, /quoted text is too short or generic/);
+});
+
+test("English confirmation claims require valid user quotes", () => {
+  const missing = check(["Device connected"], "You confirmed the layout works cleanly.");
+  assert.equal(missing.code, 1, missing.output);
+  assert.match(missing.output, /no quoted user words/);
+
+  const valid = check(
+    ["I can see the homepage shows step counts now"],
+    'The user has confirmed "homepage shows step counts".',
+  );
+  assert.equal(valid.code, 0, valid.output);
+  assert.match(valid.output, /0 unsupported/);
+});

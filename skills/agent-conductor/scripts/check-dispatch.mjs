@@ -7,29 +7,27 @@
 //   node check-dispatch.mjs --message <message.md | ->   lint a dispatch message
 // "-" reads stdin, so inline packages and messages can be checked without a
 // temp file. Message mode is the structural anchor for the "dispatch message
-// carries only a pointer and a receipt requirement" rule: 2026-10-18 showed
-// suppression openers migrating from packages (now linted) into the covering
-// dispatch messages, which nothing checked.
+// carries only a pointer and a receipt requirement" rule, preventing
+// suppression openers from migrating from packages into covering messages.
 //
 // The package declares its own type on the leading line, and the value must be
 // exactly one of 实施 / 只读审查 / 验证 (or "package type: implementation /
-// read-only review / verification"); substring matches silently accepted
-// out-of-contract values like 只读调查 on 2026-10-18, so the check is a
-// whitelist. Undeclared packages are still rejected (exit 1); the heuristic
-// only decides how they are classified.
+// read-only review / verification"); substring matches would silently accept
+// out-of-contract values like 只读调查, so the check is a whitelist.
+// Undeclared packages are still rejected (exit 1); the heuristic only decides
+// how they are classified.
 // Known limits, kept deliberately: in package mode suppression openers are
 // only checked in the first three lines; review/verification command
 // boundaries are only checked when the type is declared; grant and boundary
 // wording variants outside the patterns below read as absent. In message
 // mode: light 不-verb boundary phrasing (只挑…，不要修改 / 不要提交) is
 // tolerated and only 禁止/严禁/不得/不许 carriers are rejected — the two
-// forms sit on one lexical continuum, so tightening would break the tolerated
-// challenge-role openers (review finding 1b, 2026-10-19); Chinese compounds
-// 不得不/不得已 are exempted from the 不得 pattern, but other meta-mention of
-// the audited wording (quoting 「不要自作主张」 while discussing the rule) can
-// still hit (1a); text appended after an inline package skips the prohibition
-// check because the inline form is treated as package content (1c). Message
-// mode validates the supplied file, not what the host actually sent; dispatch
+// forms sit on one lexical continuum, so tightening would break tolerated
+// challenge-role openers; Chinese compounds 不得不/不得已 are exempted from
+// the 不得 pattern, though other meta-mentions of audited wording can still
+// hit; text appended after an inline package skips the prohibition check
+// because the inline form is treated as package content. Message mode
+// validates the supplied file, not what the host actually sent; dispatch
 // through a host file-input option (Lody --prompt-file) so the checked text is
 // the sent text.
 import fs from "node:fs";
@@ -80,13 +78,10 @@ if (messageMode) {
   const firstContentLine = text.split("\n").find((line) => line.trim());
   const inlinePackage = firstContentLine !== undefined &&
     /^\s*(?:任务包类型|package type)[:：]/i.test(firstContentLine);
-  // A `.md` path alone is not a package pointer. 2026-10-27 sessions b3c5f708
-  // and da113c7f were sent full task bodies whose first `.md` reference was an
-  // incidental document 400+ characters in; the old any-.md test counted them
-  // as pointers, so the message lint reported only the receipt/boundary
-  // problems and would have passed a task body that added a receipt line.
-  // Require an execution/package cue before a path; a source-document path
-  // near the start is still only context. Inspect later paths as well.
+  // A `.md` path alone is not a package pointer: an incidental document path
+  // inside a task body must not count as a package pointer. Require an
+  // execution/package cue before a path on the same line, and inspect later
+  // paths as well so context docs do not mask the real pointer.
   const pointerPattern = /(?:[~/]|[.]{1,2}\/|[A-Za-z]:\\)[^\s，。；）)"'《》`]*\.md/gi;
   const hasPointer = [...text.matchAll(pointerPattern)].some((match) => {
     const lineStart = text.lastIndexOf("\n", match.index) + 1;
@@ -114,9 +109,9 @@ if (messageMode) {
 
 // 1. Package type declaration. The declaration leads the package (first
 // non-empty line); extra or misplaced declaration lines are rejected. The
-// value is matched exactly against the three contract values — substring
-// matching accepted out-of-contract values (只读调查, 2026-10-18). A package
-// that both implements and verifies declares 实施 (the stronger class).
+// value is matched exactly against the three contract values rather than
+// substring matching, which would accept out-of-contract values (e.g. 只读调查).
+// A package that both implements and verifies declares 实施 (the stronger class).
 const typeLines = [...text.matchAll(/^\s*(?:任务包类型|package type)[:：]\s*(.+?)\s*$/gim)];
 const firstContentLine = text.split("\n").find((line) => line.trim());
 if (typeLines.length === 0) {
@@ -168,9 +163,13 @@ if (!hasReceiptRequirement(stripped)) {
 // writing a designated report file does not.
 const negation = /(不要|禁止|不得|不许|一律不|没有|并未|未曾|never|forbidden|do not|don'?t)/i;
 const thirdParty = /(被审|作者|对方|声称|声明|是否)/;
+const clauseSplit =
+  /(?=[，,]\s*(?:但|不过|不要|禁止|不得|不许|而|你?(?:可以|允许|能够)|请|but\b|except\b|do not\b|don'?t\b|never\b|you (?:may|can)\b|please\b))/i;
 const affirmative = stripped
   .split(/[\n。；!?！？]/)
-  .filter((sentence) => sentence.trim() && !negation.test(sentence) && !thirdParty.test(sentence))
+  .filter((sentence) => sentence.trim() && !thirdParty.test(sentence))
+  .flatMap((sentence) => sentence.split(clauseSplit))
+  .filter((clause) => clause.trim() && !negation.test(clause))
   .join("\n");
 const vcsGrants = /(git (commit|push|merge)|gh pr (create|merge)|提交你改的|开(一个|一条)?.{0,8}PR|创建.{0,6}PR|合并(进|到|入).{0,20}(main|主分支|主干))/i.test(affirmative);
 const fileGrants = /(只能?改[^\n。；]{0,6}文件|只拥有[^\n。；]{0,4}文件|唯一写入|可写的?文件|允许你?(?:写|改)[^\n。；]{0,6}文件)/.test(affirmative);

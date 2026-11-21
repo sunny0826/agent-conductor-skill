@@ -80,7 +80,7 @@ function checkSession(
 }
 
 const message =
-  "请执行任务包 /Users/guoxudong/codes/mym5/.pio/verification/adventure-implementation/storage-task.md，完成后按包内要求写API说明、测试报告并返回最终回执。\n";
+  "请执行任务包 /workspace/example-app/.tasks/storage-task.md，完成后按包内要求写API说明、测试报告并返回最终回执。\n";
 const workerPrefix = "只执行任务，不要进行额外的思考，不要自作主张";
 
 test("delivered text equal to the checked message passes", () => {
@@ -115,11 +115,11 @@ test("session mode reads the child role promptPrefix from Lody", () => {
   const result = checkSession(message, `${workerPrefix}\n\n${message.trimEnd()}`, "child-1", {
     roleId: "role-1",
     roleRevision: 4,
-    roleName: "worker+",
+    roleName: "worker-custom",
     prefix: workerPrefix,
   });
   assert.equal(result.code, 0, result.output);
-  assert.match(result.output, /configured role prompt prefix \(worker\+\)/);
+  assert.match(result.output, /configured role prompt prefix \(worker-custom\)/);
 });
 
 test("session mode still rejects a body edit under the role prefix", () => {
@@ -130,7 +130,7 @@ test("session mode still rejects a body edit under the role prefix", () => {
     {
       roleId: "role-1",
       roleRevision: 4,
-      roleName: "worker+",
+      roleName: "worker-custom",
       prefix: workerPrefix,
     },
   );
@@ -143,7 +143,7 @@ test("session mode refuses to guess when the role revision changed", () => {
     roleId: "role-1",
     roleRevision: 5,
     sessionRevision: 4,
-    roleName: "worker+",
+    roleName: "worker-custom",
     prefix: workerPrefix,
   });
   assert.equal(result.code, 2, result.output);
@@ -192,7 +192,7 @@ test("lint mode lints the delivered message without a saved file", () => {
   const result = checkSession("", message.trimEnd(), "child-1", {
     roleId: "role-1",
     roleRevision: 4,
-    roleName: "worker+",
+    roleName: "worker-custom",
     prefix: "",
   }, { lint: true });
   assert.equal(result.code, 0, result.output);
@@ -262,6 +262,49 @@ test("lint mode rejects a message file or --sent", () => {
     });
     assert.equal(result.status, 2);
     assert.match(`${result.stdout}${result.stderr}`, /--lint reads the child session/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("session mode handles session history larger than 1 MB without ENOBUFS", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "sent-dispatch-large-"));
+  try {
+    const checkedPath = path.join(dir, "message.md");
+    fs.writeFileSync(checkedPath, message);
+    const historyFile = path.join(dir, "history.json");
+    fs.writeFileSync(
+      historyFile,
+      JSON.stringify({
+        ok: true,
+        entries: [
+          { role: "user", text: message.trimEnd() },
+          { role: "assistant", text: "x".repeat(1600 * 1024) },
+        ],
+      }) + "\n",
+    );
+    const bin = path.join(dir, "bin");
+    fs.mkdirSync(bin);
+    const fakeLody = path.join(bin, "lody");
+    fs.writeFileSync(
+      fakeLody,
+      [
+        "#!/bin/sh",
+        'case "$1 $2" in',
+        `"session show") printf '%s\\n' '${JSON.stringify({ ok: true, session: {} })}' ;;`,
+        `"session history") cat "${historyFile}" ;;`,
+        "*) exit 9;;",
+        "esac",
+        "",
+      ].join("\n"),
+    );
+    fs.chmodSync(fakeLody, 0o755);
+    const result = spawnSync(process.execPath, [script, checkedPath, "--session", "child-large"], {
+      encoding: "utf8",
+      env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` },
+    });
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    assert.match(result.stdout, /sent message matches checked message/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

@@ -6,16 +6,15 @@ import { run } from "./contracts-lib.mjs";
 const checkMessage = (text) => run("skills/agent-conductor/scripts/check-dispatch.mjs", text, "--message");
 
 test("clean pointer dispatch messages pass", () => {
-  // Real 2026-10-18 shape (session 70f7879c with the suppression opener
-  // removed): package pointer plus receipt requirement, nothing else.
-  const msg = `请完整读取并执行任务包 /Users/guoxudong/codes/local-ai/inferyard/.lody/context-speed-implementation/studio-c-v2.md，在包指定的独立工作区接续实施，最终提供包内指定的完整 result.md 回执。`;
+  // Expected shape: package pointer plus receipt requirement, nothing else.
+  const msg = `请完整读取并执行任务包 /workspace/example-app/.tasks/task-v2.md，在包指定的独立工作区接续实施，最终提供包内指定的完整 result.md 回执。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 0, result.output);
   assert.match(result.output, /dispatch message: 0 problems/);
 });
 
 test("English completion replies are recognized without hiding other defects", () => {
-  // Receipt from session 3cf9dc1c, message 23ff69c1 (2026-10-29).
+  // Multi-clause English completion receipt phrasing.
   const receipt = "When done, reply with: the file path, the list of links you created, and any place where you had to make a judgment call about terminology.";
   const valid = checkMessage(`Read and execute the task package ./tasks/translate.md. ${receipt}`);
   assert.equal(valid.code, 0, valid.output);
@@ -41,45 +40,39 @@ test("mentioning an English reply without requesting one is insufficient", () =>
 });
 
 test("suppression openers in dispatch messages are rejected", () => {
-  // Verbatim shape of the dispatch message sent to session 70f7879c on
-  // 2026-10-18 17:18 CST: the opener migrated from packages (linted since
-  // PR #9) into the covering message, which nothing checked.
+  // A suppression opener placed in the covering message instead of the
+  // package file must still be caught by message mode.
   const msg = `只执行任务，不要进行额外的思考，不要自作主张
 
-请完整读取并执行任务包 /Users/guoxudong/codes/local-ai/inferyard/.lody/context-speed-implementation/studio-c-v2.md，在包指定的独立工作区接续实施，最终提供包内指定的完整 result.md 回执。`;
+请完整读取并执行任务包 /workspace/example-app/.tasks/task-v2.md，在包指定的独立工作区接续实施，最终提供包内指定的完整 result.md 回执。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /execution-suppression opener .* in dispatch message/);
 });
 
-test("2026-10-19 post-deploy long-session dispatch is rejected", () => {
-  // Verbatim shape of the message sent to session 5305a8f1 on 2026-10-19
-  // 11:19 CST, 37 minutes after the v3 checker was deployed. The forked
-  // coordinator's parent started five minutes before deployment; it saved the
-  // clean pointer message, then prepended the old suppression opener when
-  // sending.
+test("post-deploy long-session dispatch with prepended suppression is rejected", () => {
+  // Even when a clean pointer message was saved first, prepending an old
+  // suppression opener at send time must be rejected.
   const msg = `只执行任务，不要进行额外的思考，不要自作主张
 
-请读取 /Users/guoxudong/codes/local-ai/inferyard/.tools/studio-dev-20261019/go-task.md 执行，并按任务包要求返回最终回执。`;
+请读取 /workspace/example-app/.tasks/go-task.md 执行，并按任务包要求返回最终回执。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /execution-suppression opener .* in dispatch message/);
 });
 
-test("2026-10-21 experiment dispatch with inline package is rejected", () => {
-  // Verbatim opener and shape of the two child sessions created by
-  // a14b6d49 on 2026-10-21 03:03/03:07 CST (2ce934db / d218375e). The
-  // coordinator treated the replay as ad-hoc work, so the inline package was
-  // never linted; the same opener still carries three suppression problems.
+test("ad-hoc dispatch with inline package and suppression opener is rejected", () => {
+  // An inline package sent without package-type declaration and carrying a
+  // suppression opener must fail both the pointer check and opener checks.
   const msg = `只执行任务，不要进行额外的思考，不要自作主张
 
-你是 InferYard 仓库的实施者，由你自身执行。确需再分工先回报协调者重派。仓库在 /private/tmp/inferyard-instruction-ab-20261021/repo。当前分支必须是 studio-first-run，HEAD 必须是 006ff48。
+你是 example-repo 仓库的实施者，由你自身执行。确需再分工先回报协调者重派。仓库在 /tmp/example-repo。当前分支必须是 feat-first-run，HEAD 必须是 006ff48。
 
-目标：首次打开 Studio 时打开任务页，只显示环境准备卡。
+目标：首次打开工作台时打开任务页，只显示环境准备卡。
 
 只改这些文件：
-studio/internal/pages/window.go
-docs/subsystems/studio-panel.md
+app/internal/pages/window.go
+docs/subsystems/panel.md
 
 不要提交，不要推送，不要开 PR。不要改上述清单以外的文件。
 
@@ -94,9 +87,9 @@ docs/subsystems/studio-panel.md
 });
 
 test("boundary clauses in dispatch messages are rejected", () => {
-  // Real 2026-10-18 shape (session 0923abac): pointer and receipt are fine, but
-  // the message carries 禁止-class boundary clauses that belong in the package.
-  const msg = `请自身执行只读原生启动边界定位。先完整读 /Users/guoxudong/codes/local-ai/inferyard/.lody/context-speed-implementation/analyze-native-launch.md，按指定源码和日志给事实、推导及最小验证。严禁启动XCTest或应用、写文件、再派发。最终回执由Operation自动回传。`;
+  // Pointer and receipt are present, but 禁止-class boundary clauses belong
+  // in the package file rather than the dispatch message.
+  const msg = `请自身执行只读原生启动边界定位。先完整读 /workspace/example-app/.tasks/analyze-native-launch.md，按指定源码和日志给事实、推导及最小验证。严禁启动测试或应用、写文件、再派发。最终回执由Operation自动回传。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /prohibition\/boundary clauses/);
@@ -105,7 +98,7 @@ test("boundary clauses in dispatch messages are rejected", () => {
 test("dispatch messages need a package pointer and a receipt requirement", () => {
   for (const [msg, diagnostic] of [
     ["请审查当前 diff，最终回复给出结论。", /no package pointer/],
-    ["请完整读取并执行任务包 /Users/guoxudong/codes/x/tasks/implement.md。", /no receipt requirement/],
+    ["请完整读取并执行任务包 /workspace/example-app/tasks/implement.md。", /no receipt requirement/],
   ]) {
     const result = checkMessage(msg);
     assert.equal(result.code, 1, result.output);
@@ -114,12 +107,11 @@ test("dispatch messages need a package pointer and a receipt requirement", () =>
 });
 
 test("light boundary phrasing in dispatch messages is tolerated", () => {
-  // Real 2026-10-18 shape (challenge-role dispatches): the task statement
-  // 只挑…不要修改 is a decidable scope line, not a suppression opener, and
-  // carries no 禁止-class clause — message mode lets it pass.
+  // A light decidable scope line like 只挑…不要修改 carries no 禁止-class
+  // clause, so message mode lets it pass.
   const msg = `只挑代码和文档中的问题，不要修改
 
-请读取任务包 /Users/guoxudong/codes/local-ai/inferyard/.lody/context-speed-review/review-r1.md 并按包执行。回执：第一行 approve 或 request changes。`;
+请读取任务包 /workspace/example-app/.tasks/review-r1.md 并按包执行。回执：第一行 approve 或 request changes。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 0, result.output);
 });
@@ -143,21 +135,19 @@ ${inline}`;
 });
 
 test("common compounds are exempted from the prohibition pattern", () => {
-  // Review finding 1a (2026-10-19): 不得不/不得已 are ordinary Chinese
-  // compounds, not boundary clauses; 不得 alone stays rejected.
-  const msg = `时间紧张不得不缩小范围。请执行 /Users/x/pkg.md，最终回复给回执。`;
+  // 不得不/不得已 are ordinary Chinese compounds, not boundary clauses;
+  // bare 不得 stays rejected.
+  const msg = `时间紧张不得不缩小范围。请执行 /workspace/example-app/pkg.md，最终回复给回执。`;
   assert.equal(checkMessage(msg).code, 0, checkMessage(msg).output);
-  const boundary = `请执行 /Users/x/pkg.md，不得修改任何文件，最终回复给回执。`;
+  const boundary = `请执行 /workspace/example-app/pkg.md，不得修改任何文件，最终回复给回执。`;
   const result = checkMessage(boundary);
   assert.equal(result.code, 1, result.output);
   assert.match(result.output, /prohibition\/boundary clauses/);
 });
 
 test("incidental markdown references are not a package pointer", () => {
-  // 2026-10-27 sessions b3c5f708 and da113c7f were sent full task bodies with
-  // document paths hundreds of characters in. The old any-.md test treated
-  // those references as pointers; a task body with a receipt line would have
-  // passed message mode without ever naming the package to execute.
+  // Incidental document paths hundreds of characters into a task body must
+  // not pass as package pointers when no package execution cue leads them.
   const msg = `任务：检查项目文档是否最新。
 
 背景：${"上一轮已更新玩法、设计稿与验证记录，本轮只核对残留。".repeat(12)}README.md 与 docs/usage.md 的主体已更新。
@@ -169,7 +159,7 @@ test("incidental markdown references are not a package pointer", () => {
 });
 
 test("source-document references near the start are not task packages", () => {
-  // Opening shape from 4615b1a6; source paths are context, not a task package.
+  // Source paths given as context are not a task package.
   const source = "You are writing the English usage guide (read docs/usage.md first, it is the Chinese source; also skim docs/design/save-migration.md for context).";
   const result = checkMessage(`${source}\nWhen done, reply with: the file path.`);
   assert.equal(result.code, 1, result.output);
@@ -181,7 +171,7 @@ test("source-document references near the start are not task packages", () => {
 
 test("a task-package pointer later in the message still counts", () => {
   const msg = `${"范围说明：只核对文档，不改代码。".repeat(20)}
-请读取任务包 /Users/x/tasks/impl.md，最终回复给回执。`;
+请读取任务包 /workspace/example-app/tasks/impl.md，最终回复给回执。`;
   const result = checkMessage(msg);
   assert.equal(result.code, 0, result.output);
   assert.match(result.output, /dispatch message: 0 problems/);

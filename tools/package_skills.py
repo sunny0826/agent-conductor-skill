@@ -1,14 +1,18 @@
 """Package skills with the transitive closure of local Markdown links."""
 from pathlib import Path
 import argparse
+import io
 import json
+import os
 import re
+import stat
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "skills"
 DIST = ROOT / "dist"
 LINK = re.compile(r"\]\(([^)]+)\)")
+IGNORED_NAMES = {"__pycache__", ".DS_Store"}
 
 
 def skill_names():
@@ -68,20 +72,19 @@ def readme(results):
         path.read_text(),
     )
     text = re.sub(r"(?m)^\d+ 个原则技能按需读取", f"{len(principles)} 个原则技能按需读取", text)
-    text = re.sub(
-        r"\[下载\]\(dist/([\w-]+)\.zip\)（\d+ 个技能，\d+ 个文件）",
-        lambda match: (
-            f"[下载](dist/{match.group(1)}.zip)"
-            f"（{len(by_name[match.group(1)]['skills'])} 个技能，{by_name[match.group(1)]['files']} 个文件）"
-        ),
-        text,
-    )
+    for featured in ("rigor", "agent-conductor"):
+        item = by_name[featured]
+        text = re.sub(
+            rf"(\[{re.escape(featured)}\]\(skills/{re.escape(featured)}/SKILL\.md\)[^\n]*?（闭包：)\d+ 个技能，\d+ 个文件",
+            rf"\g<1>{len(item['skills'])} 个技能，{item['files']} 个文件",
+            text,
+        )
     rows = "".join(
         f"| [{name}](skills/{name}/SKILL.md) | {description(name)} | "
-        f"[{by_name[name]['files']} 个文件](dist/{name}.zip) |\n"
+        f"{len(by_name[name]['skills'])} 个技能 / {by_name[name]['files']} 个文件 |\n"
         for name in tasks
     )
-    return {path: replace_block(text, "readme", "| 技能 | 用途 | ZIP |\n|---|---|---|\n" + rows)}
+    return {path: replace_block(text, "readme", "| 技能 | 用途 | 闭包规模 |\n|---|---|---|\n" + rows)}
 
 
 def sync(generated, check):
@@ -95,6 +98,7 @@ def sync(generated, check):
 
 def dependencies(directory):
     found = set()
+    base_resolved = BASE.resolve()
     for doc in directory.rglob("*.md"):
         for raw in LINK.findall(doc.read_text()):
             target = raw.strip("<>").split("#", 1)[0]
@@ -104,13 +108,36 @@ def dependencies(directory):
             if not path.exists():
                 raise ValueError(f"Broken reference: {doc.relative_to(ROOT)} -> {target}")
             try:
-                owner = path.relative_to(BASE).parts[0]
+                owner = path.relative_to(base_resolved).parts[0]
             except ValueError as error:
                 raise ValueError(f"Reference outside skills: {doc} -> {target}") from error
-            if not (BASE / owner / "SKILL.md").is_file():
+            if not (base_resolved / owner / "SKILL.md").is_file():
                 raise ValueError(f"Reference is not owned by a skill: {path}")
             found.add(owner)
     return found
+
+
+def check_cycles(names):
+    graph = {name: sorted(dependencies(BASE / name) - {name}) for name in names}
+    state = {}
+    stack = []
+
+    def visit(node):
+        state[node] = 1
+        stack.append(node)
+        for nxt in graph.get(node, ()):
+            if state.get(nxt) == 1:
+                idx = stack.index(nxt)
+                cycle = " -> ".join(stack[idx:] + [nxt])
+                raise ValueError(f"Dependency cycle: {cycle}")
+            if state.get(nxt) is None:
+                visit(nxt)
+        stack.pop()
+        state[node] = 2
+
+    for name in sorted(names):
+        if state.get(name) is None:
+            visit(name)
 
 
 def closure(names):
@@ -125,39 +152,70 @@ def closure(names):
     return sorted(complete)
 
 
+def is_ignored_file(path):
+    if any(part in IGNORED_NAMES for part in path.parts):
+        return True
+    if path.suffix == ".pyc":
+        return True
+    if path.name.startswith("test_") or ".test." in path.name:
+        return True
+    return False
+
+
 def files(names):
-    return sorted(p for name in names for p in (BASE / name).rglob("*") if p.is_file())
+    return sorted(
+        p for name in names for p in (BASE / name).rglob("*")
+        if p.is_file() and not is_ignored_file(p.relative_to(BASE))
+    )
 
 
-def package(name, names, check):
-    members = {str(p.relative_to(BASE)): p for p in files(names)}
-    archive = DIST / f"{name}.zip"
-    if not check:
-        DIST.mkdir(parents=True, exist_ok=True)
-        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as output:
-            for member, path in members.items():
-                output.write(path, member)
-    with zipfile.ZipFile(archive) as output:
-        assert output.testzip() is None, archive
-        assert len(output.namelist()) == len(set(output.namelist())), archive
-        assert set(output.namelist()) == set(members), archive
+def build_zip_bytes(members):
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as output:
+        for member, path in members.items():
+            info = zipfile.ZipInfo(member, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            mode = 0o755 if os.access(path, os.X_OK) else 0o644
+            info.external_attr = (stat.S_IFREG | mode) << 16
+            output.writestr(info, path.read_bytes())
+    data = buf.getvalue()
+    with zipfile.ZipFile(io.BytesIO(data)) as output:
+        assert output.testzip() is None, members
+        assert len(output.namelist()) == len(set(output.namelist()))
+        assert set(output.namelist()) == set(members)
         for member, path in members.items():
             assert output.read(member) == path.read_bytes(), member
+    return data
+
+
+def package(name, names, check, verify_dist=False):
+    members = {str(p.relative_to(BASE)): p for p in files(names)}
+    archive = DIST / f"{name}.zip"
+    data = build_zip_bytes(members)
+    if not check:
+        DIST.mkdir(parents=True, exist_ok=True)
+        if not archive.is_file() or archive.read_bytes() != data:
+            archive.write_bytes(data)
+    elif verify_dist:
+        if not archive.is_file() or archive.read_bytes() != data:
+            raise ValueError(f"{archive.relative_to(ROOT)} is missing or stale; run tools/package_skills.py")
     return {"archive": archive.name, "skills": names, "files": len(members)}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--verify-dist", action="store_true")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
+    if args.verify_dist:
+        args.check = True
     names = skill_names()
     for name in names:
         validate(name)
     sync(indexes(names), args.check)
-    for name in names:
-        dependencies(BASE / name)
-    results = [package(name, closure([name]), args.check) for name in names]
+    check_cycles(names)
+    results = [package(name, closure([name]), args.check, args.verify_dist) for name in names]
     sync(readme(results), args.check)
     if args.json:
         print(json.dumps(results, ensure_ascii=False, indent=2))

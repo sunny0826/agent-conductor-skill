@@ -3,15 +3,12 @@
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readdir, readFile, stat } from "node:fs/promises";
-import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS = path.join(ROOT, "skills");
-const DEFAULT_DEPLOY_ROOT =
-  process.env.SKILL_DEPLOY_ROOT ||
-  path.join(homedir(), ".config", "magpie", "library", "skills");
+const DEFAULT_DEPLOY_ROOT = process.env.SKILL_DEPLOY_ROOT || "";
 const IGNORED_NAMES = new Set([".DS_Store", "__pycache__"]);
 const IGNORED_SUFFIXES = [".pyc"];
 
@@ -81,7 +78,15 @@ export async function compareSkill(
 
 export async function checkDeployment(options = {}) {
   const skillsBase = options.skillsBase || SKILLS;
-  const deployRoot = options.deployRoot || DEFAULT_DEPLOY_ROOT;
+  const deployRoot = options.deployRoot ?? DEFAULT_DEPLOY_ROOT;
+  if (!deployRoot) {
+    return {
+      deployRoot: "",
+      ok: false,
+      error: "deploy root is required: pass --deploy-root <path> or set SKILL_DEPLOY_ROOT",
+      results: [],
+    };
+  }
   if (!existsSync(deployRoot)) {
     return {
       deployRoot,
@@ -148,12 +153,12 @@ function usage() {
     "Usage: node tools/check-deployment.mjs [options]",
     "",
     "Options:",
-    "  --deploy-root <path>  deployed skills directory",
+    "  --deploy-root <path>  deployed skills directory (or set SKILL_DEPLOY_ROOT)",
     "  --skills <name...>    only check these skills",
     "  --json                print a JSON report",
     "  -h, --help            show this help",
     "",
-    `Default deploy root: ${DEFAULT_DEPLOY_ROOT}`,
+    `Default deploy root: ${DEFAULT_DEPLOY_ROOT || "(none; pass --deploy-root or set SKILL_DEPLOY_ROOT)"}`,
   ].join("\n");
 }
 
