@@ -9,6 +9,7 @@
 - [bug-fix](../playbooks/bug-fix.md)：复现并修复一个错误
 - [eval](../playbooks/eval.md)：盲测技能或结构变化，由独立评判比较行为
 - [feature](../playbooks/feature.md)：实现一个新功能
+- [figure-it-out](../playbooks/figure-it-out.md)：复杂迁移或多部分变更没有匹配的窄流程时，按风险设计阶段并用假设、实证与决策记录推进
 - [hillclimb](../playbooks/hillclimb.md)：围绕一个指标反复改进并验证
 - [investigation](../playbooks/investigation.md)：只读调查，交付发现，不修改产品
 - [multi-phase-plan](../playbooks/multi-phase-plan.md)：只写多阶段实施计划，停在计划

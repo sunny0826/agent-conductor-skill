@@ -17,7 +17,7 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 - [ ] State the protocol and this plan to the operator, then stop. Start execution only on the operator's explicit go.
 - [ ] Read current standing orders and the execution contract at program start and every audit tick. Resolve actual installed package paths. For a repo-tracked contract, use `git show <trunk-ref>:<actual-repo-relative-path>`; do not assume installed skills live in trunk.
   - [ ] Read the chosen execution playbook.
-  - [ ] Read the package swarm, verification-surfaces and opening-a-pr contracts.
+  - [ ] Read the package parallel-lane (agent-conductor), verification-surfaces and opening-a-pr contracts.
   - [ ] Read each other leaf skill the program actually uses.
 - [ ] On the operator's go, arm an audit tick with the host-provided scheduler at an appropriate cadence with the tick prompt below. Never leave the cadence to memory.
 - [ ] Use this tick prompt, verbatim. "Re-read the execution playbook from trunk. Audit the operation against it and fix drift in this tick. Check actual host activity handles and side effects. Confirm stalled ownership before standing down and dispatching a replacement within the approved budget. Then post a short status message to the operator in chat only when the audit found a tracked change that no earlier status message reported, such as a PR opened, a code-ready head, a round launched or closed, a verdict, a merge, a stuck agent and the action taken, a blocker added or cleared, or a decision only the operator can make. Name every such change and nothing else. Do not repeat a table, the merged list, or an unchanged blocker. If the audit found none, end the turn with no reply text. Either way, log this tick's row in your decision trail. The row names the items reported, or none."
@@ -37,14 +37,14 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 - [ ] Resolve the actual forge, repository and user identity. Prefer a host PR tool, else an existing applicable CLI; record the fallback. Use no required stack product.
 - [ ] With existing authorization, open a PR under the project ready/draft convention per Opening a PR. A stack child targets its actual parent branch.
 - [ ] Run the repo lint and typecheck before the PR-facing push, with hooks on when configured.
-- [ ] Run package code-review before each authorized commit and package no-comments before review.
+- [ ] Run package code-review (including comment and workaround hygiene) before each authorized commit.
 - [ ] Triage available human or automated review comments per [review triage](../references/review-triage.md); record when no comments exist. External replies require authorization.
 - [ ] Rebase onto current trunk before the code-ready report and babysit. Keep that merge base in fix rounds. Rebase again only at merge prep, on a `git merge-tree` conflict with trunk, or on a CI failure that comes from a change on trunk.
 
 ### Verdict and merge, for every PR
 
-- [ ] At the code-ready head SHA and at each later push that changes the patch, run the swarm per `../swarm/SKILL.md`. One gates lane. The declared live lanes from the PR's **Verify, live** block. The perf lane from its **Verify, perf** block. The declared audit lanes under the risk rules in `playbooks/multi-phase-plan.md`, each with its own focus, that read the diff and the receipts and distrust the PR body. The root audits the receipts in the merge-ready report before the verdict.
-- [ ] Clean only when every lane is `PASS`. Findings go back to the owner, including a defect that a lane filed as a note. A new head gets a fresh swarm and a fresh verdict, except for results that stay valid under the patch-id rule in `playbooks/shipping.md`.
+- [ ] At the code-ready head SHA and at each later push that changes the patch, run parallel verification lanes per `../agent-conductor/SKILL.md`. One gates lane. The declared live lanes from the PR's **Verify, live** block. The perf lane from its **Verify, perf** block. The declared audit lanes under the risk rules in `playbooks/multi-phase-plan.md`, each with its own focus, that read the diff and the receipts and distrust the PR body. The root audits the receipts in the merge-ready report before the verdict.
+- [ ] Clean only when every lane is `PASS`. Findings go back to the owner, including a defect that a lane filed as a note. A new head gets a fresh parallel verification pass and a fresh verdict, except for results that stay valid under the patch-id rule in `playbooks/shipping.md`.
 - [ ] <The merge or append rule from the execution playbook, with the patch-id rule from `playbooks/shipping.md`.>
 
 ### Boot recipe, for every live lane
@@ -129,4 +129,4 @@ Audit lanes: <count under the risk rules in playbooks/multi-phase-plan.md>
 
 ## Appendix D. Links and reading list
 
-<Docs to read before editing. Which PRs get `../how/SKILL.md` and `../interrogate/SKILL.md`. The trail per `../show-me-your-work/SKILL.md`.>
+<Docs to read before editing. Which PRs get `../how/SKILL.md` and `../interrogate/SKILL.md`. The decision trail (ts, phase, decision, why, evidence, result).>

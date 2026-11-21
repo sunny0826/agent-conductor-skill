@@ -5,7 +5,7 @@ description: "修改 .ts、.tsx 的类型、接口或外部输入边界时，建
 
 # TypeScript 类型与边界
 
-先读包内 [类型约束](../principle-type-system-discipline/SKILL.md)，输入位置由 [边界原则](../principle-boundary-discipline/SKILL.md) 决定。具体例子按需读 [patterns](references/patterns.md)，示意类型需补实际项目定义，不冒充完整可编译程序。
+在外部边界解析校验原始数据，内部信任领域类型并让编译器拒绝非法状态与未处理变体。具体例子按需读 [patterns](references/patterns.md)，示意类型需补实际项目定义，不冒充完整可编译程序。
 
 | 规则 | 应用 |
 |---|---|

@@ -9,7 +9,7 @@ import { checkDeployment } from "./check-deployment.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILLS = path.join(ROOT, "skills");
-const SAMPLE = "bro";
+const SAMPLE = "tdd";
 
 async function fixture() {
   const root = await mkdtemp(path.join(tmpdir(), "skill-deploy-"));

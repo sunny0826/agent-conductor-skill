@@ -324,6 +324,3 @@ openFile({
 ```
 
 Skip on hot paths: per-frame render, tokenizers, parsers, anything in a tight loop where the allocation cost matters.
-
-
-包内原则：[类型](../../principle-type-system-discipline/SKILL.md)、[边界](../../principle-boundary-discipline/SKILL.md)。

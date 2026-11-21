@@ -11,7 +11,7 @@
 | ledger.tsv | TSV 表头 `pr head verdict origin evidence`；origin 为 self 或 verifier，追加一行每结论；同键 verifier 优先，双方各取最后记录 |
 | inbox/ | 一完成指针一文件，包含 agent／unit／status／report；drain 原子移入一批再处理，新到不入该批 |
 | gates.md | `- [ ]` 表示 open；问题、选项、默认及授权条件；已解决改 `- [x]` 并记录理由 |
-| decisions.tsv | [决策日志](../../show-me-your-work/SKILL.md) 的六列契约，不自行另造 |
+| decisions.tsv | UTF-8 只追加六列 TSV（`ts`、`phase`、`decision`、`why`、`evidence`、`result`），每格单行，错误用新行取代 |
 | status.md | 以下脚本只从表格和 gates 生成，不能手改事实 |
 
 使用项目实际路径运行 `python3 <本技能目录>/scripts/program-status.py <store>`。它校验必需表头、单元唯一键与 verdict，拒绝坏表而不覆盖已有 status，输出当前计数、未获当前 head 证明项、open gates。它不能证明 ledger 声称的行为，协调者仍须读证据；旧 head、blocked、failed 和 type-check-only 不计行为完成。没有 ledger 行不意味着成功。变更列表写 decisions／overview，不能由两个快照猜作者行为。
