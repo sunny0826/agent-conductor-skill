@@ -149,3 +149,42 @@ test("unknown goals, duplicate task ids and ambiguous paths are rejected", () =>
     assert.match(result.output, diagnostic);
   }
 });
+
+test("reviewer tasks enforce the 3-round h1..h3 limit and reject same-session reuse", () => {
+  const mkReview = (id, session, extra = {}) => ({
+    id, goal: "G1", owner: "reviewer", workspace: `wt-${id}`, status: "done",
+    writes: [], constraints: ["Read-only review"], evidence: [`lody://session/${session}?workspace=ws`],
+    ...extra,
+  });
+  const valid = state();
+  valid.tasks.push(
+    mkReview("R0", "sess-cancelled", { status: "stopped" }),
+    mkReview("R1", "sess-1", { review_round: 1, review_target: "PR#55" }),
+    mkReview("R2", "sess-2", { review_round: 2, rework_round: "h1", review_target: "PR#55" }),
+    mkReview("R3", "sess-3", { review_round: 3, rework_round: "h2", review_target: "PR#55" }),
+    mkReview("R4-other-pr", "sess-4", { review_round: 1, review_target: "PR#56" }),
+  );
+  assert.equal(checkState(valid).code, 0, checkState(valid).output);
+
+  const fourthRound = structuredClone(valid);
+  fourthRound.tasks.push(mkReview("R4", "sess-5", { review_target: "PR#55" }));
+  assert.equal(checkState(fourthRound).code, 1);
+  assert.match(checkState(fourthRound).output, /exceeds the 3-round/);
+
+  for (const [extra, diagnostic] of [
+    [{ review_round: 4 }, /review_round.*3-round/],
+    [{ rework_round: "h4" }, /rework_round.*h1\.\.h3/],
+  ]) {
+    const bad = state();
+    bad.tasks.push(mkReview("R-bad", "sess-bad", extra));
+    const result = checkState(bad);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, diagnostic);
+  }
+
+  const reused = state();
+  reused.tasks.push(mkReview("R1", "same-reviewer-uuid"), mkReview("R2", "same-reviewer-uuid"));
+  const reuseResult = checkState(reused);
+  assert.equal(reuseResult.code, 1, reuseResult.output);
+  assert.match(reuseResult.output, /cannot reuse the same reviewer session/);
+});

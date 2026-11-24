@@ -67,8 +67,53 @@ for (const task of tasks) {
   if (!strings(task.constraints)) fail(`${task.id}: constraints must be an array`);
   if (!strings(task.evidence)) fail(`${task.id}: evidence must be an array`);
   if (["done", "stopped"].includes(task.status) && !evidence(task.evidence)) fail(`${task.id}: ${task.status} needs a result or stop acknowledgement`);
+  if (task.review_target !== undefined && !text(task.review_target)) fail(`${task.id}: review_target must be a non-empty string`);
+  if (task.review_round !== undefined) {
+    if (!Number.isInteger(task.review_round) || task.review_round < 1) fail(`${task.id}: review_round must be a positive integer`);
+    else if (task.review_round > 3) fail(`${task.id}: review_round ${task.review_round} exceeds the 3-round hard limit (h1..h3)`);
+  }
+  if (task.rework_round !== undefined) {
+    const raw = task.rework_round;
+    const match = typeof raw === "string" ? raw.trim().match(/^h([1-9]\d*)$/i) : null;
+    const num = Number.isInteger(raw) && raw >= 1 ? raw : match ? Number(match[1]) : null;
+    if (num === null) fail(`${task.id}: rework_round must be h1..h3 or 1..3`);
+    else if (num > 3) fail(`${task.id}: rework_round ${raw} exceeds the h1..h3 hard limit`);
+  }
   if (mode === "--complete" && active(task)) fail(`${task.id}: ${task.status}; work has not reached a terminal state`);
   checkSkillAdoption(task, mode === "--complete" && goal?.status === "active" && task.status !== "stopped", fail);
+}
+const reviewCounts = new Map();
+const reviewerSessions = new Map();
+for (const task of tasks) {
+  const goal = goals.find((g) => g.id === task.goal);
+  if (!goal || goal.status === "superseded" || task.status === "stopped" || !text(task.owner)) continue;
+  if (!/^reviewer(?:$|[-_])/i.test(task.owner.trim())) continue;
+  const target = text(task.review_target) ? task.review_target.trim() : task.goal;
+  const key = `${task.goal}::${target}::${task.owner.trim().toLowerCase()}`;
+  const group = reviewCounts.get(key) ?? [];
+  group.push(task.id);
+  reviewCounts.set(key, group);
+  if (strings(task.evidence)) {
+    const taskSessions = new Set();
+    for (const ref of task.evidence) {
+      for (const match of ref.matchAll(/(?:lody:\/\/session\/|session:\/\/)([^?\s/#]+)/gi)) {
+        taskSessions.add(match[1]);
+      }
+    }
+    for (const sid of taskSessions) {
+      const prior = reviewerSessions.get(sid);
+      if (prior && prior !== task.id) {
+        fail(`${prior} and ${task.id}: independent review rounds cannot reuse the same reviewer session (${sid})`);
+      } else {
+        reviewerSessions.set(sid, task.id);
+      }
+    }
+  }
+}
+for (const [key, ids] of reviewCounts) {
+  if (ids.length > 3) {
+    fail(`${ids.join(", ")}: ${ids.length} review rounds on ${key.split("::")[1]} exceeds the 3-round hard limit (h1..h3)`);
+  }
 }
 const writers = tasks.filter((t) => t.status === "running" && strings(t.writes));
 for (let i = 0; i < writers.length; i++) {

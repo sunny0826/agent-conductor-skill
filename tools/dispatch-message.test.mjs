@@ -176,3 +176,16 @@ test("a task-package pointer later in the message still counts", () => {
   assert.equal(result.code, 0, result.output);
   assert.match(result.output, /dispatch message: 0 problems/);
 });
+
+test("dispatch messages reject Round 4+ review dispatches and same-session review continuation", () => {
+  const r3 = checkMessage("请读取任务包 /workspace/example-app/.tasks/review-r3.md 并按包执行。回执：第一行 approve 或 request changes。");
+  assert.equal(r3.code, 0, r3.output);
+  for (const [msg, diagnostic] of [
+    ["请读取任务包 /workspace/example-app/.tasks/review-r4.md 进行第 4 轮复审。回执：approve 或 request changes。", /3-round/],
+    ["已推送新提交，请读取任务包 /workspace/example-app/.tasks/review-r2.md 并在同一会话复审。回执：approve 或 request changes。", /fresh session/],
+  ]) {
+    const result = checkMessage(msg);
+    assert.equal(result.code, 1, result.output);
+    assert.match(result.output, diagnostic);
+  }
+});

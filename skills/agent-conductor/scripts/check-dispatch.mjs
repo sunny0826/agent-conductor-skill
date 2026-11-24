@@ -63,6 +63,12 @@ const suppressionOpeners = [
   [/不要问.{0,3}问题/, "question-suppression opener"],
 ];
 const receiptPattern = /(回执|回报|最终[^\n。；]{0,4}(?:报告|回复|结论)|VERDICT|裁决|\bwhen\s+done,?\s+reply\s+with\s*:)/i;
+const overCapReviewPattern =
+  /(?:第\s*(?:[4-9]|[1-9]\d+)\s*轮[^\n。；]{0,16}(?:审查|复审|审核|终审)|\bround\s*(?:[4-9]|[1-9]\d+)\b[^\n.;]{0,28}\b(?:review|re-?review|audit)\b|\breview(?:[-_][a-z0-9]+)*[-_]r(?:[4-9]|[1-9]\d+)\b)/i;
+const sameSessionReviewPattern =
+  /(?:(?:同一|原|当前)会话[^\n。；]{0,10}(?:继续)?(?:复审|重审|再审|审查)|(?:worktree|工作树)[^\n。；]{0,24}(?:可能)?停留在)/i;
+const stripQuotedRegexes = (value) =>
+  value.replace(/\/\([^\n/]{1,2000}\)\/[gimsuy]*/g, (m) => (/[|{]/.test(m) ? "" : m));
 
 function hasReceiptRequirement(value) {
   if (receiptPattern.test(value)) return true;
@@ -102,6 +108,13 @@ if (messageMode) {
   if (!inlinePackage && /(禁止|严禁|不得(?!不|已)|不许)/.test(text)) {
     fail("dispatch message carries prohibition/boundary clauses (禁止/严禁/不得/不许) — boundaries belong in the package, keep the message to pointer plus receipt requirement");
   }
+  const strippedMessage = stripQuotedRegexes(text);
+  if (overCapReviewPattern.test(strippedMessage)) {
+    fail("review round exceeds the 3-round cap (h1..h3 / Round 1..3) — stop patching and adjudicate via Harvest Packet or escalate");
+  }
+  if (sameSessionReviewPattern.test(strippedMessage)) {
+    fail("review dispatch reuses an existing session/worktree — open a fresh session pinned to the new snapshot SHA");
+  }
   for (const problem of problems) console.error(problem);
   console.log(`dispatch message: ${problems.length} problems`);
   process.exit(problems.length ? 1 : 0);
@@ -126,16 +139,18 @@ if (typeLines.length === 0) {
   const value = typeLines[0][1];
   const normalized = value.trim().toLowerCase();
   if (/^(?:实施|implementation)$/.test(normalized)) declaredType = "implementation";
-  else if (/^(?:只读审查|验证|read[- ]?only review|review only|verification)$/.test(normalized)) declaredType = "bounded";
+  else if (/^(?:只读审查|read[- ]?only review|review only)$/.test(normalized)) declaredType = "review";
+  else if (/^(?:验证|verification)$/.test(normalized)) declaredType = "verification";
   else fail(`unrecognized package type "${value}" — use 实施 / 只读审查 / 验证`);
 }
+const isBounded = declaredType === "review" || declaredType === "verification";
 
 // 2. Strip slash-delimited regex literals of the form /(...)/flags before
 // pattern matching, so a review package that quotes an audited regex (e.g.
 // the grant patterns of this very script) is not read as granting writes.
 // Only alternation/quantifier bodies (containing | or {) are stripped; prose
 // paths and parentheses survive.
-const stripped = text.replace(/\/\([^\n/]{1,2000}\)\/[gimsuy]*/g, (m) => (/[|{]/.test(m) ? "" : m));
+const stripped = stripQuotedRegexes(text);
 
 // 3. Suppression openers. Global "just execute, don't think" lines are not
 // decidable boundaries; the first three lines are where they appear in
@@ -177,7 +192,7 @@ const heuristicGrants = vcsGrants || fileGrants;
 
 let grantsWrites;
 if (declaredType === "implementation") grantsWrites = true;
-else if (declaredType === "bounded") {
+else if (isBounded) {
   if (heuristicGrants) {
     fail("declared read-only/review but the text grants writes — fix the type or the grants");
   }
@@ -198,11 +213,21 @@ if (grantsWrites) {
 // implied by ordered instructions or a bare mention of the word — executors
 // otherwise treat the package as open-ended. Boundary headers need a colon so
 // prose that merely mentions 验证命令/命令边界 does not pass.
-if (declaredType === "bounded" &&
+if (isBounded &&
     !/(?<![不莫])允许[^\n。；]{0,12}(?:命令|执行|运行|搜索|只读)|(?:可用|可以|能够)[^\n。；]{0,60}(?:命令|执行|运行)|(?:命令边界|验证命令)[^\n。；]{0,30}[:：]|在[^\n。；]{0,30}运行[:：]|不要?(?:执行|运行|跑)(?:任何)?命令|(?:allowed|permitted|verification) commands?|command boundary|(?:runs?|execute) no commands/i.test(stripped)) {
   fail("review/verification package lacks a command boundary (允许执行的命令… / 不执行任何命令 / 验证命令在…运行：)");
 }
 
+// 7. Review round cap and fresh-session boundary for read-only review packages.
+if (declaredType === "review") {
+  if (overCapReviewPattern.test(stripped)) {
+    fail("review round exceeds the 3-round cap (h1..h3 / Round 1..3) — stop patching and adjudicate via Harvest Packet or escalate");
+  }
+  if (sameSessionReviewPattern.test(stripped) || /\bgit\s+(?:fetch|pull|checkout|switch|reset)\b/i.test(affirmative)) {
+    fail("review dispatch reuses or mutates an existing session/worktree — open a fresh session pinned to the new snapshot SHA");
+  }
+}
+
 for (const problem of problems) console.error(problem);
-console.log(`dispatch package: ${grantsWrites ? "implementation" : "read-only"}${declaredType ? ` (declared ${declaredType})` : ""}, ${problems.length} problems`);
+console.log(`dispatch package: ${grantsWrites ? "implementation" : "read-only"}${isBounded ? " (declared bounded)" : declaredType ? ` (declared ${declaredType})` : ""}, ${problems.length} problems`);
 process.exit(problems.length ? 1 : 0);
